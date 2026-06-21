@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LoomXR — One-of-One Luxury Packaging</title>
+<title>LoomXR: One-of-One Luxury Packaging</title>
 <style>
 
 /* ── RESET ── */
@@ -267,7 +267,7 @@ section:nth-child(even) { background: #f5f2ee; }
 }
 .card-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; color: #1a1a1a; }
 .card-body { font-size: 0.875rem; color: rgba(26,26,26,0.5); line-height: 1.68; }
-.card-icon { font-size: 1.8rem; margin-bottom: 1.3rem; }
+.card-icon { line-height: 0; margin-bottom: 1.3rem; }
 
 /* ── SAMSUNG CARDS ── */
 .samsung-grid {
@@ -290,7 +290,7 @@ section:nth-child(even) { background: #f5f2ee; }
   transform: translateY(-6px);
   box-shadow: 0 12px 40px rgba(59,130,246,0.12);
 }
-.s-card-icon { font-size: 2.4rem; margin-bottom: 1.25rem; }
+.s-card-icon { line-height: 0; margin-bottom: 1.25rem; }
 .s-card-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; color: #1a1a1a; }
 .s-card-desc { font-size: 0.875rem; color: rgba(26,26,26,0.5); line-height: 1.65; }
 
@@ -438,8 +438,8 @@ footer {
 
     <!-- Scene 1: Hero -->
     <div class="scene-overlay" id="ov1">
-      <span class="scene-label">LoomXR Platform</span>
-      <h1 class="scene-headline">Packaging as unique<br>as the person holding it</h1>
+      <h1 class="scene-headline" style="font-size:clamp(3rem,8vw,6rem);letter-spacing:-0.055em;margin-bottom:0.6rem;">LoomXR</h1>
+      <p class="scene-sub" style="font-size:clamp(1rem,2.2vw,1.45rem);color:rgba(26,26,26,0.72);font-weight:600;letter-spacing:-0.01em;margin-bottom:1.1rem;">Packaging as unique as the person holding it</p>
       <p class="scene-sub">LoomXR turns every luxury product into a one-of-one, AI-designed experience your customer previews in augmented reality. Like an NFT, made physical.</p>
       <a href="#cta-section" class="btn-hero">Request Demo</a>
       <p class="scroll-cue" style="margin-top:1.5rem;">Scroll to explore ↓</p>
@@ -447,21 +447,21 @@ footer {
 
     <!-- Scene 2: Scan -->
     <div class="scene-overlay" id="ov2">
-      <span class="scene-label">Step 01 — Scan</span>
+      <span class="scene-label">Step 01 · Scan</span>
       <h2 class="scene-headline">Point. Scan.<br>Step into the experience.</h2>
       <p class="scene-sub">Your Samsung Galaxy phone or Galaxy XR headset recognizes the product instantly. The packaging comes alive the moment you look at it.</p>
     </div>
 
     <!-- Scene 3: Personalize -->
     <div class="scene-overlay" id="ov3">
-      <span class="scene-label">Step 02 — Personalize</span>
+      <span class="scene-label">Step 02 · Personalize</span>
       <h2 class="scene-headline">Designed around you.<br>Made for no one else.</h2>
-      <p class="scene-sub">Your music, your aesthetic, your world. LoomXR's generative AI crafts packaging that is tuned to exactly who you are — and will never be made for anyone else.</p>
+      <p class="scene-sub">Your music, your aesthetic, your world. LoomXR's generative AI crafts packaging tuned to exactly who you are, and will never be made for anyone else.</p>
     </div>
 
     <!-- Scene 4: One-of-One -->
     <div class="scene-overlay" id="ov4">
-      <span class="scene-label">Step 03 — Own</span>
+      <span class="scene-label">Step 03 · Own</span>
       <h2 class="scene-headline">Every design<br>exists once. Forever.</h2>
       <p class="scene-sub">Like a certificate of authenticity for a piece of art. Every LoomXR design is permanently signed, stored, and will never be recreated for any other customer.</p>
     </div>
@@ -492,19 +492,19 @@ footer {
 
     <div class="card-grid" style="max-width:960px;margin:3rem auto 0;">
       <div class="card fade-up d2">
-        <div class="card-icon">🎨</div>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><line x1="12" y1="2" x2="12" y2="6.5"/><line x1="12" y1="17.5" x2="12" y2="22"/><line x1="2" y1="12" x2="6.5" y2="12"/><line x1="17.5" y1="12" x2="22" y2="12"/><line x1="5.64" y1="5.64" x2="8.46" y2="8.46"/><line x1="15.54" y1="15.54" x2="18.36" y2="18.36"/><line x1="5.64" y1="18.36" x2="8.46" y2="15.54"/><line x1="15.54" y1="8.46" x2="18.36" y2="5.64"/></svg></div>
         <p class="card-step">AI Design Engine</p>
         <h3 class="card-title">Generative, not templated</h3>
         <p class="card-body">Every design is generated from scratch, tuned to the customer's personal taste profile. No templates, no repeats, no two customers ever share the same design.</p>
       </div>
       <div class="card fade-up d3">
-        <div class="card-icon">📱</div>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="17.5" r="0.8" fill="rgba(26,26,26,0.38)" stroke="none"/></svg></div>
         <p class="card-step">Augmented Reality</p>
         <h3 class="card-title">Preview on the real product</h3>
         <p class="card-body">Customers see their unique design overlaid in AR on the actual product before committing. The AR anchor works with Samsung Galaxy phones and Galaxy XR headsets.</p>
       </div>
       <div class="card fade-up d4">
-        <div class="card-icon">✦</div>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 12 12 22 2 12"/></svg></div>
         <p class="card-step">One-of-One</p>
         <h3 class="card-title">Permanently signed, never reused</h3>
         <p class="card-body">Each design is cryptographically signed and stored permanently. Once created, it belongs to that customer alone and cannot be generated for anyone else.</p>
@@ -518,24 +518,24 @@ footer {
   <div class="inner">
     <span class="s-label fade-up">For Brands</span>
     <h2 class="s-headline fade-up d1">Offer personalization without<br>changing how you work</h2>
-    <p class="s-body fade-up d2" style="max-width:580px;margin:0 auto;">LoomXR plugs into your existing workflow with zero new hardware and zero new supply chain. You keep your printer, your fulfillment, your production process — exactly as it is today.</p>
+    <p class="s-body fade-up d2" style="max-width:580px;margin:0 auto;">LoomXR plugs into your existing workflow with zero new hardware and zero new supply chain. You keep your printer, your fulfillment, your production process, exactly as it is today.</p>
 
     <div class="card-grid" style="max-width:880px;margin:3rem auto 0;">
       <div class="card fade-up d2">
-        <div class="card-icon">📦</div>
-        <p class="card-step">01 — Upload</p>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8L12 3 3 8v8l9 5 9-5V8z"/><polyline points="3 8 12 13 21 8"/><line x1="12" y1="13" x2="12" y2="22"/></svg></div>
+        <p class="card-step">01 · Upload</p>
         <h3 class="card-title">Upload your product</h3>
         <p class="card-body">Share a few images of your product. LoomXR trains its object detection model to recognize it from any angle, instantly and reliably.</p>
       </div>
       <div class="card fade-up d3">
-        <div class="card-icon">⬛</div>
-        <p class="card-step">02 — Place</p>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V5a2 2 0 0 1 2-2h4"/><path d="M15 3h4a2 2 0 0 1 2 2v4"/><path d="M21 15v4a2 2 0 0 1-2 2h-4"/><path d="M9 21H5a2 2 0 0 1-2-2v-4"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></div>
+        <p class="card-step">02 · Place</p>
         <h3 class="card-title">Place your QR code</h3>
         <p class="card-body">Drop a QR code in your shop, on your product, or anywhere your customer might encounter your brand. That is the entire setup.</p>
       </div>
       <div class="card fade-up d4">
-        <div class="card-icon">🖨️</div>
-        <p class="card-step">03 — Fulfill</p>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div>
+        <p class="card-step">03 · Fulfill</p>
         <h3 class="card-title">Fulfill as normal</h3>
         <p class="card-body">Customers create the design, you print it through your existing print partner. No new supply chain. No new hardware. Just a premium new experience.</p>
       </div>
@@ -552,17 +552,17 @@ footer {
 
     <div class="samsung-grid fade-up d3">
       <div class="s-card">
-        <div class="s-card-icon">📱</div>
+        <div class="s-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="17.5" r="0.8" fill="rgba(26,26,26,0.38)" stroke="none"/></svg></div>
         <h3 class="s-card-title">Samsung Galaxy</h3>
-        <p class="s-card-desc">Full AR experience on Android. Scan, generate, and preview your one-of-one design directly in your camera view — no app required.</p>
+        <p class="s-card-desc">Full AR experience on Android. Scan, generate, and preview your one-of-one design directly in your camera view. No app required.</p>
       </div>
       <div class="s-card">
-        <div class="s-card-icon">🥽</div>
+        <div class="s-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9z"/><circle cx="8" cy="11.5" r="2"/><circle cx="16" cy="11.5" r="2"/><line x1="10" y1="11.5" x2="14" y2="11.5"/></svg></div>
         <h3 class="s-card-title">Samsung Galaxy XR</h3>
-        <p class="s-card-desc">Immersive headset experience. See your unique design wrapped around the product in full spatial 3D — the ultimate luxury reveal moment.</p>
+        <p class="s-card-desc">Immersive headset experience. See your unique design wrapped around the product in full spatial 3D: the ultimate luxury reveal moment.</p>
       </div>
       <div class="s-card">
-        <div class="s-card-icon">⬛</div>
+        <div class="s-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V5a2 2 0 0 1 2-2h4"/><path d="M15 3h4a2 2 0 0 1 2 2v4"/><path d="M21 15v4a2 2 0 0 1-2 2h-4"/><path d="M9 21H5a2 2 0 0 1-2-2v-4"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></div>
         <h3 class="s-card-title">In-Store QR</h3>
         <p class="s-card-desc">A single QR code bridges physical retail and digital personalization. Place it anywhere your customer touches your brand.</p>
       </div>
@@ -581,7 +581,7 @@ footer {
       <input type="email" class="email-input" id="email-input" placeholder="your@brand.com">
       <button class="btn-submit" id="submit-btn">Request Demo</button>
     </div>
-    <p class="thank-msg" id="thank-msg">✦&nbsp;&nbsp;Thank you. We will be in touch very soon.</p>
+    <p class="thank-msg" id="thank-msg">Thank you. We will be in touch very soon.</p>
   </div>
 </section>
 
@@ -691,9 +691,19 @@ const mainGroup = new THREE.Group();
 scene.add(mainGroup);
 
 /* ════════════════════════════════════════════════════
-   LIGHTS — boosted ambient so cream box reads bright
+   LIGHTS
 ════════════════════════════════════════════════════ */
-scene.add(new THREE.AmbientLight(0xffffff, 1.4));
+scene.add(new THREE.AmbientLight(0xffffff, 1.7));
+
+// Key light — warm white, front-right-top; gives the box clear face definition
+const keyLight = new THREE.DirectionalLight(0xfffef0, 2.6);
+keyLight.position.set(3, 4, 5);
+scene.add(keyLight);
+
+// Fill/rim — warm golden, rear-left; lifts shadow side
+const rimLight = new THREE.DirectionalLight(0xf0e0c0, 0.9);
+rimLight.position.set(-4, 2, -2);
+scene.add(rimLight);
 
 const pinkLight = new THREE.PointLight(0xff6eb4, 1.6, 10);
 pinkLight.position.set(2.5, 1.5, 2);
@@ -708,22 +718,27 @@ blueLight.position.set(0, 0.5, 3);
 scene.add(blueLight);
 
 /* ════════════════════════════════════════════════════
-   THE LUXURY BOX — soft cream/ivory, warm gold specular
+   THE LUXURY BOX — warm golden ivory, premium phong
 ════════════════════════════════════════════════════ */
-const BOX_W = 1.0, BOX_H = 1.8, BOX_D = 0.5;
+const BOX_W = 1.2, BOX_H = 2.05, BOX_D = 0.58;
 const boxGeo = new THREE.BoxGeometry(BOX_W, BOX_H, BOX_D);
 
 const boxMat = new THREE.MeshPhongMaterial({
-  color:     0xf5f0ea,   // warm cream
-  specular:  0xc8a060,   // warm gold highlight
-  shininess: 120,
+  color:     0xd8c8a0,   // warm golden ivory — clearly distinct from off-white bg
+  specular:  0xfff8e8,   // bright warm specular
+  shininess: 200,
   transparent: true,
   opacity: 1
 });
 const box = new THREE.Mesh(boxGeo, boxMat);
 mainGroup.add(box);
 
-// Edge wireframe (blue, Scene 2)
+// Gold edge wireframe — Scene 1 hero visibility
+const edgesGoldMat = new THREE.LineBasicMaterial({ color: 0x8a6f3a, transparent: true, opacity: 0 });
+const wireBoxGold  = new THREE.LineSegments(new THREE.EdgesGeometry(boxGeo), edgesGoldMat);
+mainGroup.add(wireBoxGold);
+
+// Blue edge wireframe — Scene 2 scan
 const edgesMat = new THREE.LineBasicMaterial({ color: 0x3b82f6, transparent: true, opacity: 0 });
 const wireBox  = new THREE.LineSegments(new THREE.EdgesGeometry(boxGeo), edgesMat);
 mainGroup.add(wireBox);
@@ -810,35 +825,65 @@ const scanDots = new THREE.Points(sdGeo, sdMat);
 mainGroup.add(scanDots);
 
 /* ════════════════════════════════════════════════════
-   SCENE 3 — GENERATIVE SWIRL PARTICLES (Lissajous, multi-color)
-   Lower lightness (0.55) for richer saturation on light bg
+   SCENE 3 — CONSTELLATION NETWORK (champagne gold)
+   Fine nodes on an ellipsoidal shell connected by thin
+   lines. Single restrained accent — no rainbow hues.
 ════════════════════════════════════════════════════ */
-const GEN_N     = MOBILE ? 550 : 1300;
-const genGeo    = new THREE.BufferGeometry();
-const genPos    = new Float32Array(GEN_N * 3);
-const genCol    = new Float32Array(GEN_N * 3);
-const genPhase  = new Float32Array(GEN_N);
-const genSpeed  = new Float32Array(GEN_N);
-const genRadius = new Float32Array(GEN_N);
-const genFreqY  = new Float32Array(GEN_N);
-const tmpC      = new THREE.Color();
+const CONST_N    = MOBILE ? 44 : 82;
+const constBase  = new Float32Array(CONST_N * 3);  // rest positions
+const constPh3   = new Float32Array(CONST_N);      // per-node phase
 
-for (let i = 0; i < GEN_N; i++) {
-  genPhase[i]  = Math.random() * Math.PI * 2;
-  genSpeed[i]  = 0.4 + Math.random() * 1.2;
-  genRadius[i] = 0.25 + (i / GEN_N) * 2.4;
-  genFreqY[i]  = 1 + Math.floor(Math.random() * 4);
-  const hue    = i / GEN_N;
-  tmpC.setHSL(hue, 1, 0.52);   // richer/deeper hue on light bg
-  genCol[i*3]=tmpC.r; genCol[i*3+1]=tmpC.g; genCol[i*3+2]=tmpC.b;
-  genPos[i*3]=genPos[i*3+1]=genPos[i*3+2]=0;
+for (let i = 0; i < CONST_N; i++) {
+  const theta  = Math.acos(2 * Math.random() - 1);
+  const phi    = Math.random() * Math.PI * 2;
+  const r      = 1.45 + Math.random() * 0.75;
+  constBase[i*3]   = r * Math.sin(theta) * Math.cos(phi) * 0.88;
+  constBase[i*3+1] = r * Math.sin(theta) * Math.sin(phi) * 1.55;  // elongate Y
+  constBase[i*3+2] = r * Math.cos(theta) * 0.52;
+  constPh3[i]      = Math.random() * Math.PI * 2;
 }
-genGeo.setAttribute('position', new THREE.BufferAttribute(genPos, 3));
-genGeo.setAttribute('color',    new THREE.BufferAttribute(genCol, 3));
 
-const genMat       = new THREE.PointsMaterial({ size: 0.044, vertexColors: true, transparent: true, opacity: 0 });
-const genParticles = new THREE.Points(genGeo, genMat);
-mainGroup.add(genParticles);
+// Build edge list: pairs of nodes within connection threshold
+const C_THRESH  = 1.28;
+const constEdges = [];   // [idxA, idxB, idxA, idxB, ...]
+for (let i = 0; i < CONST_N; i++) {
+  for (let j = i + 1; j < CONST_N; j++) {
+    const dx = constBase[i*3]   - constBase[j*3];
+    const dy = constBase[i*3+1] - constBase[j*3+1];
+    const dz = constBase[i*3+2] - constBase[j*3+2];
+    if (dx*dx + dy*dy + dz*dz < C_THRESH * C_THRESH) {
+      constEdges.push(i, j);
+    }
+  }
+}
+const numConstEdges = constEdges.length >> 1;   // divide by 2
+
+// Group: rotates as a unit, sits inside mainGroup (which handles mouse tilt)
+const constGroup = new THREE.Group();
+mainGroup.add(constGroup);
+
+const constNodeGeo = new THREE.BufferGeometry();
+const constNodePos = constBase.slice();
+constNodeGeo.setAttribute('position', new THREE.BufferAttribute(constNodePos, 3));
+const constNodeMat = new THREE.PointsMaterial({
+  color: 0xc9a96e, size: 0.06, transparent: true, opacity: 0, sizeAttenuation: true
+});
+const constNodes = new THREE.Points(constNodeGeo, constNodeMat);
+constGroup.add(constNodes);
+
+const constLineGeo = new THREE.BufferGeometry();
+const constLinePos = new Float32Array(numConstEdges * 6);  // 2 verts × 3 coords
+constLineGeo.setAttribute('position', new THREE.BufferAttribute(constLinePos, 3));
+const constLineMat = new THREE.LineBasicMaterial({
+  color: 0xc9a96e, transparent: true, opacity: 0
+});
+const constLineSegs = new THREE.LineSegments(constLineGeo, constLineMat);
+constGroup.add(constLineSegs);
+
+// Warm accent light that glows with the constellation
+const constLight = new THREE.PointLight(0xd4a96e, 0, 8);
+constLight.position.set(0, 0, 3);
+scene.add(constLight);
 
 /* ════════════════════════════════════════════════════
    SCENE 4 — EXPLODED FACES + ORBIT RINGS
@@ -993,15 +1038,17 @@ function animate() {
   chips.forEach(c => { c.style.opacity = w4 * 0.92; });
 
   /* ──────────────────────────────────────────────────
-     THE BOX — cream in S1, dims slightly in S2/S3,
-     fades with the exploded faces in S4
+     THE BOX — prominent in S1, dims through S2/S3,
+     fades into exploded faces in S4
   ────────────────────────────────────────────────── */
   box.rotation.y  = time * 0.28 + p * 0.14;
   box.rotation.x  = Math.sin(time * 0.14) * 0.09;
   wireBox.rotation.copy(box.rotation);
+  wireBoxGold.rotation.copy(box.rotation);
 
-  boxMat.opacity   = Math.max(0.06, w1 * 1.0 + w2 * 0.4 + w3 * 0.5 + w4 * 0.15);
-  edgesMat.opacity = w2 * 0.88 + w4 * 0.2;
+  boxMat.opacity      = Math.max(0.06, w1 * 1.0 + w2 * 0.42 + w3 * 0.36 + w4 * 0.15);
+  edgesGoldMat.opacity = w1 * 0.55;
+  edgesMat.opacity     = w2 * 0.88 + w4 * 0.2;
 
   /* ──────────────────────────────────────────────────
      SCENE 1 — AURA
@@ -1034,25 +1081,42 @@ function animate() {
   blueLight.intensity = w2 * 1.8;
 
   /* ──────────────────────────────────────────────────
-     SCENE 3 — GENERATIVE SWIRL
+     SCENE 3 — CONSTELLATION NETWORK
   ────────────────────────────────────────────────── */
-  genMat.opacity      = w3 * 0.90;
-  genParticles.visible = genMat.opacity > 0.01;
-  if (genParticles.visible) {
-    const gAttr = genGeo.attributes.position;
-    const gCol  = genGeo.attributes.color;
-    for (let i = 0; i < GEN_N; i++) {
-      const t  = time * genSpeed[i] + genPhase[i];
-      const r  = genRadius[i];
-      gAttr.array[i*3]   = Math.cos(t * 0.7 + mouse.x * 0.4) * r * 0.72;
-      gAttr.array[i*3+1] = Math.sin(t * genFreqY[i] + mouse.y * 0.3) * r * 0.5;
-      gAttr.array[i*3+2] = Math.cos(t * 0.85) * 0.45;
-      // Slowly rotate the hue spectrum
-      tmpC.setHSL(((i / GEN_N) + time * 0.025) % 1, 1, 0.52);
-      gCol.array[i*3]=tmpC.r; gCol.array[i*3+1]=tmpC.g; gCol.array[i*3+2]=tmpC.b;
+  constNodeMat.opacity  = w3 * 0.92;
+  constLineMat.opacity  = w3 * 0.30;
+  constLight.intensity  = w3 * 1.1;
+  const c3vis = constNodeMat.opacity > 0.01;
+  constNodes.visible    = c3vis;
+  constLineSegs.visible = c3vis;
+
+  if (c3vis) {
+    const nAttr = constNodeGeo.attributes.position;
+    const lAttr = constLineGeo.attributes.position;
+
+    for (let i = 0; i < CONST_N; i++) {
+      const ph      = constPh3[i];
+      const breathe = 1 + Math.sin(time * 0.5 + ph) * 0.045;
+      nAttr.array[i*3]   = constBase[i*3]   * breathe;
+      nAttr.array[i*3+1] = constBase[i*3+1] * (1 + Math.cos(time * 0.38 + ph) * 0.038);
+      nAttr.array[i*3+2] = constBase[i*3+2] * breathe;
     }
-    gAttr.needsUpdate = true;
-    gCol.needsUpdate  = true;
+    nAttr.needsUpdate = true;
+
+    for (let e = 0; e < numConstEdges; e++) {
+      const ai = constEdges[e * 2], bi = constEdges[e * 2 + 1];
+      lAttr.array[e*6]   = nAttr.array[ai*3];
+      lAttr.array[e*6+1] = nAttr.array[ai*3+1];
+      lAttr.array[e*6+2] = nAttr.array[ai*3+2];
+      lAttr.array[e*6+3] = nAttr.array[bi*3];
+      lAttr.array[e*6+4] = nAttr.array[bi*3+1];
+      lAttr.array[e*6+5] = nAttr.array[bi*3+2];
+    }
+    lAttr.needsUpdate = true;
+
+    // Slow autonomous rotation; mainGroup handles the mouse tilt
+    constGroup.rotation.y = time * 0.075;
+    constGroup.rotation.x = mouse.y * 0.06;
   }
 
   /* ──────────────────────────────────────────────────
