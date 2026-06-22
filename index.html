@@ -4,24 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LoomXR: One-of-One Luxury Packaging</title>
+<link rel="icon" href="Logos/Linked Logo.jpg" type="image/jpeg">
 <style>
 
-/* ── RESET ── */
+/* RESET */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
 body {
-  /* warm off-white, fixed so it reads as a constant sky tone */
   background: #f8f6f3;
   background-image: linear-gradient(180deg, #fbfaf8 0%, #f2efea 100%);
   background-attachment: fixed;
-  color: #1a1a1a;
+  color: #1e3d50;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   overflow-x: hidden;
   line-height: 1.6;
 }
 
-/* ── THREE.JS CANVAS (fixed, full viewport) ── */
+/* THREE.JS CANVAS */
 #main-canvas {
   position: fixed;
   top: 0; left: 0;
@@ -30,7 +30,7 @@ body {
   pointer-events: none;
 }
 
-/* ── NAV ── */
+/* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0;
   z-index: 100;
@@ -43,40 +43,44 @@ nav.scrolled {
   background: rgba(255,255,255,0.78);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(26,26,26,0.08);
+  border-bottom: 1px solid rgba(30,61,80,0.08);
 }
 .nav-logo {
-  font-size: 1.45rem; font-weight: 800; letter-spacing: -0.035em;
-  color: #1a1a1a; text-decoration: none; user-select: none;
+  display: flex; align-items: center;
+  text-decoration: none; user-select: none;
+}
+.nav-logo-img {
+  height: 38px; width: auto; display: block;
+  object-fit: contain;
 }
 .nav-links { display: flex; gap: 2.25rem; list-style: none; }
 .nav-links a {
-  color: rgba(26,26,26,0.55); text-decoration: none;
+  color: rgba(30,61,80,0.55); text-decoration: none;
   font-size: 0.875rem; font-weight: 500; letter-spacing: 0.01em;
   transition: color 0.2s;
 }
-.nav-links a:hover { color: #1a1a1a; }
+.nav-links a:hover { color: #1e3d50; }
 .nav-demo {
   padding: 0.5rem 1.3rem;
-  border: 1px solid rgba(26,26,26,0.3);
-  border-radius: 100px; color: #1a1a1a;
+  border: 1px solid rgba(30,61,80,0.3);
+  border-radius: 100px; color: #1e3d50;
   font-size: 0.85rem; font-weight: 600; letter-spacing: 0.01em;
   text-decoration: none;
   transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
 }
 .nav-demo:hover {
-  border-color: rgba(26,26,26,0.6);
-  box-shadow: 0 2px 16px rgba(26,26,26,0.08);
-  background: rgba(26,26,26,0.04);
+  border-color: rgba(30,61,80,0.6);
+  box-shadow: 0 2px 16px rgba(30,61,80,0.08);
+  background: rgba(30,61,80,0.04);
 }
 .hamburger {
   display: none; cursor: pointer;
   flex-direction: column; gap: 5px;
   background: none; border: none;
 }
-.hamburger span { display: block; width: 22px; height: 2px; background: #1a1a1a; border-radius: 2px; }
+.hamburger span { display: block; width: 22px; height: 2px; background: #1e3d50; border-radius: 2px; }
 
-/* ── SCENE PROGRESS DOTS ── */
+/* SCENE PROGRESS DOTS */
 #scene-dots {
   position: fixed; right: 2.5vw; top: 50%;
   transform: translateY(-50%);
@@ -85,16 +89,16 @@ nav.scrolled {
 }
 .scene-dot {
   width: 6px; height: 6px; border-radius: 50%;
-  background: rgba(26,26,26,0.18);
+  background: rgba(30,61,80,0.18);
   cursor: pointer;
   transition: background 0.4s, transform 0.4s, box-shadow 0.4s;
 }
 .scene-dot.active {
-  background: #1a1a1a; transform: scale(1.5);
-  box-shadow: 0 0 6px rgba(26,26,26,0.3);
+  background: #1e3d50; transform: scale(1.5);
+  box-shadow: 0 0 6px rgba(30,61,80,0.3);
 }
 
-/* ── 4-SCENE STICKY HERO ── */
+/* 4-SCENE STICKY HERO */
 #scene-container {
   position: relative; z-index: 1;
   height: 400vh;
@@ -107,17 +111,14 @@ nav.scrolled {
   pointer-events: none;
 }
 
-/* ── SCENE TEXT OVERLAYS
-   NOTE: opacity & transform are driven per-frame by JS.
-   No CSS transition here — JS does all easing.          ── */
+/* SCENE TEXT OVERLAYS */
 .scene-overlay {
   position: absolute;
   bottom: 9vh; left: 50%;
-  /* base transform; JS will append translateY() */
   transform: translateX(-50%);
   text-align: center;
   max-width: 820px; width: 90vw;
-  opacity: 0;           /* JS sets this */
+  opacity: 0;
   pointer-events: none;
   z-index: 10;
   will-change: opacity, transform;
@@ -125,24 +126,24 @@ nav.scrolled {
 .scene-label {
   font-size: 0.67rem; font-weight: 700;
   letter-spacing: 0.22em; text-transform: uppercase;
-  color: rgba(26,26,26,0.38); margin-bottom: 1.1rem;
+  color: rgba(30,61,80,0.38); margin-bottom: 1.1rem;
   display: block;
 }
 .scene-headline {
   font-size: clamp(2rem, 5.5vw, 4.2rem);
   font-weight: 900; line-height: 1.05;
   letter-spacing: -0.04em; margin-bottom: 1.3rem;
-  color: #1a1a1a;
+  color: #1e3d50;
 }
 .scene-sub {
   font-size: clamp(0.9rem, 1.6vw, 1.1rem);
-  color: rgba(26,26,26,0.52);
+  color: rgba(30,61,80,0.52);
   line-height: 1.72; max-width: 540px;
   margin: 0 auto 1.8rem;
 }
 .scroll-cue {
   font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(26,26,26,0.3);
+  color: rgba(30,61,80,0.3);
   animation: cue-fade 2.8s ease-in-out infinite;
 }
 @keyframes cue-fade { 0%,100%{opacity:0.3} 50%{opacity:0.8} }
@@ -150,60 +151,60 @@ nav.scrolled {
 .btn-hero {
   display: inline-block;
   padding: 0.78rem 2.1rem; margin-top: 0.4rem;
-  background: #1a1a1a; color: #fff;
+  background: #1e3d50; color: #fff;
   border-radius: 100px;
   font-size: 0.9rem; font-weight: 700; letter-spacing: 0.01em;
   text-decoration: none;
   transition: transform 0.2s, box-shadow 0.3s;
-  pointer-events: auto;   /* explicitly clickable despite parent pointer-events:none */
+  pointer-events: auto;
 }
-.btn-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,26,26,0.2); }
+.btn-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(30,61,80,0.25); }
 
-/* ── 1-OF-1 BADGE ── */
+/* 1-OF-1 BADGE */
 #one-badge {
   position: absolute;
   top: 50%; right: 12%;
   transform: translateY(-50%);
   text-align: center;
-  opacity: 0;           /* JS drives this */
+  opacity: 0;
   pointer-events: none; z-index: 10;
   will-change: opacity;
 }
 .badge-eyebrow {
   font-size: 0.58rem; font-weight: 700; letter-spacing: 0.25em;
-  text-transform: uppercase; color: rgba(26,26,26,0.38);
+  text-transform: uppercase; color: rgba(30,61,80,0.38);
   margin-bottom: 0.4rem;
 }
 .badge-num {
   font-size: 2.8rem; font-weight: 900; letter-spacing: -0.05em;
-  background: linear-gradient(135deg, #a855f7 0%, #f59e0b 100%);
+  background: linear-gradient(135deg, #2d7a8a 0%, #c4a07a 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text; line-height: 1;
 }
 .badge-foot {
-  font-size: 0.6rem; color: rgba(26,26,26,0.32);
+  font-size: 0.6rem; color: rgba(30,61,80,0.32);
   letter-spacing: 0.12em; text-transform: uppercase; margin-top: 0.35rem;
 }
 
-/* ── FLOATING METRIC CHIPS (Scene 4) ── */
+/* FLOATING METRIC CHIPS */
 .metric-chip {
   position: absolute;
-  opacity: 0;           /* JS drives this */
+  opacity: 0;
   background: rgba(255,255,255,0.82);
-  border: 1px solid rgba(26,26,26,0.09);
+  border: 1px solid rgba(30,61,80,0.09);
   border-radius: 12px;
   padding: 0.55rem 1rem;
   font-size: 0.72rem; font-weight: 600;
-  color: rgba(26,26,26,0.6);
+  color: rgba(30,61,80,0.6);
   letter-spacing: 0.04em;
   pointer-events: none; z-index: 9;
   white-space: nowrap;
   backdrop-filter: blur(8px);
-  box-shadow: 0 2px 12px rgba(26,26,26,0.07);
+  box-shadow: 0 2px 12px rgba(30,61,80,0.07);
   will-change: opacity;
 }
 
-/* ── SECTIONS (below the sticky hero) ── */
+/* SECTIONS */
 section {
   position: relative; z-index: 2;
   padding: 7rem 4vw 5.5rem;
@@ -211,7 +212,7 @@ section {
 }
 section:nth-child(even) { background: #f5f2ee; }
 
-/* ── FADE UP ── */
+/* FADE UP */
 .fade-up {
   opacity: 0; transform: translateY(32px);
   transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1),
@@ -224,25 +225,25 @@ section:nth-child(even) { background: #f5f2ee; }
 .fade-up.d4 { transition-delay: 0.44s; }
 .fade-up.d5 { transition-delay: 0.58s; }
 
-/* ── SECTION TYPOGRAPHY ── */
+/* SECTION TYPOGRAPHY */
 .s-label {
   display: block; font-size: 0.67rem; font-weight: 700;
   letter-spacing: 0.22em; text-transform: uppercase;
-  color: rgba(26,26,26,0.35); margin-bottom: 1.25rem;
+  color: rgba(30,61,80,0.35); margin-bottom: 1.25rem;
 }
 .s-headline {
   font-size: clamp(2rem, 4.5vw, 3.6rem);
   font-weight: 900; letter-spacing: -0.04em;
   line-height: 1.07; margin-bottom: 1.4rem;
-  color: #1a1a1a;
+  color: #1e3d50;
 }
 .s-body {
   font-size: clamp(0.9rem, 1.5vw, 1.05rem);
-  color: rgba(26,26,26,0.52); line-height: 1.78;
+  color: rgba(30,61,80,0.52); line-height: 1.78;
 }
 .inner { max-width: 1140px; margin: 0 auto; text-align: center; }
 
-/* ── CARD GRID ── */
+/* CARD GRID */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -251,25 +252,25 @@ section:nth-child(even) { background: #f5f2ee; }
 }
 .card {
   background: #fff;
-  border: 1px solid rgba(26,26,26,0.07);
+  border: 1px solid rgba(30,61,80,0.07);
   border-radius: 20px; padding: 2rem 1.75rem;
-  box-shadow: 0 2px 12px rgba(26,26,26,0.05);
+  box-shadow: 0 2px 12px rgba(30,61,80,0.05);
   transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
 }
 .card:hover {
-  border-color: rgba(26,26,26,0.12);
-  box-shadow: 0 8px 32px rgba(26,26,26,0.1);
+  border-color: rgba(30,61,80,0.14);
+  box-shadow: 0 8px 32px rgba(30,61,80,0.1);
   transform: translateY(-3px);
 }
 .card-step {
   font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em;
-  color: rgba(26,26,26,0.28); margin-bottom: 1rem; text-transform: uppercase;
+  color: rgba(30,61,80,0.28); margin-bottom: 1rem; text-transform: uppercase;
 }
-.card-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; color: #1a1a1a; }
-.card-body { font-size: 0.875rem; color: rgba(26,26,26,0.5); line-height: 1.68; }
+.card-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; color: #1e3d50; }
+.card-body { font-size: 0.875rem; color: rgba(30,61,80,0.5); line-height: 1.68; }
 .card-icon { line-height: 0; margin-bottom: 1.3rem; }
 
-/* ── SAMSUNG CARDS ── */
+/* SAMSUNG CARDS */
 .samsung-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -277,27 +278,27 @@ section:nth-child(even) { background: #f5f2ee; }
   max-width: 900px; margin-left: auto; margin-right: auto;
 }
 .s-card {
-  background: rgba(59,130,246,0.04);
-  border: 1px solid rgba(59,130,246,0.2);
+  background: rgba(30,100,120,0.04);
+  border: 1px solid rgba(30,100,120,0.18);
   border-radius: 22px; padding: 2.5rem 2rem;
   text-align: center;
-  box-shadow: 0 2px 16px rgba(59,130,246,0.06);
+  box-shadow: 0 2px 16px rgba(30,100,120,0.06);
   transition: border-color 0.3s, background 0.3s, transform 0.35s, box-shadow 0.35s;
 }
 .s-card:hover {
-  border-color: rgba(59,130,246,0.38);
-  background: rgba(59,130,246,0.07);
+  border-color: rgba(30,100,120,0.36);
+  background: rgba(30,100,120,0.07);
   transform: translateY(-6px);
-  box-shadow: 0 12px 40px rgba(59,130,246,0.12);
+  box-shadow: 0 12px 40px rgba(30,100,120,0.12);
 }
 .s-card-icon { line-height: 0; margin-bottom: 1.25rem; }
-.s-card-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; color: #1a1a1a; }
-.s-card-desc { font-size: 0.875rem; color: rgba(26,26,26,0.5); line-height: 1.65; }
+.s-card-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; color: #1e3d50; }
+.s-card-desc { font-size: 0.875rem; color: rgba(30,61,80,0.5); line-height: 1.65; }
 
-/* ── CTA SECTION ── */
+/* CTA SECTION */
 #cta-section {
   text-align: center;
-  border-top: 1px solid rgba(26,26,26,0.07);
+  border-top: 1px solid rgba(30,61,80,0.07);
 }
 .email-row {
   display: flex; gap: 0.75rem;
@@ -307,29 +308,29 @@ section:nth-child(even) { background: #f5f2ee; }
   flex: 1; min-width: 240px; max-width: 360px;
   padding: 0.88rem 1.4rem;
   background: #fff;
-  border: 1px solid rgba(26,26,26,0.14);
-  border-radius: 100px; color: #1a1a1a; font-size: 0.95rem;
+  border: 1px solid rgba(30,61,80,0.14);
+  border-radius: 100px; color: #1e3d50; font-size: 0.95rem;
   outline: none;
-  box-shadow: 0 1px 6px rgba(26,26,26,0.05);
+  box-shadow: 0 1px 6px rgba(30,61,80,0.05);
   transition: border-color 0.3s, box-shadow 0.3s;
 }
-.email-input::placeholder { color: rgba(26,26,26,0.3); }
+.email-input::placeholder { color: rgba(30,61,80,0.3); }
 .email-input:focus {
-  border-color: rgba(26,26,26,0.35);
-  box-shadow: 0 0 0 3px rgba(26,26,26,0.06);
+  border-color: rgba(30,61,80,0.35);
+  box-shadow: 0 0 0 3px rgba(30,61,80,0.06);
 }
 .btn-submit {
   padding: 0.88rem 2.1rem;
-  background: #1a1a1a; color: #fff;
+  background: #1e3d50; color: #fff;
   border: none; border-radius: 100px;
   font-size: 0.95rem; font-weight: 700;
   cursor: pointer; white-space: nowrap;
   transition: transform 0.2s, box-shadow 0.3s;
 }
-.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,26,26,0.22); }
-.thank-msg { display: none; margin-top: 1.6rem; font-size: 0.95rem; color: rgba(26,26,26,0.5); letter-spacing: 0.04em; }
+.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(30,61,80,0.28); }
+.thank-msg { display: none; margin-top: 1.6rem; font-size: 0.95rem; color: rgba(30,61,80,0.5); letter-spacing: 0.04em; }
 
-/* ── SAMSUNG STRIP ── */
+/* SAMSUNG STRIP */
 #samsung-strip {
   position: relative; z-index: 2;
   padding: 4.5rem 4vw; text-align: center;
@@ -337,30 +338,30 @@ section:nth-child(even) { background: #f5f2ee; }
 }
 .strip-line {
   height: 1px; max-width: 520px; margin: 1.6rem auto;
-  background: linear-gradient(90deg, transparent, rgba(26,26,26,0.18), rgba(26,26,26,0.1), rgba(26,26,26,0.18), transparent);
+  background: linear-gradient(90deg, transparent, rgba(30,61,80,0.18), rgba(30,61,80,0.1), rgba(30,61,80,0.18), transparent);
 }
 .strip-wordmark {
   font-size: clamp(1.7rem, 4vw, 2.8rem);
-  font-weight: 900; letter-spacing: 0.1em; color: #1a1a1a;
+  font-weight: 900; letter-spacing: 0.1em; color: #1e3d50;
 }
 
-/* ── FOOTER ── */
+/* FOOTER */
 footer {
   position: relative; z-index: 2;
   background: #ece9e4;
-  border-top: 1px solid rgba(26,26,26,0.08);
+  border-top: 1px solid rgba(30,61,80,0.08);
   padding: 2.8rem 4vw;
   display: flex; flex-direction: column;
   align-items: center; gap: 1.25rem; text-align: center;
 }
-.footer-logo { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.03em; color: #1a1a1a; }
-.footer-tag { font-size: 0.82rem; color: rgba(26,26,26,0.42); }
+.footer-logo-img { height: 30px; width: auto; opacity: 0.7; }
+.footer-tag { font-size: 0.82rem; color: rgba(30,61,80,0.42); }
 .footer-links { display: flex; gap: 1.8rem; flex-wrap: wrap; justify-content: center; }
-.footer-links a { color: rgba(26,26,26,0.42); font-size: 0.78rem; text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: rgba(26,26,26,0.75); }
-.footer-copy { font-size: 0.72rem; color: rgba(26,26,26,0.28); }
+.footer-links a { color: rgba(30,61,80,0.42); font-size: 0.78rem; text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: rgba(30,61,80,0.75); }
+.footer-copy { font-size: 0.72rem; color: rgba(30,61,80,0.28); }
 
-/* ── MOBILE NAV DRAWER ── */
+/* MOBILE NAV DRAWER */
 .mobile-nav {
   display: none; position: fixed; inset: 0;
   background: rgba(251,250,248,0.98);
@@ -370,15 +371,15 @@ footer {
 }
 .mobile-nav.open { display: flex; }
 .mobile-nav a {
-  color: #1a1a1a; font-size: 1.4rem; font-weight: 700;
+  color: #1e3d50; font-size: 1.4rem; font-weight: 700;
   text-decoration: none; letter-spacing: -0.02em;
 }
 .mobile-close {
   position: absolute; top: 1.6rem; right: 5vw;
-  font-size: 1.8rem; cursor: pointer; color: #1a1a1a; line-height: 1;
+  font-size: 1.8rem; cursor: pointer; color: #1e3d50; line-height: 1;
 }
 
-/* ── RESPONSIVE ── */
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .nav-links, .nav-demo { display: none; }
   .hamburger { display: flex; }
@@ -397,10 +398,10 @@ footer {
 </head>
 <body>
 
-<!-- ─── THREE.JS CANVAS (fixed, behind everything) ─── -->
+<!-- THREE.JS CANVAS -->
 <canvas id="main-canvas"></canvas>
 
-<!-- ─── MOBILE NAV ─── -->
+<!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobile-nav">
   <span class="mobile-close" id="mobile-close">&#x2715;</span>
   <a href="#sub-hero" onclick="closeMobile()">Platform</a>
@@ -409,9 +410,11 @@ footer {
   <a href="#cta-section" onclick="closeMobile()">Request Demo</a>
 </div>
 
-<!-- ─── NAV ─── -->
+<!-- NAV -->
 <nav id="main-nav">
-  <a href="#" class="nav-logo">LoomXR</a>
+  <a href="#" class="nav-logo">
+    <img src="Logos/Linked Logo.jpg" alt="LoomXR" class="nav-logo-img">
+  </a>
   <ul class="nav-links">
     <li><a href="#sub-hero">Platform</a></li>
     <li><a href="#brands">For Brands</a></li>
@@ -424,7 +427,7 @@ footer {
   </button>
 </nav>
 
-<!-- ─── SCENE PROGRESS DOTS ─── -->
+<!-- SCENE PROGRESS DOTS -->
 <div id="scene-dots" aria-hidden="true">
   <div class="scene-dot active" data-scene="0"></div>
   <div class="scene-dot" data-scene="1"></div>
@@ -432,17 +435,17 @@ footer {
   <div class="scene-dot" data-scene="3"></div>
 </div>
 
-<!-- ─── 4-SCENE STICKY HERO ─── -->
+<!-- 4-SCENE STICKY HERO -->
 <div id="scene-container">
   <div id="scene-sticky">
 
     <!-- Scene 1: Hero -->
     <div class="scene-overlay" id="ov1">
       <h1 class="scene-headline" style="font-size:clamp(3rem,8vw,6rem);letter-spacing:-0.055em;margin-bottom:0.6rem;">LoomXR</h1>
-      <p class="scene-sub" style="font-size:clamp(1rem,2.2vw,1.45rem);color:rgba(26,26,26,0.72);font-weight:600;letter-spacing:-0.01em;margin-bottom:1.1rem;">Packaging as unique as the person holding it</p>
+      <p class="scene-sub" style="font-size:clamp(1rem,2.2vw,1.45rem);color:rgba(30,61,80,0.72);font-weight:600;letter-spacing:-0.01em;margin-bottom:1.1rem;">Packaging as unique as the person holding it</p>
       <p class="scene-sub">LoomXR turns every luxury product into a one-of-one, AI-designed experience your customer previews in augmented reality. Like an NFT, made physical.</p>
       <a href="#cta-section" class="btn-hero">Request Demo</a>
-      <p class="scroll-cue" style="margin-top:1.5rem;">Scroll to explore ↓</p>
+      <p class="scroll-cue" style="margin-top:1.5rem;">Scroll to explore &#x2193;</p>
     </div>
 
     <!-- Scene 2: Scan -->
@@ -466,14 +469,14 @@ footer {
       <p class="scene-sub">Like a certificate of authenticity for a piece of art. Every LoomXR design is permanently signed, stored, and will never be recreated for any other customer.</p>
     </div>
 
-    <!-- 1 of 1 badge — JS-driven opacity -->
+    <!-- 1 of 1 badge -->
     <div id="one-badge">
       <p class="badge-eyebrow">Unique ID</p>
       <p class="badge-num">1 of 1</p>
       <p class="badge-foot">Signed · Verified · Permanent</p>
     </div>
 
-    <!-- Floating metric chips — JS-driven opacity -->
+    <!-- Floating metric chips -->
     <div class="metric-chip" id="chip-1" style="top:22%;left:9%;">AI-Generated Design</div>
     <div class="metric-chip" id="chip-2" style="top:38%;left:7%;">Unique Signature</div>
     <div class="metric-chip" id="chip-3" style="top:55%;left:10%;">AR Preview Ready</div>
@@ -483,7 +486,7 @@ footer {
   </div>
 </div>
 
-<!-- ─── SUB-HERO ─── -->
+<!-- SUB-HERO -->
 <section id="sub-hero">
   <div class="inner">
     <span class="s-label fade-up">The Next Dimension</span>
@@ -492,19 +495,19 @@ footer {
 
     <div class="card-grid" style="max-width:960px;margin:3rem auto 0;">
       <div class="card fade-up d2">
-        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><line x1="12" y1="2" x2="12" y2="6.5"/><line x1="12" y1="17.5" x2="12" y2="22"/><line x1="2" y1="12" x2="6.5" y2="12"/><line x1="17.5" y1="12" x2="22" y2="12"/><line x1="5.64" y1="5.64" x2="8.46" y2="8.46"/><line x1="15.54" y1="15.54" x2="18.36" y2="18.36"/><line x1="5.64" y1="18.36" x2="8.46" y2="15.54"/><line x1="15.54" y1="8.46" x2="18.36" y2="5.64"/></svg></div>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(30,61,80,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><line x1="12" y1="2" x2="12" y2="6.5"/><line x1="12" y1="17.5" x2="12" y2="22"/><line x1="2" y1="12" x2="6.5" y2="12"/><line x1="17.5" y1="12" x2="22" y2="12"/><line x1="5.64" y1="5.64" x2="8.46" y2="8.46"/><line x1="15.54" y1="15.54" x2="18.36" y2="18.36"/><line x1="5.64" y1="18.36" x2="8.46" y2="15.54"/><line x1="15.54" y1="8.46" x2="18.36" y2="5.64"/></svg></div>
         <p class="card-step">AI Design Engine</p>
         <h3 class="card-title">Generative, not templated</h3>
         <p class="card-body">Every design is generated from scratch, tuned to the customer's personal taste profile. No templates, no repeats, no two customers ever share the same design.</p>
       </div>
       <div class="card fade-up d3">
-        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="17.5" r="0.8" fill="rgba(26,26,26,0.38)" stroke="none"/></svg></div>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(30,61,80,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="17.5" r="0.8" fill="rgba(30,61,80,0.38)" stroke="none"/></svg></div>
         <p class="card-step">Augmented Reality</p>
         <h3 class="card-title">Preview on the real product</h3>
         <p class="card-body">Customers see their unique design overlaid in AR on the actual product before committing. The AR anchor works with Samsung Galaxy phones and Galaxy XR headsets.</p>
       </div>
       <div class="card fade-up d4">
-        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 12 12 22 2 12"/></svg></div>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(30,61,80,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 12 12 22 2 12"/></svg></div>
         <p class="card-step">One-of-One</p>
         <h3 class="card-title">Permanently signed, never reused</h3>
         <p class="card-body">Each design is cryptographically signed and stored permanently. Once created, it belongs to that customer alone and cannot be generated for anyone else.</p>
@@ -513,7 +516,7 @@ footer {
   </div>
 </section>
 
-<!-- ─── FOR BRANDS ─── -->
+<!-- FOR BRANDS -->
 <section id="brands">
   <div class="inner">
     <span class="s-label fade-up">For Brands</span>
@@ -522,19 +525,19 @@ footer {
 
     <div class="card-grid" style="max-width:880px;margin:3rem auto 0;">
       <div class="card fade-up d2">
-        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8L12 3 3 8v8l9 5 9-5V8z"/><polyline points="3 8 12 13 21 8"/><line x1="12" y1="13" x2="12" y2="22"/></svg></div>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(30,61,80,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8L12 3 3 8v8l9 5 9-5V8z"/><polyline points="3 8 12 13 21 8"/><line x1="12" y1="13" x2="12" y2="22"/></svg></div>
         <p class="card-step">01 · Upload</p>
         <h3 class="card-title">Upload your product</h3>
         <p class="card-body">Share a few images of your product. LoomXR trains its object detection model to recognize it from any angle, instantly and reliably.</p>
       </div>
       <div class="card fade-up d3">
-        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V5a2 2 0 0 1 2-2h4"/><path d="M15 3h4a2 2 0 0 1 2 2v4"/><path d="M21 15v4a2 2 0 0 1-2 2h-4"/><path d="M9 21H5a2 2 0 0 1-2-2v-4"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></div>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(30,61,80,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V5a2 2 0 0 1 2-2h4"/><path d="M15 3h4a2 2 0 0 1 2 2v4"/><path d="M21 15v4a2 2 0 0 1-2 2h-4"/><path d="M9 21H5a2 2 0 0 1-2-2v-4"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></div>
         <p class="card-step">02 · Place</p>
         <h3 class="card-title">Place your QR code</h3>
         <p class="card-body">Drop a QR code in your shop, on your product, or anywhere your customer might encounter your brand. That is the entire setup.</p>
       </div>
       <div class="card fade-up d4">
-        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(30,61,80,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div>
         <p class="card-step">03 · Fulfill</p>
         <h3 class="card-title">Fulfill as normal</h3>
         <p class="card-body">Customers create the design, you print it through your existing print partner. No new supply chain. No new hardware. Just a premium new experience.</p>
@@ -543,7 +546,7 @@ footer {
   </div>
 </section>
 
-<!-- ─── SAMSUNG ─── -->
+<!-- SAMSUNG -->
 <section id="samsung">
   <div class="inner">
     <span class="s-label fade-up">Ecosystem</span>
@@ -552,17 +555,17 @@ footer {
 
     <div class="samsung-grid fade-up d3">
       <div class="s-card">
-        <div class="s-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="17.5" r="0.8" fill="rgba(26,26,26,0.38)" stroke="none"/></svg></div>
+        <div class="s-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(30,61,80,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="17.5" r="0.8" fill="rgba(30,61,80,0.38)" stroke="none"/></svg></div>
         <h3 class="s-card-title">Samsung Galaxy</h3>
         <p class="s-card-desc">Full AR experience on Android. Scan, generate, and preview your one-of-one design directly in your camera view. No app required.</p>
       </div>
       <div class="s-card">
-        <div class="s-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9z"/><circle cx="8" cy="11.5" r="2"/><circle cx="16" cy="11.5" r="2"/><line x1="10" y1="11.5" x2="14" y2="11.5"/></svg></div>
+        <div class="s-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(30,61,80,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9z"/><circle cx="8" cy="11.5" r="2"/><circle cx="16" cy="11.5" r="2"/><line x1="10" y1="11.5" x2="14" y2="11.5"/></svg></div>
         <h3 class="s-card-title">Samsung Galaxy XR</h3>
         <p class="s-card-desc">Immersive headset experience. See your unique design wrapped around the product in full spatial 3D: the ultimate luxury reveal moment.</p>
       </div>
       <div class="s-card">
-        <div class="s-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(26,26,26,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V5a2 2 0 0 1 2-2h4"/><path d="M15 3h4a2 2 0 0 1 2 2v4"/><path d="M21 15v4a2 2 0 0 1-2 2h-4"/><path d="M9 21H5a2 2 0 0 1-2-2v-4"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></div>
+        <div class="s-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(30,61,80,0.38)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V5a2 2 0 0 1 2-2h4"/><path d="M15 3h4a2 2 0 0 1 2 2v4"/><path d="M21 15v4a2 2 0 0 1-2 2h-4"/><path d="M9 21H5a2 2 0 0 1-2-2v-4"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></div>
         <h3 class="s-card-title">In-Store QR</h3>
         <p class="s-card-desc">A single QR code bridges physical retail and digital personalization. Place it anywhere your customer touches your brand.</p>
       </div>
@@ -570,7 +573,7 @@ footer {
   </div>
 </section>
 
-<!-- ─── CTA ─── -->
+<!-- CTA -->
 <section id="cta-section">
   <div class="inner">
     <span class="s-label fade-up">Get Started</span>
@@ -585,7 +588,7 @@ footer {
   </div>
 </section>
 
-<!-- ─── SAMSUNG STRIP ─── -->
+<!-- SAMSUNG STRIP -->
 <div id="samsung-strip">
   <span class="s-label fade-up" style="text-align:center;display:block;">Designed For</span>
   <div class="strip-line fade-up d1"></div>
@@ -593,9 +596,9 @@ footer {
   <div class="strip-line fade-up d3"></div>
 </div>
 
-<!-- ─── FOOTER ─── -->
+<!-- FOOTER -->
 <footer>
-  <p class="footer-logo">LoomXR</p>
+  <img src="Logos/Linked Logo.jpg" alt="LoomXR" class="footer-logo-img">
   <p class="footer-tag">One-of-one luxury packaging, powered by AI and AR</p>
   <div class="footer-links">
     <a href="#sub-hero">Platform</a>
@@ -603,21 +606,18 @@ footer {
     <a href="#samsung">Samsung</a>
     <a href="#cta-section">Request Demo</a>
   </div>
-  <p class="footer-copy">© 2026 LoomXR. All rights reserved.</p>
+  <p class="footer-copy">&#169; 2026 LoomXR. All rights reserved.</p>
 </footer>
 
-<!-- ─── THREE.JS ─── -->
+<!-- THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 'use strict';
 
-/* ════════════════════════════════════════════════════
-   RENDERER + CAMERA
-════════════════════════════════════════════════════ */
+/* RENDERER + CAMERA */
 const canvas   = document.getElementById('main-canvas');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-// Warm off-white to match body background
 renderer.setClearColor(0xf8f6f3, 1);
 
 const scene  = new THREE.Scene();
@@ -634,24 +634,17 @@ function onResize() {
 onResize();
 window.addEventListener('resize', onResize);
 
-/* ════════════════════════════════════════════════════
-   EASING HELPERS
-════════════════════════════════════════════════════ */
+/* EASING HELPERS */
 function clamp01(x) { return Math.max(0, Math.min(1, x)); }
-// Smoothstep — eliminates the linear "ramping" feel of raw t
 function ss(t) { const c = clamp01(t); return c * c * (3 - 2 * c); }
 
-// Scene weight: smoothstep tent centred at `peak`, zero at ±`half`
 function sw(p, peak, half) {
   return ss(Math.max(0, 1 - Math.abs(p - peak) / half));
 }
 
-// Scene 4 weight: fades IN from p=2.2 → 3.0, then stays at 1 permanently
 function sw4(p) { return ss(clamp01((p - 2.2) / 0.8)); }
 
-/* ════════════════════════════════════════════════════
-   MOUSE
-════════════════════════════════════════════════════ */
+/* MOUSE */
 const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
 window.addEventListener('mousemove', e => {
   mouse.tx = (e.clientX / window.innerWidth)  * 2 - 1;
@@ -663,9 +656,7 @@ window.addEventListener('touchmove', e => {
   mouse.ty = -(t.clientY / window.innerHeight) * 2 + 1;
 }, { passive: true });
 
-/* ════════════════════════════════════════════════════
-   STARFIELD — soft dark charcoal particles on light bg
-════════════════════════════════════════════════════ */
+/* STARFIELD */
 (function buildStars() {
   const N   = MOBILE ? 700 : 1600;
   const geo = new THREE.BufferGeometry();
@@ -676,56 +667,47 @@ window.addEventListener('touchmove', e => {
     pos[i*3+2] = (Math.random() - 0.5) * 35 - 8;
   }
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  // Dark warm charcoal — reads as delicate dots on the light canvas
   const mat = new THREE.PointsMaterial({
-    color: 0x3a2e26, size: 0.022,
+    color: 0x2a3f50, size: 0.022,
     transparent: true, opacity: 0.14, sizeAttenuation: true
   });
   scene.add(new THREE.Points(geo, mat));
 })();
 
-/* ════════════════════════════════════════════════════
-   MAIN GROUP (receives mouse tilt)
-════════════════════════════════════════════════════ */
+/* MAIN GROUP */
 const mainGroup = new THREE.Group();
 scene.add(mainGroup);
 
-/* ════════════════════════════════════════════════════
-   LIGHTS
-════════════════════════════════════════════════════ */
+/* LIGHTS */
 scene.add(new THREE.AmbientLight(0xffffff, 1.7));
 
-// Key light — warm white, front-right-top; gives the box clear face definition
 const keyLight = new THREE.DirectionalLight(0xfffef0, 2.6);
 keyLight.position.set(3, 4, 5);
 scene.add(keyLight);
 
-// Fill/rim — warm golden, rear-left; lifts shadow side
 const rimLight = new THREE.DirectionalLight(0xf0e0c0, 0.9);
 rimLight.position.set(-4, 2, -2);
 scene.add(rimLight);
 
-const pinkLight = new THREE.PointLight(0xff6eb4, 1.6, 10);
-pinkLight.position.set(2.5, 1.5, 2);
-scene.add(pinkLight);
+const tealLight = new THREE.PointLight(0x2d7a8a, 1.4, 10);
+tealLight.position.set(2.5, 1.5, 2);
+scene.add(tealLight);
 
-const goldLight = new THREE.PointLight(0xf59e0b, 1.0, 10);
+const goldLight = new THREE.PointLight(0xc9a96e, 1.0, 10);
 goldLight.position.set(-2.5, -1.5, 1.5);
 scene.add(goldLight);
 
-const blueLight = new THREE.PointLight(0x3b82f6, 0, 10);
+const blueLight = new THREE.PointLight(0x2d6b7e, 0, 10);
 blueLight.position.set(0, 0.5, 3);
 scene.add(blueLight);
 
-/* ════════════════════════════════════════════════════
-   THE LUXURY BOX — warm golden ivory, premium phong
-════════════════════════════════════════════════════ */
+/* THE LUXURY BOX */
 const BOX_W = 1.2, BOX_H = 2.05, BOX_D = 0.58;
 const boxGeo = new THREE.BoxGeometry(BOX_W, BOX_H, BOX_D);
 
 const boxMat = new THREE.MeshPhongMaterial({
-  color:     0xd8c8a0,   // warm golden ivory — clearly distinct from off-white bg
-  specular:  0xfff8e8,   // bright warm specular
+  color:     0xd8c8a0,
+  specular:  0xfff8e8,
   shininess: 200,
   transparent: true,
   opacity: 1
@@ -733,20 +715,15 @@ const boxMat = new THREE.MeshPhongMaterial({
 const box = new THREE.Mesh(boxGeo, boxMat);
 mainGroup.add(box);
 
-// Gold edge wireframe — Scene 1 hero visibility
 const edgesGoldMat = new THREE.LineBasicMaterial({ color: 0x8a6f3a, transparent: true, opacity: 0 });
 const wireBoxGold  = new THREE.LineSegments(new THREE.EdgesGeometry(boxGeo), edgesGoldMat);
 mainGroup.add(wireBoxGold);
 
-// Blue edge wireframe — Scene 2 scan
-const edgesMat = new THREE.LineBasicMaterial({ color: 0x3b82f6, transparent: true, opacity: 0 });
+const edgesMat = new THREE.LineBasicMaterial({ color: 0x2d6b7e, transparent: true, opacity: 0 });
 const wireBox  = new THREE.LineSegments(new THREE.EdgesGeometry(boxGeo), edgesMat);
 mainGroup.add(wireBox);
 
-/* ════════════════════════════════════════════════════
-   SCENE 1 — AURA PARTICLES (pink + gold ellipsoidal shell)
-   Colors are saturated and stay vivid on a light background
-════════════════════════════════════════════════════ */
+/* SCENE 1 - AURA PARTICLES (teal + gold) */
 const AURA_N    = MOBILE ? 380 : 900;
 const auraGeo   = new THREE.BufferGeometry();
 const auraPos   = new Float32Array(AURA_N * 3);
@@ -760,10 +737,10 @@ for (let i = 0; i < AURA_N; i++) {
   auraPos[i*3]   = r * Math.sin(theta) * Math.cos(phi);
   auraPos[i*3+1] = r * Math.sin(theta) * Math.sin(phi) * 1.65;
   auraPos[i*3+2] = r * Math.cos(theta) * 0.55;
-  if (Math.random() < 0.55) {       // vibrant pink
-    auraCol[i*3] = 1; auraCol[i*3+1] = 0.35; auraCol[i*3+2] = 0.65;
-  } else {                           // deep gold
-    auraCol[i*3] = 0.96; auraCol[i*3+1] = 0.58; auraCol[i*3+2] = 0.02;
+  if (Math.random() < 0.55) {       /* teal */
+    auraCol[i*3] = 0.18; auraCol[i*3+1] = 0.48; auraCol[i*3+2] = 0.60;
+  } else {                           /* champagne gold */
+    auraCol[i*3] = 0.96; auraCol[i*3+1] = 0.62; auraCol[i*3+2] = 0.18;
   }
   auraPhase[i] = Math.random() * Math.PI * 2;
 }
@@ -776,11 +753,9 @@ const auraMat       = new THREE.PointsMaterial({ size: 0.04, vertexColors: true,
 const auraParticles = new THREE.Points(auraGeo, auraMat);
 mainGroup.add(auraParticles);
 
-/* ════════════════════════════════════════════════════
-   SCENE 2 — AR SCAN ELEMENTS (blue / cyan)
-════════════════════════════════════════════════════ */
+/* SCENE 2 - AR SCAN ELEMENTS (teal) */
 const ringGeo = new THREE.TorusGeometry(1.35, 0.011, 6, 100);
-const ringMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6, transparent: true, opacity: 0 });
+const ringMat = new THREE.MeshBasicMaterial({ color: 0x2d7a8a, transparent: true, opacity: 0 });
 const scanRing = new THREE.Mesh(ringGeo, ringMat);
 scanRing.rotation.x = Math.PI / 2;
 mainGroup.add(scanRing);
@@ -791,7 +766,7 @@ function makeAnchor(cx, cy, fx, fy) {
     new THREE.Vector3(cx,           cy,           BOX_D/2+0.02),
     new THREE.Vector3(cx + fx*0.28, cy,           BOX_D/2+0.02),
   ]);
-  const mat = new THREE.LineBasicMaterial({ color: 0x06b6d4, transparent: true, opacity: 0 });
+  const mat = new THREE.LineBasicMaterial({ color: 0x3a8898, transparent: true, opacity: 0 });
   return new THREE.Line(geo, mat);
 }
 const anchors = [
@@ -820,32 +795,27 @@ for (let i = 0; i < SCAN_N; i++) {
   sdPos[i*3+2] = pz + (Math.random()-0.5)*0.05;
 }
 sdGeo.setAttribute('position', new THREE.BufferAttribute(sdPos, 3));
-const sdMat  = new THREE.PointsMaterial({ color: 0x06b6d4, size: 0.022, transparent: true, opacity: 0 });
+const sdMat  = new THREE.PointsMaterial({ color: 0x3a8898, size: 0.022, transparent: true, opacity: 0 });
 const scanDots = new THREE.Points(sdGeo, sdMat);
 mainGroup.add(scanDots);
 
-/* ════════════════════════════════════════════════════
-   SCENE 3 — CONSTELLATION NETWORK (champagne gold)
-   Fine nodes on an ellipsoidal shell connected by thin
-   lines. Single restrained accent — no rainbow hues.
-════════════════════════════════════════════════════ */
+/* SCENE 3 - CONSTELLATION NETWORK (champagne gold) */
 const CONST_N    = MOBILE ? 44 : 82;
-const constBase  = new Float32Array(CONST_N * 3);  // rest positions
-const constPh3   = new Float32Array(CONST_N);      // per-node phase
+const constBase  = new Float32Array(CONST_N * 3);
+const constPh3   = new Float32Array(CONST_N);
 
 for (let i = 0; i < CONST_N; i++) {
   const theta  = Math.acos(2 * Math.random() - 1);
   const phi    = Math.random() * Math.PI * 2;
   const r      = 1.45 + Math.random() * 0.75;
   constBase[i*3]   = r * Math.sin(theta) * Math.cos(phi) * 0.88;
-  constBase[i*3+1] = r * Math.sin(theta) * Math.sin(phi) * 1.55;  // elongate Y
+  constBase[i*3+1] = r * Math.sin(theta) * Math.sin(phi) * 1.55;
   constBase[i*3+2] = r * Math.cos(theta) * 0.52;
   constPh3[i]      = Math.random() * Math.PI * 2;
 }
 
-// Build edge list: pairs of nodes within connection threshold
 const C_THRESH  = 1.28;
-const constEdges = [];   // [idxA, idxB, idxA, idxB, ...]
+const constEdges = [];
 for (let i = 0; i < CONST_N; i++) {
   for (let j = i + 1; j < CONST_N; j++) {
     const dx = constBase[i*3]   - constBase[j*3];
@@ -856,9 +826,8 @@ for (let i = 0; i < CONST_N; i++) {
     }
   }
 }
-const numConstEdges = constEdges.length >> 1;   // divide by 2
+const numConstEdges = constEdges.length >> 1;
 
-// Group: rotates as a unit, sits inside mainGroup (which handles mouse tilt)
 const constGroup = new THREE.Group();
 mainGroup.add(constGroup);
 
@@ -872,7 +841,7 @@ const constNodes = new THREE.Points(constNodeGeo, constNodeMat);
 constGroup.add(constNodes);
 
 const constLineGeo = new THREE.BufferGeometry();
-const constLinePos = new Float32Array(numConstEdges * 6);  // 2 verts × 3 coords
+const constLinePos = new Float32Array(numConstEdges * 6);
 constLineGeo.setAttribute('position', new THREE.BufferAttribute(constLinePos, 3));
 const constLineMat = new THREE.LineBasicMaterial({
   color: 0xc9a96e, transparent: true, opacity: 0
@@ -880,21 +849,18 @@ const constLineMat = new THREE.LineBasicMaterial({
 const constLineSegs = new THREE.LineSegments(constLineGeo, constLineMat);
 constGroup.add(constLineSegs);
 
-// Warm accent light that glows with the constellation
-const constLight = new THREE.PointLight(0xd4a96e, 0, 8);
+const constLight = new THREE.PointLight(0xc9a96e, 0, 8);
 constLight.position.set(0, 0, 3);
 scene.add(constLight);
 
-/* ════════════════════════════════════════════════════
-   SCENE 4 — EXPLODED FACES + ORBIT RINGS
-════════════════════════════════════════════════════ */
+/* SCENE 4 - EXPLODED FACES + ORBIT RINGS */
 const faceDefs = [
-  [BOX_W,BOX_H, 0,0, BOX_D/2,  0,0,           0,0, 1, 0xa855f7],
-  [BOX_W,BOX_H, 0,0,-BOX_D/2,  0,Math.PI,      0,0,-1, 0xf59e0b],
-  [BOX_D,BOX_H,-BOX_W/2,0,0,   0,-Math.PI/2,  -1,0, 0, 0x3b82f6],
-  [BOX_D,BOX_H, BOX_W/2,0,0,   0, Math.PI/2,   1,0, 0, 0xff6eb4],
-  [BOX_W,BOX_D, 0, BOX_H/2,0, -Math.PI/2,0,    0,1, 0, 0x9333ea],
-  [BOX_W,BOX_D, 0,-BOX_H/2,0,  Math.PI/2,0,    0,-1,0, 0xf59e0b],
+  [BOX_W,BOX_H, 0,0, BOX_D/2,  0,0,           0,0, 1, 0x1e3d50],
+  [BOX_W,BOX_H, 0,0,-BOX_D/2,  0,Math.PI,      0,0,-1, 0xc9a96e],
+  [BOX_D,BOX_H,-BOX_W/2,0,0,   0,-Math.PI/2,  -1,0, 0, 0x2d7a8a],
+  [BOX_D,BOX_H, BOX_W/2,0,0,   0, Math.PI/2,   1,0, 0, 0x3a8898],
+  [BOX_W,BOX_D, 0, BOX_H/2,0, -Math.PI/2,0,    0,1, 0, 0x1e3d50],
+  [BOX_W,BOX_D, 0,-BOX_H/2,0,  Math.PI/2,0,    0,-1,0, 0xc9a96e],
 ];
 
 const explodedFaces = faceDefs.map(fd => {
@@ -911,9 +877,9 @@ const explodedFaces = faceDefs.map(fd => {
 });
 
 const orbitCfgs = [
-  { r: 2.3, color: 0xa855f7, rx: Math.PI/3.2, ry: 0           },
-  { r: 2.9, color: 0xf59e0b, rx: Math.PI/5,   ry: Math.PI/4   },
-  { r: 1.95,color: 0xff6eb4, rx:-Math.PI/4,   ry: Math.PI/3   },
+  { r: 2.3, color: 0x1e3d50, rx: Math.PI/3.2, ry: 0           },
+  { r: 2.9, color: 0xc9a96e, rx: Math.PI/5,   ry: Math.PI/4   },
+  { r: 1.95,color: 0x2d7a8a, rx:-Math.PI/4,   ry: Math.PI/3   },
 ];
 const orbitRings = orbitCfgs.map(oc => {
   const geo  = new THREE.TorusGeometry(oc.r, 0.007, 4, 110);
@@ -924,11 +890,7 @@ const orbitRings = orbitCfgs.map(oc => {
   return ring;
 });
 
-/* ════════════════════════════════════════════════════
-   SCROLL PROGRESS
-   rawProgress  — snaps immediately to scroll position
-   sceneProgress — lerped toward rawProgress at 0.10/frame
-════════════════════════════════════════════════════ */
+/* SCROLL PROGRESS */
 let rawProgress   = 0;
 let sceneProgress = 0;
 
@@ -942,27 +904,21 @@ function calcProgress() {
   return (scrolled / scrollable) * 4;
 }
 
-/* ════════════════════════════════════════════════════
-   DOM REFS — overlays, dots, badge, chips
-════════════════════════════════════════════════════ */
+/* DOM REFS */
 const overlays = ['ov1','ov2','ov3','ov4'].map(id => document.getElementById(id));
 const dots     = document.querySelectorAll('.scene-dot');
 const badge    = document.getElementById('one-badge');
 const chips    = document.querySelectorAll('.metric-chip');
 
-// Camera target positions per scene
 const CAM_Z = [4.8, 4.2, 4.6, 5.4];
 const CAM_Y = [0.0, 0.3,-0.15, 0.0];
 
-/* ════════════════════════════════════════════════════
-   SCROLL LISTENER
-════════════════════════════════════════════════════ */
+/* SCROLL LISTENER */
 window.addEventListener('scroll', () => {
   rawProgress = calcProgress();
   document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 30);
 }, { passive: true });
 
-// Dot click → jump
 dots.forEach(dot => {
   dot.addEventListener('click', () => {
     const si   = parseInt(dot.dataset.scene);
@@ -972,55 +928,40 @@ dots.forEach(dot => {
   });
 });
 
-/* ════════════════════════════════════════════════════
-   INTERSECTION OBSERVER — section fade-up
-   Slightly higher threshold (0.15) + natural stagger
-   from existing delay classes gives a flowing feel
-════════════════════════════════════════════════════ */
+/* INTERSECTION OBSERVER */
 const fadeObs = new IntersectionObserver(
   entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
   { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
 );
 document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
 
-/* ════════════════════════════════════════════════════
-   ANIMATION LOOP
-════════════════════════════════════════════════════ */
+/* ANIMATION LOOP */
 let time = 0;
 
 function animate() {
   requestAnimationFrame(animate);
   time += 0.01;
 
-  /* ── 1. Smooth progress — lerp factor 0.10 for responsive but silky feel ── */
   sceneProgress += (rawProgress - sceneProgress) * 0.10;
   const p = sceneProgress;
 
-  /* ── 2. Mouse smoothing ── */
   mouse.x += (mouse.tx - mouse.x) * 0.06;
   mouse.y += (mouse.ty - mouse.y) * 0.06;
 
-  /* ── 3. Mouse-reactive group tilt ── */
   mainGroup.rotation.y += (mouse.x * 0.35 - mainGroup.rotation.y) * 0.04;
   mainGroup.rotation.x += (-mouse.y * 0.20 - mainGroup.rotation.x) * 0.04;
 
-  /* ── 4. Smoothstep scene weights — each overlaps its neighbours
-          so there is always something prominent, never a dead frame ── */
-  const w1 = sw(p, 0, 0.95);  // full at p=0, zero by p=0.95
-  const w2 = sw(p, 1, 0.95);  // full at p=1, crossfades with w1 & w3
-  const w3 = sw(p, 2, 0.95);  // full at p=2
-  const w4 = sw4(p);           // fades in from p=2.2, stays full from p=3 onward
+  const w1 = sw(p, 0, 0.95);
+  const w2 = sw(p, 1, 0.95);
+  const w3 = sw(p, 2, 0.95);
+  const w4 = sw4(p);
 
-  /* ── 5. Camera dolly — z and y shift between scenes ── */
   const tZ = w1*CAM_Z[0] + w2*CAM_Z[1] + w3*CAM_Z[2] + w4*CAM_Z[3];
   const tY = w1*CAM_Y[0] + w2*CAM_Y[1] + w3*CAM_Y[2] + w4*CAM_Y[3];
-  // Normalise: weights may sum >1 during crossfades
   const wSum = w1 + w2 + w3 + w4 || 1;
   camera.position.z += ((tZ / wSum) - camera.position.z) * 0.055;
   camera.position.y += ((tY / wSum) - camera.position.y) * 0.055;
 
-  /* ── 6. Text overlay — JS drives opacity & subtle rise
-          Removes any CSS transition lag; each frame is direct. ── */
   const ovW = [w1, w2, w3, w4];
   overlays.forEach((el, i) => {
     const w = ovW[i];
@@ -1029,18 +970,13 @@ function animate() {
     el.style.pointerEvents = w > 0.5 ? 'auto' : 'none';
   });
 
-  // Dots: show which scene is dominant
   const activeIdx = Math.round(clamp01(p / 3) * 3);
   dots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
 
-  // Badge + chips appear with Scene 4
   badge.style.opacity = w4;
   chips.forEach(c => { c.style.opacity = w4 * 0.92; });
 
-  /* ──────────────────────────────────────────────────
-     THE BOX — prominent in S1, dims through S2/S3,
-     fades into exploded faces in S4
-  ────────────────────────────────────────────────── */
+  /* THE BOX */
   box.rotation.y  = time * 0.28 + p * 0.14;
   box.rotation.x  = Math.sin(time * 0.14) * 0.09;
   wireBox.rotation.copy(box.rotation);
@@ -1050,9 +986,7 @@ function animate() {
   edgesGoldMat.opacity = w1 * 0.55;
   edgesMat.opacity     = w2 * 0.88 + w4 * 0.2;
 
-  /* ──────────────────────────────────────────────────
-     SCENE 1 — AURA
-  ────────────────────────────────────────────────── */
+  /* SCENE 1 - AURA */
   auraMat.opacity = w1 * 0.85 + w4 * 0.18;
   auraParticles.visible = auraMat.opacity > 0.01;
   if (auraParticles.visible) {
@@ -1066,12 +1000,10 @@ function animate() {
     aAttr.needsUpdate = true;
     auraParticles.rotation.y = time * 0.09;
   }
-  pinkLight.intensity = w1 * 1.6 + w4 * 0.35;
+  tealLight.intensity = w1 * 1.4 + w4 * 0.35;
   goldLight.intensity = w1 * 1.0 + w4 * 0.25;
 
-  /* ──────────────────────────────────────────────────
-     SCENE 2 — SCAN
-  ────────────────────────────────────────────────── */
+  /* SCENE 2 - SCAN */
   ringMat.opacity    = w2 * 0.85;
   sdMat.opacity      = w2 * (0.6 + Math.sin(time * 2.2) * 0.18);
   anchors.forEach(a => { a.material.opacity = w2 * 0.78; });
@@ -1080,9 +1012,7 @@ function animate() {
   if (scanRing.visible) scanRing.position.y = Math.sin(time * 1.1) * (BOX_H * 0.5);
   blueLight.intensity = w2 * 1.8;
 
-  /* ──────────────────────────────────────────────────
-     SCENE 3 — CONSTELLATION NETWORK
-  ────────────────────────────────────────────────── */
+  /* SCENE 3 - CONSTELLATION */
   constNodeMat.opacity  = w3 * 0.92;
   constLineMat.opacity  = w3 * 0.30;
   constLight.intensity  = w3 * 1.1;
@@ -1114,14 +1044,11 @@ function animate() {
     }
     lAttr.needsUpdate = true;
 
-    // Slow autonomous rotation; mainGroup handles the mouse tilt
     constGroup.rotation.y = time * 0.075;
     constGroup.rotation.x = mouse.y * 0.06;
   }
 
-  /* ──────────────────────────────────────────────────
-     SCENE 4 — EXPLODED FACES + ORBIT RINGS
-  ────────────────────────────────────────────────── */
+  /* SCENE 4 - EXPLODED FACES + ORBIT RINGS */
   explodedFaces.forEach((face, i) => {
     face.material.opacity = w4 * 0.65;
     face.visible = face.material.opacity > 0.01;
@@ -1150,29 +1077,25 @@ function animate() {
 
 animate();
 
-/* ════════════════════════════════════════════════════
-   NAV — hamburger
-════════════════════════════════════════════════════ */
+/* NAV HAMBURGER */
 document.getElementById('hamburger').addEventListener('click', () => {
   document.getElementById('mobile-nav').classList.add('open');
 });
 document.getElementById('mobile-close').addEventListener('click', closeMobile);
 function closeMobile() { document.getElementById('mobile-nav').classList.remove('open'); }
 
-/* ════════════════════════════════════════════════════
-   CTA FORM — no backend
-════════════════════════════════════════════════════ */
+/* CTA FORM */
 document.getElementById('submit-btn').addEventListener('click', () => {
   const val = document.getElementById('email-input').value.trim();
   if (!val || !val.includes('@')) {
-    document.getElementById('email-input').style.borderColor = 'rgba(168,85,247,0.5)';
+    document.getElementById('email-input').style.borderColor = 'rgba(45,122,138,0.5)';
     return;
   }
   document.querySelector('.email-row').style.display = 'none';
   document.getElementById('thank-msg').style.display = 'block';
 });
 
-/* Initial overlay state — Scene 1 fully visible at load */
+/* Initial overlay state */
 overlays[0].style.opacity   = 1;
 overlays[0].style.transform = 'translateX(-50%) translateY(0px)';
 overlays[0].style.pointerEvents = 'auto';
