@@ -196,8 +196,14 @@ section{padding:8rem 5vw;background:var(--ivory)}
 /* team */
 #team{background:var(--ivory-2)}
 .team{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:3rem}
-.member{background:#fff;border:1px solid var(--line);border-radius:22px;padding:2.2rem 1.9rem;transition:transform .4s var(--ease),box-shadow .4s}
+.member{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;transition:transform .4s var(--ease),box-shadow .4s}
 .member:hover{transform:translateY(-5px);box-shadow:0 18px 44px rgba(19,41,58,.1)}
+.photo{aspect-ratio:1/1;overflow:hidden;background:var(--ivory-2)}
+.photo img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.member:hover .photo img{transform:scale(1.05)}
+.m-body{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.4rem 1.5rem}
+.m-li{flex-shrink:0;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:var(--ink);border:1px solid var(--line);transition:background .25s,color .25s,border-color .25s}
+.m-li:hover{background:#0a66c2;color:#fff;border-color:#0a66c2}
 .avatar{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-family:Fraunces,serif;font-weight:700;font-size:1.3rem;color:#fff;background:linear-gradient(135deg,var(--ink-2),var(--teal) 60%,var(--gold));margin-bottom:1.4rem}
 .member h3{font-size:1.2rem;letter-spacing:-.015em}
 .role{margin-top:.3rem;font-size:.82rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-2)}
@@ -267,7 +273,7 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
   <a href="#research">Research</a>
   <a href="#journey">Journey</a>
   <a href="#team">Team</a>
-  <a href="#cta">Join the pilot</a>
+  <a href="#cta">Get in touch</a>
   <a href="https://www.linkedin.com/company/loom-xr/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
 </div>
 
@@ -280,7 +286,7 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
     <li><a href="#journey">Journey</a></li>
     <li><a href="#team">Team</a></li>
   </ul>
-  <div class="nav-right"><a href="https://www.linkedin.com/company/loom-xr/" class="nav-li" target="_blank" rel="noopener noreferrer" aria-label="LoomXR Labs Inc. on LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a><a href="#cta" class="btn btn-dark nav-cta">Join the pilot <span class="arrow">&rarr;</span></a></div>
+  <div class="nav-right"><a href="https://www.linkedin.com/company/loom-xr/" class="nav-li" target="_blank" rel="noopener noreferrer" aria-label="LoomXR Labs Inc. on LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a><a href="#cta" class="btn btn-dark nav-cta">Get in touch <span class="arrow">&rarr;</span></a></div>
   <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
 </nav>
 
@@ -297,27 +303,27 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
     <div class="scene-overlay" id="ov1">
       <a href="#incubator" class="pill"><span class="pill-tag">New</span><span class="dot"></span>Accepted into the Communitech incubator <span>&rarr;</span></a>
       <h1 class="hero-title serif">Packaging made<br>for <span class="gold-text">one person.</span></h1>
-      <p class="scene-sub">LoomXR generates a one-of-one package design for every customer and lets them preview it in augmented reality on the real product before it is printed.</p>
+      <p class="scene-sub">AI-generated, one-of-one packaging that customers preview in AR before it is printed.</p>
       <div class="hero-cta">
-        <a href="#cta" class="btn btn-dark">Join the pilot <span class="arrow">&rarr;</span></a>
-        <a href="#how" class="btn btn-ghost">See how it works</a>
+        <a href="#product" class="btn btn-dark">See the idea <span class="arrow">&rarr;</span></a>
+        <a href="#cta" class="btn btn-ghost">Get in touch</a>
       </div>
       <p class="scroll-cue">Scroll &#x2193;</p>
     </div>
     <div class="scene-overlay" id="ov2">
       <span class="scene-label">01 · Scan</span>
       <h2 class="scene-headline serif">Point a phone.<br>The box wakes up.</h2>
-      <p class="scene-sub">A QR code opens LoomXR in the browser. The camera recognizes the product and anchors the experience to it. No app to install.</p>
+      <p class="scene-sub">A QR code opens LoomXR in the browser. No app to install.</p>
     </div>
     <div class="scene-overlay" id="ov3">
       <span class="scene-label">02 · Personalize</span>
       <h2 class="scene-headline serif">A design built<br>from your taste.</h2>
-      <p class="scene-sub">The customer answers a few prompts about their style. Generative AI turns those answers into a packaging design in seconds.</p>
+      <p class="scene-sub">A few prompts about your style become a packaging design in seconds.</p>
     </div>
     <div class="scene-overlay" id="ov4">
       <span class="scene-label">03 · Own</span>
       <h2 class="scene-headline serif">Made once.<br>Never repeated.</h2>
-      <p class="scene-sub">Each design is stored against that customer's order and is never issued to anyone else. The brand prints it through its existing partner.</p>
+      <p class="scene-sub">Each design is made for one customer and never issued again.</p>
     </div>
     <div id="one-badge"><p class="badge-eyebrow">Edition</p><p class="badge-num">1 of 1</p><p class="badge-foot">Generated · Previewed · Printed</p></div>
     <div class="metric-chip" id="chip-1" style="top:22%;left:9%">AI-generated design</div>
@@ -330,8 +336,8 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
 
 <div class="band band-marquee" aria-hidden="true">
   <div class="marquee">
-    <span>One-of-one packaging</span><span>Generative design</span><span>AR preview</span><span>No app required</span><span>Print-on-demand</span><span>Incubated at Communitech</span>
-    <span>One-of-one packaging</span><span>Generative design</span><span>AR preview</span><span>No app required</span><span>Print-on-demand</span><span>Incubated at Communitech</span>
+    <span>One-of-one packaging</span><span>Generative design</span><span>AR preview</span><span>No app required</span><span>Incubated at Communitech</span>
+    <span>One-of-one packaging</span><span>Generative design</span><span>AR preview</span><span>No app required</span><span>Incubated at Communitech</span>
   </div>
 </div>
 
@@ -339,31 +345,30 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
 <section id="manifesto">
   <div class="inner">
     <span class="eyebrow rv">Why we exist</span>
-    <p class="scrub" id="scrub">Every box on a shelf looks the same as the one next to it. The product inside may be premium, but the packaging is a template printed ten thousand times. We think the box should belong to the person who bought it. So we built a way to design it for them, show it to them, and print it once.</p>
+    <p class="scrub" id="scrub">Every box on a shelf looks the same. We think the box should belong to the person who bought it, designed for them and printed once.</p>
   </div>
 </section>
 
 <!-- PRODUCT -->
 <section id="product">
   <div class="inner">
-    <span class="eyebrow rv">The product</span>
+    <span class="eyebrow rv">What we are building</span>
     <h2 class="h2 serif split" data-split>Three pieces, one platform.</h2>
-    <p class="lead rv d2">LoomXR sits between a brand and its customer. It recognizes the product, generates the design, and shows the result in AR before anything reaches a printer.</p>
-    <div class="cards">
+        <div class="cards">
       <div class="card rv d1" data-tilt>
         <div class="card-num"><span>01</span><div class="card-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2d7a8a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V5a2 2 0 0 1 2-2h4"/><path d="M15 3h4a2 2 0 0 1 2 2v4"/><path d="M21 15v4a2 2 0 0 1-2 2h-4"/><path d="M9 21H5a2 2 0 0 1-2-2v-4"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg></div></div>
         <h3>Product recognition</h3>
-        <p>Each brand gets its own object detection model, trained on a few photos of its product, so the camera finds the box from different angles and lighting.</p>
+        <p>The camera finds the brand's product from any angle.</p>
       </div>
       <div class="card rv d2" data-tilt>
         <div class="card-num"><span>02</span><div class="card-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2d7a8a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 17l.8 2.2L22 20l-2.2.8L19 23l-.8-2.2L16 20l2.2-.8z"/></svg></div></div>
         <h3>Generative design</h3>
-        <p>A short style prompt from the customer becomes a full packaging texture. Designs generate in seconds and stay within the brand's guidelines.</p>
+        <p>A style prompt becomes an on-brand design in seconds.</p>
       </div>
       <div class="card rv d3" data-tilt>
         <div class="card-num"><span>03</span><div class="card-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2d7a8a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8L12 3 3 8v8l9 5 9-5V8z"/><polyline points="3 8 12 13 21 8"/><line x1="12" y1="13" x2="12" y2="21"/></svg></div></div>
         <h3>Live AR preview</h3>
-        <p>The design is wrapped onto the physical box in the camera view. The customer turns it in their hands and approves it before it is printed.</p>
+        <p>The design wraps onto the real box before it is printed.</p>
       </div>
     </div>
   </div>
@@ -373,16 +378,16 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
 <section id="how">
   <div class="inner how-grid">
     <div class="how-sticky">
-      <span class="eyebrow rv">For brands</span>
-      <h2 class="h2 serif split" data-split>Set up in an afternoon. Keep your supply chain.</h2>
-      <p class="lead rv d2">No new hardware and no new printer. LoomXR plugs into the production process you already run.</p>
+      <span class="eyebrow rv">The plan for brands</span>
+      <h2 class="h2 serif split" data-split>Simple for brands. No new supply chain.</h2>
+      <p class="lead rv d2">How we expect it to work once the product is built.</p>
       <div class="how-meter"><i id="how-meter"></i></div>
     </div>
     <div class="steps">
-      <div class="step"><div class="step-n">01</div><div><h3>Send us product photos</h3><p>A handful of images is enough to train detection for your box or bottle.</p><span class="tag">Day 1</span></div></div>
-      <div class="step"><div class="step-n">02</div><div><h3>Set your brand rules</h3><p>Colours, logo placement and no-go zones. Every generated design stays inside them.</p><span class="tag">Day 1</span></div></div>
-      <div class="step"><div class="step-n">03</div><div><h3>Place a QR code</h3><p>In store, on the shelf, on the product or in an email. That is the customer's way in.</p><span class="tag">Launch</span></div></div>
-      <div class="step"><div class="step-n">04</div><div><h3>Print as normal</h3><p>Approved designs arrive as print-ready files for your existing print partner.</p><span class="tag">Every order</span></div></div>
+      <div class="step"><div class="step-n">01</div><div><h3>Share product photos</h3><p>We train detection on your product.</p></div></div>
+      <div class="step"><div class="step-n">02</div><div><h3>Set brand rules</h3><p>Colours, logo and no-go zones.</p></div></div>
+      <div class="step"><div class="step-n">03</div><div><h3>Place a QR code</h3><p>In store or on the product.</p></div></div>
+      <div class="step"><div class="step-n">04</div><div><h3>Print as normal</h3><p>Print-ready files for your printer.</p></div></div>
     </div>
   </div>
 </section>
@@ -392,17 +397,17 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
   <div class="glow"></div>
   <div class="inner">
     <span class="eyebrow rv">Built on research</span>
-    <h2 class="h2 serif split" data-split>We tested it before we sold it.</h2>
-    <p class="lead rv d2">LoomXR started as HYPAR, a research prototype built at Algoma University's SLIDE Studio. We put it in front of shoppers and measured how they used it.</p>
+    <h2 class="h2 serif split" data-split>Started as research.</h2>
+    <p class="lead rv d2">LoomXR grew out of HYPAR, a prototype built and tested at Algoma University's SLIDE Studio.</p>
     <div class="stats">
-      <div class="stat rv d1"><div class="stat-v"><span data-count="15">0</span></div><p class="stat-l">participants in the first user study, using a perfume box</p></div>
-      <div class="stat rv d2"><div class="stat-v"><span data-count="89.5" data-dec="1">0</span><small>/100</small></div><p class="stat-l">System Usability Scale score, well above the 68 average</p></div>
-      <div class="stat rv d3"><div class="stat-v"><span data-count="10">0</span><small>s</small></div><p class="stat-l">or less to generate a new packaging design</p></div>
-      <div class="stat rv d4"><div class="stat-v"><span data-count="0">0</span><small>apps</small></div><p class="stat-l">for the customer to install. It runs in the phone browser.</p></div>
+      <div class="stat rv d1"><div class="stat-v"><span data-count="15">0</span></div><p class="stat-l">user study participants</p></div>
+      <div class="stat rv d2"><div class="stat-v"><span data-count="89.5" data-dec="1">0</span><small>/100</small></div><p class="stat-l">usability score (average is 68)</p></div>
+      <div class="stat rv d3"><div class="stat-v"><span data-count="10">0</span><small>s</small></div><p class="stat-l">or less per design</p></div>
+      <div class="stat rv d4"><div class="stat-v"><span data-count="0">0</span><small>apps</small></div><p class="stat-l">to install</p></div>
     </div>
     <div class="paper rv">
       <span class="paper-badge">IEEE ISEMV 2026</span>
-      <p><em>Designing Hyper-Personalized Retail Product Packaging through Generative AI and Augmented Reality.</em> Accepted for presentation in Cyprus, October 2026.</p>
+      <p><em>Designing Hyper-Personalized Retail Product Packaging through Generative AI and Augmented Reality.</em> Accepted, October 2026.</p>
     </div>
   </div>
 </section>
@@ -412,11 +417,11 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
   <div class="incub-card rv rv-s">
     <p class="incub-kicker">Incubator news</p>
     <h2 class="incub-name"><img src="https://communitech.ca/assets/themes/communitech/img/logos/Communitech-Logo-RGB-Primary.svg" alt="Communitech" class="ct-logo"></h2>
-    <p class="lead">LoomXR Labs Inc. has been accepted into the Communitech incubator in Waterloo, Ontario. We will use the program to run our first brand pilots and prepare for launch.</p>
+    <p class="lead">LoomXR Labs Inc. has been accepted into the Communitech incubator in Waterloo, Ontario.</p>
     <div class="incub-meta">
       <div><b>Program</b>Communitech incubator</div>
       <div><b>Location</b>Waterloo, Ontario</div>
-      <div><b>Focus</b>Pilot brands and launch</div>
+      <div><b>Stage</b>Ideation</div>
     </div>
   </div>
 </section>
@@ -430,12 +435,12 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
         <h2 class="h2 serif">From lab prototype to startup.</h2>
       </div>
       <div class="hz-track" id="hz-track">
-        <div class="ms"><span class="ms-date">2025 to 2026</span><h3>HYPAR prototype</h3><p>Built at SLIDE Studio as an honours thesis: WebAR, generative textures and a user study.</p><span class="ms-idx">1</span></div>
-        <div class="ms"><span class="ms-date">Summer 2026</span><h3>Paper accepted</h3><p>The research is accepted at IEEE ISEMV 2026.</p><span class="ms-idx">2</span></div>
-        <div class="ms"><span class="ms-date">June 2026</span><h3>LoomXR Labs Inc.</h3><p>Incorporated in Ontario to turn the prototype into a B2B platform for brands.</p><span class="ms-idx">3</span></div>
-        <div class="ms"><span class="ms-date">September 10, 2026</span><h3>First showcase</h3><p>LoomXR's first public event as a company, at the Brampton Venture Expo.</p><span class="ms-idx">4</span></div>
-        <div class="ms now"><span class="ms-date">Now</span><h3>Communitech incubator</h3><p>Accepted into the Communitech incubator in Waterloo.</p><span class="ms-idx">5</span></div>
-        <div class="ms next"><span class="ms-date">Next</span><h3>First brand pilots</h3><p>A small group of brands shaping the product with us. You could be one of them.</p><span class="ms-idx">6</span></div>
+        <div class="ms"><span class="ms-date">2025 to 2026</span><h3>HYPAR prototype</h3><p>Honours thesis at SLIDE Studio.</p><span class="ms-idx">1</span></div>
+        <div class="ms"><span class="ms-date">Summer 2026</span><h3>Paper accepted</h3><p>Accepted at IEEE ISEMV 2026.</p><span class="ms-idx">2</span></div>
+        <div class="ms"><span class="ms-date">June 2026</span><h3>LoomXR Labs Inc.</h3><p>Incorporated in Ontario.</p><span class="ms-idx">3</span></div>
+        <div class="ms"><span class="ms-date">September 10, 2026</span><h3>First showcase</h3><p>Brampton Venture Expo.</p><span class="ms-idx">4</span></div>
+        <div class="ms now"><span class="ms-date">Now</span><h3>Communitech incubator</h3><p>Accepted in Waterloo. Refining the idea.</p><span class="ms-idx">5</span></div>
+        <div class="ms next"><span class="ms-date">Next</span><h3>Mitacs Accelerate Entrepreneur</h3><p>Build and finalize the product.</p><span class="ms-idx">6</span></div>
       </div>
       <div class="hz-rail"><i id="hz-rail"></i></div>
     </div>
@@ -446,11 +451,11 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
 <section id="team">
   <div class="inner">
     <span class="eyebrow rv">Team</span>
-    <h2 class="h2 serif split" data-split>The people building LoomXR Labs Inc.</h2>
+    <h2 class="h2 serif split" data-split>The founding team.</h2>
     <div class="team">
-      <div class="member rv d1"><div class="avatar">MM</div><h3>Muhammad Minhajuddin</h3><p class="role">Founder &amp; CEO</p></div>
-      <div class="member rv d2"><div class="avatar">V</div><h3>Vidhi</h3><p class="role">CCO</p></div>
-      <div class="member rv d3"><div class="avatar">YP</div><h3>Yuvraj Singh Palh</h3><p class="role">CTO</p></div>
+      <div class="member rv d1"><div class="photo"><img src="team/minhaj.jpg" alt="Muhammad Minhajuddin" loading="lazy"></div><div class="m-body"><div><h3>Muhammad Minhajuddin</h3><p class="role">Founder &amp; CEO</p></div><a class="m-li" href="https://www.linkedin.com/in/muhammad-minhajuddin76/" target="_blank" rel="noopener noreferrer" aria-label="Muhammad Minhajuddin on LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></div>
+      <div class="member rv d2"><div class="photo"><img src="team/vidhi.jpg" alt="Vidhi" loading="lazy"></div><div class="m-body"><div><h3>Vidhi</h3><p class="role">CCO</p></div><a class="m-li" href="https://www.linkedin.com/in/vidhi-vee78/" target="_blank" rel="noopener noreferrer" aria-label="Vidhi on LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></div>
+      <div class="member rv d3"><div class="photo"><img src="team/yuvraj.jpg" alt="Yuvraj Singh Palh" loading="lazy"></div><div class="m-body"><div><h3>Yuvraj Singh Palh</h3><p class="role">CTO</p></div><a class="m-li" href="https://www.linkedin.com/in/yuvraj-palh/" target="_blank" rel="noopener noreferrer" aria-label="Yuvraj Singh Palh on LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div></div>
     </div>
   </div>
 </section>
@@ -458,16 +463,16 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
 <!-- CTA -->
 <section id="cta">
   <div class="inner">
-    <span class="eyebrow rv">Pilot cohort</span>
-    <h2 class="h2 serif split" data-split>Be one of our first brands.</h2>
-    <p class="lead rv d2">We are onboarding a small number of brands for our first pilots. Leave your email and we will reach out to set up a demo.</p>
+    <span class="eyebrow rv">Get in touch</span>
+    <h2 class="h2 serif split" data-split>Want to build this with us?</h2>
+    <p class="lead rv d2">We are early. Brands, mentors and partners, leave your email and we will reach out.</p>
     <form class="form rv d3" id="cta-form" novalidate>
-      <input type="email" id="email-input" placeholder="you@brand.com" aria-label="Work email" required>
-      <button class="btn btn-dark" type="submit">Request a demo <span class="arrow">&rarr;</span></button>
+      <input type="email" id="email-input" placeholder="you@company.com" aria-label="Email" required>
+      <button class="btn btn-dark" type="submit">Get in touch <span class="arrow">&rarr;</span></button>
     </form>
     <p class="follow rv d4">Or follow our progress on <a href="https://www.linkedin.com/company/loom-xr/" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg> LinkedIn</a></p>
     <p class="thanks" id="thanks">Thanks. We will be in touch soon.</p>
-    <p class="form-err" id="form-err">That did not go through. Email us at <a href="mailto:minhaj112204@gmail.com?subject=LoomXR%20demo%20request">minhaj112204@gmail.com</a>.</p>
+    <p class="form-err" id="form-err">That did not go through. Email us at <a href="mailto:minhaj112204@gmail.com?subject=LoomXR%20enquiry">minhaj112204@gmail.com</a>.</p>
   </div>
 </section>
 
@@ -479,7 +484,7 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
       <div class="f-incub"><span>Incubated at</span><img src="https://communitech.ca/assets/themes/communitech/img/logos/Communitech-Logo-RGB-Primary.svg" alt="Communitech"></div>
     </div>
     <div class="f-col"><h4>Company</h4><a href="#product">Product</a><a href="#how">How it works</a><a href="#research">Research</a><a href="#journey">Journey</a><a href="#team">Team</a></div>
-    <div class="f-col"><h4>Get started</h4><a href="#cta">Join the pilot</a><a href="mailto:minhaj112204@gmail.com">Contact us</a><a href="https://www.linkedin.com/company/loom-xr/" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="#incubator">Communitech</a></div>
+    <div class="f-col"><h4>Get started</h4><a href="#cta">Get in touch</a><a href="mailto:minhaj112204@gmail.com">Contact us</a><a href="https://www.linkedin.com/company/loom-xr/" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="#incubator">Communitech</a></div>
   </div>
   <div class="f-base"><span>&copy; 2026 LoomXR Labs Inc.</span><span>Ontario, Canada</span></div>
 </footer>
@@ -1026,13 +1031,13 @@ $('#cta-form').addEventListener('submit', async e => {
     const res = await fetch(FORM_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ email, _subject: 'LoomXR demo request: ' + email, _replyto: email, _template: 'table', _captcha: 'false', source: 'loomxr.vercel.app pilot form' })
+      body: JSON.stringify({ email, _subject: 'LoomXR website enquiry: ' + email, _replyto: email, _template: 'table', _captcha: 'false', source: 'loomxr.vercel.app contact form' })
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok || String(data.success) !== 'true') throw new Error(data.message || 'failed');
     e.target.style.display = 'none'; $('#thanks').style.display = 'block';
   } catch (_) {
-    btn.disabled = false; btn.firstChild.textContent = 'Request a demo ';
+    btn.disabled = false; btn.firstChild.textContent = 'Get in touch ';
     err.style.display = 'block';
   }
 });
