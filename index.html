@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LoomXR | Personalized AR Packaging</title>
-<meta name="description" content="LoomXR is an early-stage startup building AI-generated, one-of-one product packaging that customers preview in augmented reality. Incubated at Communitech.">
-<meta property="og:title" content="LoomXR | Personalized AR Packaging">
+<title>LoomXR Labs Inc. | Personalized AR Packaging</title>
+<meta name="description" content="LoomXR Labs Inc. is an early-stage startup building AI-generated, one-of-one product packaging that customers preview in augmented reality. Incubated at Communitech.">
+<meta property="og:title" content="LoomXR Labs Inc. | Personalized AR Packaging">
 <meta property="og:description" content="One-of-one packaging, designed by generative AI and previewed in AR. Incubated at Communitech.">
 <meta property="og:image" content="Logo/Banner.jpg">
 <link rel="icon" href="Logo/loomxr-mark.png" type="image/png">
@@ -48,6 +48,9 @@ nav.scrolled{background:rgba(248,246,243,.82);backdrop-filter:blur(18px);-webkit
 .btn-ghost:hover{border-color:var(--ink);background:rgba(19,41,58,.04)}
 .btn .arrow{transition:transform .25s var(--ease)}
 .btn:hover .arrow{transform:translateX(3px)}
+.nav-right{display:flex;align-items:center;gap:.8rem}
+.nav-li{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--ink);border:1px solid var(--line);transition:background .25s,color .25s,border-color .25s}
+.nav-li:hover{background:#0a66c2;color:#fff;border-color:#0a66c2}
 .hamburger{display:none;background:none;border:0;cursor:pointer;flex-direction:column;gap:5px;padding:8px}
 .hamburger span{width:22px;height:2px;background:var(--ink);border-radius:2px}
 .mobile-nav{display:none;position:fixed;inset:0;z-index:200;background:rgba(248,246,243,.98);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:1.8rem}
@@ -205,6 +208,9 @@ section{padding:8rem 5vw;background:var(--ivory)}
 .form input{flex:1;min-width:240px;max-width:360px;padding:.9rem 1.3rem;border-radius:100px;border:1px solid rgba(19,41,58,.16);background:#fff;font:inherit;font-size:.95rem;color:var(--ink);outline:none;transition:border-color .3s,box-shadow .3s}
 .form input:focus{border-color:var(--teal);box-shadow:0 0 0 4px rgba(45,122,138,.1)}
 .form-err{display:none;margin-top:1.2rem;font-size:.9rem;color:#b0533c}
+.follow{margin-top:1.6rem;font-size:.9rem;color:var(--muted)}
+.follow a{display:inline-flex;align-items:center;gap:.35rem;font-weight:600;color:#0a66c2;text-decoration:none}
+.follow a:hover{text-decoration:underline}
 .thanks{display:none;margin-top:1.6rem;color:var(--muted)}
 
 /* footer */
@@ -225,7 +231,7 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
 
 /* responsive */
 @media (max-width:900px){
-  .nav-links,.nav-cta{display:none}.hamburger{display:flex}
+  .nav-links,.nav-right{display:none}.hamburger{display:flex}
   #scene-dots,.metric-chip{display:none}
   #one-badge{right:6%;top:18%;transform:none}.badge-num{font-size:2rem}
   .cards,.team{grid-template-columns:1fr}
@@ -262,6 +268,7 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
   <a href="#journey">Journey</a>
   <a href="#team">Team</a>
   <a href="#cta">Join the pilot</a>
+  <a href="https://www.linkedin.com/company/loom-xr/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
 </div>
 
 <nav id="main-nav">
@@ -273,7 +280,7 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
     <li><a href="#journey">Journey</a></li>
     <li><a href="#team">Team</a></li>
   </ul>
-  <a href="#cta" class="btn btn-dark nav-cta">Join the pilot <span class="arrow">&rarr;</span></a>
+  <div class="nav-right"><a href="https://www.linkedin.com/company/loom-xr/" class="nav-li" target="_blank" rel="noopener noreferrer" aria-label="LoomXR Labs Inc. on LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a><a href="#cta" class="btn btn-dark nav-cta">Join the pilot <span class="arrow">&rarr;</span></a></div>
   <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
 </nav>
 
@@ -405,7 +412,7 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
   <div class="incub-card rv rv-s">
     <p class="incub-kicker">Incubator news</p>
     <h2 class="incub-name"><img src="https://communitech.ca/assets/themes/communitech/img/logos/Communitech-Logo-RGB-Primary.svg" alt="Communitech" class="ct-logo"></h2>
-    <p class="lead">LoomXR has been accepted into the Communitech incubator in Waterloo, Ontario. We will use the program to run our first brand pilots and prepare for launch.</p>
+    <p class="lead">LoomXR Labs Inc. has been accepted into the Communitech incubator in Waterloo, Ontario. We will use the program to run our first brand pilots and prepare for launch.</p>
     <div class="incub-meta">
       <div><b>Program</b>Communitech incubator</div>
       <div><b>Location</b>Waterloo, Ontario</div>
@@ -439,7 +446,7 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
 <section id="team">
   <div class="inner">
     <span class="eyebrow rv">Team</span>
-    <h2 class="h2 serif split" data-split>The people building LoomXR.</h2>
+    <h2 class="h2 serif split" data-split>The people building LoomXR Labs Inc.</h2>
     <div class="team">
       <div class="member rv d1"><div class="avatar">MM</div><h3>Muhammad Minhajuddin</h3><p class="role">Founder &amp; CEO</p></div>
       <div class="member rv d2"><div class="avatar">V</div><h3>Vidhi</h3><p class="role">CCO</p></div>
@@ -458,6 +465,7 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
       <input type="email" id="email-input" placeholder="you@brand.com" aria-label="Work email" required>
       <button class="btn btn-dark" type="submit">Request a demo <span class="arrow">&rarr;</span></button>
     </form>
+    <p class="follow rv d4">Or follow our progress on <a href="https://www.linkedin.com/company/loom-xr/" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg> LinkedIn</a></p>
     <p class="thanks" id="thanks">Thanks. We will be in touch soon.</p>
     <p class="form-err" id="form-err">That did not go through. Email us at <a href="mailto:minhaj112204@gmail.com?subject=LoomXR%20demo%20request">minhaj112204@gmail.com</a>.</p>
   </div>
@@ -466,12 +474,12 @@ footer{position:relative;z-index:2;background:var(--night);color:rgba(238,231,22
 <footer>
   <div class="f-grid">
     <div>
-      <div class="f-brand"><img src="Logo/loomxr-mark.png" alt=""><span>Loom<em>XR</em></span></div>
+      <div class="f-brand"><img src="Logo/loomxr-mark.png" alt=""><span>Loom<em>XR</em> Labs Inc.</span></div>
       <p class="f-tag">Personalized AR packaging. An early-stage startup from Ontario.</p>
       <div class="f-incub"><span>Incubated at</span><img src="https://communitech.ca/assets/themes/communitech/img/logos/Communitech-Logo-RGB-Primary.svg" alt="Communitech"></div>
     </div>
     <div class="f-col"><h4>Company</h4><a href="#product">Product</a><a href="#how">How it works</a><a href="#research">Research</a><a href="#journey">Journey</a><a href="#team">Team</a></div>
-    <div class="f-col"><h4>Get started</h4><a href="#cta">Join the pilot</a><a href="mailto:minhaj112204@gmail.com">Contact us</a><a href="#incubator">Communitech</a></div>
+    <div class="f-col"><h4>Get started</h4><a href="#cta">Join the pilot</a><a href="mailto:minhaj112204@gmail.com">Contact us</a><a href="https://www.linkedin.com/company/loom-xr/" target="_blank" rel="noopener noreferrer">LinkedIn</a><a href="#incubator">Communitech</a></div>
   </div>
   <div class="f-base"><span>&copy; 2026 LoomXR Labs Inc.</span><span>Ontario, Canada</span></div>
 </footer>
