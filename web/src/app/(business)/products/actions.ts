@@ -205,11 +205,12 @@ export async function saveBrief(
   const base = defaultTemplate(answers as Brief, product.brand_colours ?? []);
   let template = base;
   let usedAi = false;
+  const aiAvailable = hasTogether();
 
-  if (hasTogether()) {
+  if (aiAvailable) {
     try {
       const improved = await chat(
-        `You write prompts for an image model that paints packaging artwork. Rewrite the user's draft into one vivid paragraph of at most 90 words. Keep every placeholder exactly as written: ${CUSTOMER_SLOTS.map((s) => `{{${s}}}`).join(", ")}. Each placeholder must appear exactly once. Do not ask for text, letters or logos. Reply with the prompt only.`,
+        `You write prompts for an image model that paints flat decorative artwork, later printed on packaging. The result must be a flat edge-to-edge illustration, never a picture or mockup of a box or product. Rewrite the user's draft into one vivid paragraph of at most 90 words. Keep every placeholder exactly as written: ${CUSTOMER_SLOTS.map((s) => `{{${s}}}`).join(", ")}. Each placeholder must appear exactly once. Do not ask for text, letters or logos. Reply with the prompt only.`,
         base,
       );
       const hasAll = CUSTOMER_SLOTS.every((s) => improved.includes(`{{${s}}}`));
@@ -235,7 +236,9 @@ export async function saveBrief(
   return {
     message: usedAi
       ? "Saved. An AI-written prompt template is ready to review below."
-      : "Saved. A prompt template was built from your answers (no AI text model is connected yet).",
+      : aiAvailable
+        ? "Saved. The AI writer was unavailable, so a standard prompt template was built from your answers."
+        : "Saved. A prompt template was built from your answers (no AI text model is connected yet).",
   };
 }
 

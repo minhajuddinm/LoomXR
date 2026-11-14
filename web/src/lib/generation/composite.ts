@@ -6,8 +6,10 @@ import sharp, { type OverlayOptions } from "sharp";
 import {
   BOX_FACES,
   SIDE_FACES,
+  centreCrop,
   faceTextureSize,
   sideSlices,
+  unrolledSizeMm,
   type BoxDims,
   type BoxFace,
 } from "@/lib/products";
@@ -61,6 +63,17 @@ const panel = (fontSize: number, text: string, weight: 500 | 700 = 500): Node =>
     text,
   );
 
+// The image model has minimum and maximum sizes, so for very wide or very tall
+// boxes the artwork comes back in a different shape than the unrolled box.
+// Crop the centre to the true shape first, so nothing is stretched.
+async function cropToUnrolledAspect(artwork: Buffer, dims: BoxDims): Promise<Buffer> {
+  const meta = await sharp(artwork).metadata();
+  const want = unrolledSizeMm(dims);
+  const crop = centreCrop(meta.width, meta.height, want.w / want.h);
+  if (crop.width === meta.width && crop.height === meta.height) return artwork;
+  return sharp(artwork).extract(crop).png().toBuffer();
+}
+
 export type CompositeInput = {
   artwork: Buffer;
   dims: BoxDims;
@@ -71,7 +84,8 @@ export type CompositeInput = {
 };
 
 export async function buildFaceTextures(input: CompositeInput): Promise<Record<BoxFace, Buffer>> {
-  const { artwork, dims } = input;
+  const { dims } = input;
+  const artwork = await cropToUnrolledAspect(input.artwork, dims);
   const meta = await sharp(artwork).metadata();
   const slices = sideSlices(dims, meta.width, meta.height);
   const out = {} as Record<BoxFace, Buffer>;

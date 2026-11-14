@@ -6,8 +6,10 @@ import "server-only";
 const BASE = "https://api.together.xyz/v1";
 
 export const IMAGE_MODEL = process.env.TOGETHER_IMAGE_MODEL || "black-forest-labs/FLUX.2-dev";
-export const TEXT_MODEL =
-  process.env.TOGETHER_TEXT_MODEL || "meta-llama/Llama-3.3-70B-Instruct-Turbo";
+// Checked on 2026-11-14: available without a dedicated endpoint, $0.15 in /
+// $0.60 out per million tokens. It reasons before answering, hence the
+// generous max_tokens below.
+export const TEXT_MODEL = process.env.TOGETHER_TEXT_MODEL || "openai/gpt-oss-120b";
 
 // USD per image, from together.ai/pricing on 2026-11-13. Used for usage logs.
 export const IMAGE_COST_USD: Record<string, number> = {
@@ -19,7 +21,28 @@ export function hasTogether(): boolean {
   return Boolean(process.env.TOGETHER_API_KEY);
 }
 
+// Together sometimes answers "temporarily unavailable due to high demand"
+// (as a 400), or 429 / 5xx. Those are worth a couple of retries.
+function isTemporary(status: number, detail: string): boolean {
+  return status === 429 || status >= 500 || /temporarily unavailable|high demand|overloaded/i.test(detail);
+}
+
 async function post(path: string, body: unknown, timeoutMs: number): Promise<unknown> {
+  const attempts = 3;
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await postOnce(path, body, timeoutMs);
+    } catch (error) {
+      const temporary = error instanceof TemporaryError || (error instanceof TypeError && attempt < attempts);
+      if (!temporary || attempt >= attempts) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 1200 * attempt));
+    }
+  }
+}
+
+class TemporaryError extends Error {}
+
+async function postOnce(path: string, body: unknown, timeoutMs: number): Promise<unknown> {
   const response = await fetch(`${BASE}${path}`, {
     method: "POST",
     headers: {
@@ -31,7 +54,8 @@ async function post(path: string, body: unknown, timeoutMs: number): Promise<unk
   });
   if (!response.ok) {
     const detail = (await response.text()).slice(0, 300);
-    throw new Error(`Together ${path} failed (${response.status}): ${detail}`);
+    const message = `Together ${path} failed (${response.status}): ${detail}`;
+    throw isTemporary(response.status, detail) ? new TemporaryError(message) : new Error(message);
   }
   return response.json();
 }
@@ -63,7 +87,7 @@ export async function chat(system: string, user: string): Promise<string> {
     "/chat/completions",
     {
       model: TEXT_MODEL,
-      max_tokens: 400,
+      max_tokens: 1500,
       temperature: 0.6,
       messages: [
         { role: "system", content: system },

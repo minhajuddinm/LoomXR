@@ -1,5 +1,6 @@
 import "server-only";
 import { randomInt, randomUUID } from "node:crypto";
+import sharp from "sharp";
 import { isDemoMode } from "@/lib/demo";
 import { isSubscriptionActive } from "@/lib/plans";
 import { BOX_FACES, generationSize, type BoxFace, type Product } from "@/lib/products";
@@ -107,9 +108,11 @@ export async function runGenerationRound(input: {
     Array.from({ length: DESIGNS_PER_ROUND }, async (): Promise<DesignView> => {
       const id = randomUUID();
       const seed = randomInt(1, 2 ** 31 - 1);
-      const artwork = real
+      const raw = real
         ? await generateImage({ prompt, ...size, seed })
         : await placeholderArtwork({ ...size, seed, colourAnswer: session.answers.colours });
+      // Models return JPEG or PNG; store one consistent format.
+      const artwork = await sharp(raw).png().toBuffer();
 
       const textures = await buildFaceTextures({
         artwork,
@@ -123,17 +126,24 @@ export async function runGenerationRound(input: {
       const folder = `${product.id}/${id}`;
       const artworkPath = `${folder}/artwork.png`;
       const paths = {} as Record<BoxFace, string>;
-      const uploads = [
-        db.storage.from("designs").upload(artworkPath, artwork, { contentType: "image/png" }),
+      // Uploads occasionally fail on a dropped connection, so each gets a retry.
+      const put = async (path: string, body: Buffer, contentType: string) => {
+        for (let attempt = 1; ; attempt++) {
+          const { error } = await db.storage
+            .from("designs")
+            .upload(path, body, { contentType, upsert: true });
+          if (!error) return;
+          if (attempt >= 3) throw new Error(`Upload failed: ${error.message}`);
+          await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+        }
+      };
+      await Promise.all([
+        put(artworkPath, artwork, "image/png"),
         ...BOX_FACES.map((face) => {
           paths[face] = `${folder}/${face}.jpg`;
-          return db.storage
-            .from("designs")
-            .upload(paths[face], textures[face], { contentType: "image/jpeg" });
+          return put(paths[face], textures[face], "image/jpeg");
         }),
-      ];
-      const failed = (await Promise.all(uploads)).find((u) => u.error);
-      if (failed?.error) throw new Error(`Upload failed: ${failed.error.message}`);
+      ]);
 
       const row = await db.from("designs").insert({
         id,

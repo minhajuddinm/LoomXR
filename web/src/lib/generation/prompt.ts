@@ -7,7 +7,7 @@ const SLOT = /\{\{\s*([a-z_]+)\s*\}\}/g;
 
 // The image model must never draw words or logos: those are added in code.
 export const NO_TEXT_SUFFIX =
-  "Seamless continuous artwork with no text, no letters, no numbers, no logos, no watermark, no borders, no product mockup.";
+  "Flat two-dimensional artwork that fills the whole frame edge to edge, like a printed pattern seen straight on. Not a photo, render or mockup of a box, package or product. No panels, no frames, no borders. No text, no letters, no numbers, no logos, no watermark.";
 
 export function parseSlots(template: string): string[] {
   const found = new Set<string>();
@@ -45,14 +45,14 @@ const CATEGORY_WORDS: Record<string, string> = {
 // configured, and as the starting point the model is asked to improve.
 export function defaultTemplate(brief: Brief, brandColours: string[] = []): string {
   const parts = [
-    `Wraparound packaging artwork for ${CATEGORY_WORDS[brief.category ?? "other"] ?? CATEGORY_WORDS.other}`,
+    `Flat decorative artwork, a continuous horizontal band, for the packaging of ${CATEGORY_WORDS[brief.category ?? "other"] ?? CATEGORY_WORDS.other}`,
     brief.audience ? `, bought by ${brief.audience}` : "",
     `. Overall feel: ${brief.tone || "warm and friendly"}, and {{mood}}, made for {{occasion}}.`,
     ` Style: {{style}}. Main subject: {{motif}}`,
     brief.must_include ? `, with hints of ${brief.must_include}` : "",
     `. Colour palette: {{colours}}`,
     brandColours.length ? `, accented with the brand colours ${brandColours.join(", ")}` : "",
-    `. Even detail across the whole image so it reads well on every side of a box.`,
+    `. Spread the detail evenly from left to right, with nothing important only at the edges.`,
     brief.must_avoid ? ` Do not show ${brief.must_avoid}.` : "",
   ];
   return parts.join("").replace(/\s+\./g, ".").replace(/\s{2,}/g, " ").trim();

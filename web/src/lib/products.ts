@@ -138,6 +138,25 @@ export function sideSlices(d: BoxDims, imageW: number, imageH: number): Record<S
   return { front: rect(0), right: rect(1), back: rect(2), left: rect(3) };
 }
 
+// The largest centred rectangle of the given aspect ratio (width / height)
+// inside an image. Used when the artwork's shape differs from the box's.
+export function centreCrop(imageW: number, imageH: number, aspect: number): Rect {
+  let width = imageW;
+  let height = Math.round(imageW / aspect);
+  if (height > imageH) {
+    height = imageH;
+    width = Math.round(imageH * aspect);
+  }
+  width = Math.max(1, Math.min(imageW, width));
+  height = Math.max(1, Math.min(imageH, height));
+  return {
+    left: Math.floor((imageW - width) / 2),
+    top: Math.floor((imageH - height) / 2),
+    width,
+    height,
+  };
+}
+
 // Output texture size for a face: real proportions, longest side `longest` px.
 export function faceTextureSize(
   d: BoxDims,

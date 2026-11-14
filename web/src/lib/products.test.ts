@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   SIDE_FACES,
+  centreCrop,
   faceSizeMm,
   faceTextureSize,
   generationSize,
@@ -100,6 +101,21 @@ describe("sideSlices", () => {
     const total = SIDE_FACES.reduce((sum, f) => sum + odd[f].width, 0);
     expect(total).toBe(1001);
     expect(odd.left.left + odd.left.width).toBe(1001);
+  });
+});
+
+describe("centreCrop", () => {
+  it("leaves an image of the right shape untouched", () => {
+    expect(centreCrop(1080, 600, 1.8)).toEqual({ left: 0, top: 0, width: 1080, height: 600 });
+  });
+
+  it("trims top and bottom equally when the image is too tall", () => {
+    // A 130 x 75 x 65 mm box unrolls to 390 x 75 mm (5.2 : 1).
+    expect(centreCrop(1408, 384, 5.2)).toEqual({ left: 0, top: 56, width: 1408, height: 271 });
+  });
+
+  it("trims the sides equally when the image is too wide", () => {
+    expect(centreCrop(1000, 500, 1)).toEqual({ left: 250, top: 0, width: 500, height: 500 });
   });
 });
 
