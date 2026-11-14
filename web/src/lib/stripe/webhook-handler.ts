@@ -8,7 +8,7 @@
 //      event is only a signal: we re-read the subscription from Stripe and
 //      store its current state, never the state inside the event payload.
 
-import { isSubscriptionActive, planFromLookupKey, type PlanId } from "../plans";
+import { isSubscriptionActive, planFromLookupKey, type PlanId } from "../plans.ts";
 
 // The small part of a Stripe subscription this module reads.
 export type SubscriptionLike = {

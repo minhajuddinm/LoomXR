@@ -10,7 +10,9 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "seed:stripe": "node --env-file=.env.local scripts/seed-stripe.ts"
+    "seed:stripe": "node --env-file=.env.local scripts/seed-stripe.ts",
+    "stripe:pull": "node --env-file=.env.local scripts/stripe-pull.ts",
+    "test:user": "node --env-file=.env.local scripts/create-test-user.ts"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
