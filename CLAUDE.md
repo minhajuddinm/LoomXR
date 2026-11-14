@@ -28,7 +28,7 @@ One Next.js app serves two subdomains. `web/src/proxy.ts` routes by hostname usi
 
 - Next.js 16, App Router, TypeScript, Tailwind 4, pnpm. Read `web/AGENTS.md`: this Next.js version differs from older ones. Middleware is called Proxy (`src/proxy.ts`). Bundled docs are in `web/node_modules/next/dist/docs/`.
 - `cacheComponents` is off on purpose (see `web/next.config.ts`).
-- Supabase: Postgres, Auth (email + Google), Storage, pgvector. Uses the new publishable and secret keys.
+- Supabase: project `loomxr-mvp` (ref `gwetmxmvqnulhsrlqlzx`, ca-central-1, free plan). Postgres, Auth (email + Google), Storage, pgvector. Uses the new publishable and secret keys. "Automatically expose new tables" is off and automatic RLS is on, so every new table needs explicit grants. Migrations were applied through the Supabase connector; file names match the recorded versions.
 - Stripe Billing: Checkout, Customer Portal, webhook. Plans are in `web/src/lib/plans.ts` (placeholder prices) and are matched to Stripe prices by lookup key.
 
 ## Trust boundaries
