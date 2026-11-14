@@ -93,13 +93,15 @@ export const CUSTOMER_QUESTIONS: CustomerQuestion[] = [
   },
   {
     id: "style",
-    label: "Art style",
+    label: "Design style",
+    // Each value is a design language defined in generation/directions.ts.
     choices: [
-      { value: "hand-drawn illustration", label: "Illustrated" },
-      { value: "clean geometric shapes", label: "Geometric" },
-      { value: "loose watercolour painting", label: "Watercolour" },
-      { value: "minimal line art with lots of space", label: "Minimal" },
-      { value: "retro 1970s print", label: "Retro" },
+      { value: "Art Deco geometry with fine metallic gold linework", label: "Art Deco" },
+      { value: "vintage botanical engraving with soft colour", label: "Botanical" },
+      { value: "mid-century modern shapes with a screen-print look", label: "Mid-century" },
+      { value: "loose hand-painted watercolour", label: "Watercolour" },
+      { value: "luxury minimal with one fine line motif", label: "Minimal" },
+      { value: "1970s retro pop with bold wavy shapes", label: "Retro pop" },
     ],
   },
   {

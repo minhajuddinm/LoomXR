@@ -210,7 +210,7 @@ export async function saveBrief(
   if (aiAvailable) {
     try {
       const improved = await chat(
-        `You write prompts for an image model that paints flat decorative artwork, later printed on packaging. The result must be a flat edge-to-edge illustration, never a picture or mockup of a box or product. Rewrite the user's draft into one vivid paragraph of at most 90 words. Keep every placeholder exactly as written: ${CUSTOMER_SLOTS.map((s) => `{{${s}}}`).join(", ")}. Each placeholder must appear exactly once. Do not ask for text, letters or logos. Reply with the prompt only.`,
+        `You write the creative brief line for a packaging design. It is later combined with layout and style instructions and sent to an image model. Rewrite the user's draft into two or three vivid sentences, at most 70 words, describing the product, the feeling and the subject matter. Do not describe layout, borders, boxes or text. Keep every placeholder exactly as written: ${CUSTOMER_SLOTS.map((s) => `{{${s}}}`).join(", ")}. Each placeholder must appear exactly once. Do not ask for text, letters or logos. Reply with the prompt only.`,
         base,
       );
       const hasAll = CUSTOMER_SLOTS.every((s) => improved.includes(`{{${s}}}`));

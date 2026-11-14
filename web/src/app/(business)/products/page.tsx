@@ -19,7 +19,7 @@ export default async function ProductsPage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold tracking-tight">Products</h1>
+        <h1 className="font-display text-4xl font-bold tracking-tight">Products</h1>
         <Link href="/products/new" className={ui.button}>
           Add a product
         </Link>
@@ -33,14 +33,10 @@ export default async function ProductsPage() {
         <ul className="grid gap-4 sm:grid-cols-2">
           {products.map((p) => (
             <li key={p.id}>
-              <Link href={`/products/${p.id}`} className={`${ui.card} block hover:border-teal`}>
+              <Link href={`/products/${p.id}`} className={`${ui.card} block transition duration-200 hover:-translate-y-0.5 hover:border-teal hover:shadow-lift`}>
                 <span className="flex items-center justify-between gap-3">
-                  <span className="text-lg font-bold">{p.name}</span>
-                  <span
-                    className={`rounded-full px-2.5 py-0.5 text-sm font-semibold ${
-                      p.status === "active" ? "bg-teal/10 text-teal" : "bg-panel text-ink-soft"
-                    }`}
-                  >
+                  <span className="font-display text-2xl font-bold tracking-tight">{p.name}</span>
+                  <span className={p.status === "active" ? ui.badgeLive : ui.badgeDraft}>
                     {p.status === "active" ? "Live" : "Draft"}
                   </span>
                 </span>

@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { CUSTOMER_SLOTS, sanitizeCustomerAnswers } from "../questions";
-import { NO_TEXT_SUFFIX, defaultTemplate, fillTemplate, parseSlots, unknownSlots } from "./prompt";
+import { CUSTOMER_QUESTIONS, CUSTOMER_SLOTS, sanitizeCustomerAnswers } from "../questions";
+import { artDirection, COLOUR_VALUES, NEGATIVE, STYLE_VALUES } from "./directions";
+import { defaultTemplate, fillTemplate, parseSlots, unknownSlots } from "./prompt";
 
 const answers = {
   occasion: "a gift for someone",
   mood: "calm and soothing",
   colours: "cool blues and greens",
-  style: "loose watercolour painting",
+  style: "loose hand-painted watercolour",
   motif: "leaves, plants and nature",
 };
 
@@ -26,13 +27,13 @@ describe("parseSlots", () => {
 });
 
 describe("fillTemplate", () => {
-  it("replaces placeholders and always ends with the no-text rule", () => {
+  it("replaces placeholders with the customer's answers", () => {
     const prompt = fillTemplate("A {{mood}} design showing {{motif}}.", answers);
-    expect(prompt).toBe(`A calm and soothing design showing leaves, plants and nature. ${NO_TEXT_SUFFIX}`);
+    expect(prompt).toBe("A calm and soothing design showing leaves, plants and nature.");
   });
 
   it("drops a placeholder with no answer without leaving stray spaces", () => {
-    expect(fillTemplate("Bright {{missing}} , bold.", {})).toBe(`Bright, bold. ${NO_TEXT_SUFFIX}`);
+    expect(fillTemplate("Bright {{missing}} , bold.", {})).toBe("Bright, bold.");
   });
 });
 
@@ -71,5 +72,35 @@ describe("sanitizeCustomerAnswers", () => {
 
   it("strips keys that are not questions", () => {
     expect(sanitizeCustomerAnswers({ ...answers, extra: "x" })).toEqual(answers);
+  });
+});
+
+describe("artDirection", () => {
+  const brief = "Packaging for a tea product.";
+
+  it("gives each of the three designs in a round a different layout", () => {
+    const plates = [0, 1, 2].map((i) => artDirection({ designIndex: i, answers, brief }).plate);
+    expect(new Set(plates).size).toBe(3);
+  });
+
+  it("never asks the image model for text, logos or the customer's own words", () => {
+    const d = artDirection({ designIndex: 0, answers, brief });
+    for (const prompt of [d.frontPrompt, d.patternPrompt]) {
+      expect(prompt).toContain(NEGATIVE);
+      expect(prompt).not.toMatch(/For Sam|Test Tea Co/);
+    }
+  });
+
+  it("includes the business brief in the front prompt and keeps the centre empty for the label", () => {
+    const d = artDirection({ designIndex: 1, answers, brief });
+    expect(d.frontPrompt).toContain(brief);
+    expect(d.frontPrompt).toContain("left as plain, empty");
+  });
+
+  it("has a design language for every style answer and a palette for every colour answer", () => {
+    const style = CUSTOMER_QUESTIONS.find((q) => q.id === "style")!.choices.map((c) => c.value);
+    const colours = CUSTOMER_QUESTIONS.find((q) => q.id === "colours")!.choices.map((c) => c.value);
+    expect(style.sort()).toEqual([...STYLE_VALUES].sort());
+    expect(colours.sort()).toEqual([...COLOUR_VALUES].sort());
   });
 });

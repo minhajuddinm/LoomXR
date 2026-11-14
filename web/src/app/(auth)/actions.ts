@@ -23,12 +23,18 @@ function parse(formData: FormData) {
   });
 }
 
+// Staff may log in with a short username instead of an email: "admin" means
+// admin@loomxrlabs.com.
+const STAFF_DOMAIN = "loomxrlabs.com";
+
 export async function signIn(_prev: AuthFormState, formData: FormData): Promise<AuthFormState> {
-  const parsed = parse(formData);
-  if (!parsed.success) return { error: parsed.error.issues[0].message };
+  const typed = String(formData.get("email") ?? "").trim().toLowerCase();
+  const password = String(formData.get("password") ?? "");
+  if (!typed || !password) return { error: "Enter your email and password." };
+  const email = typed.includes("@") ? typed : `${typed}@${STAFF_DOMAIN}`;
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword(parsed.data);
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
     return {
       error:

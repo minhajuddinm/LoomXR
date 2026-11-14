@@ -41,7 +41,7 @@ export default async function BillingPage({ searchParams }: PageProps<"/billing"
   if (!isBillingRequired()) {
     return (
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold tracking-tight">Billing</h1>
+        <h1 className="font-display text-4xl font-bold tracking-tight">Billing</h1>
         <p className={ui.notice}>
           Billing is not switched on yet. Everything is available at no charge while payments are being set up. You will
           be told before any plan starts.
@@ -52,12 +52,12 @@ export default async function BillingPage({ searchParams }: PageProps<"/billing"
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold tracking-tight">Billing</h1>
+      <h1 className="font-display text-4xl font-bold tracking-tight">Billing</h1>
 
       {notice && <p className={notice.tone === "error" ? ui.error : ui.notice}>{notice.text}</p>}
 
       <section className={ui.card} aria-labelledby="current-heading">
-        <h2 id="current-heading" className="text-lg font-bold">
+        <h2 id="current-heading" className="font-display text-2xl font-bold tracking-tight">
           Current plan
         </h2>
         {currentPlan ? (
@@ -90,7 +90,7 @@ export default async function BillingPage({ searchParams }: PageProps<"/billing"
       </section>
 
       <section aria-labelledby="plans-heading">
-        <h2 id="plans-heading" className="text-lg font-bold">
+        <h2 id="plans-heading" className="font-display text-2xl font-bold tracking-tight">
           Plans
         </h2>
         <p className="mt-1 text-ink-soft">
@@ -101,7 +101,7 @@ export default async function BillingPage({ searchParams }: PageProps<"/billing"
             const isCurrent = active && currentPlan?.id === plan.id;
             return (
               <li key={plan.id} className={`${ui.card} flex flex-col`}>
-                <h3 className="text-xl font-bold">{plan.name}</h3>
+                <h3 className="font-display text-2xl font-bold tracking-tight">{plan.name}</h3>
                 <p className="mt-1 text-ink-soft">{plan.blurb}</p>
                 <p className="mt-4 text-3xl font-bold">
                   {formatPrice(plan.priceCents, plan.currency)}

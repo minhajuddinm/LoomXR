@@ -5,10 +5,6 @@ import { CUSTOMER_SLOTS } from "../questions.ts";
 
 const SLOT = /\{\{\s*([a-z_]+)\s*\}\}/g;
 
-// The image model must never draw words or logos: those are added in code.
-export const NO_TEXT_SUFFIX =
-  "Flat two-dimensional artwork that fills the whole frame edge to edge, like a printed pattern seen straight on. Not a photo, render or mockup of a box, package or product. No panels, no frames, no borders. No text, no letters, no numbers, no logos, no watermark.";
-
 export function parseSlots(template: string): string[] {
   const found = new Set<string>();
   for (const match of template.matchAll(SLOT)) found.add(match[1]);
@@ -25,7 +21,7 @@ export function fillTemplate(template: string, answers: Record<string, string>):
     .replace(/\s+([,.;])/g, "$1")
     .replace(/\s{2,}/g, " ")
     .trim();
-  return `${filled} ${NO_TEXT_SUFFIX}`;
+  return filled;
 }
 
 export type Brief = Partial<
@@ -45,14 +41,14 @@ const CATEGORY_WORDS: Record<string, string> = {
 // configured, and as the starting point the model is asked to improve.
 export function defaultTemplate(brief: Brief, brandColours: string[] = []): string {
   const parts = [
-    `Flat decorative artwork, a continuous horizontal band, for the packaging of ${CATEGORY_WORDS[brief.category ?? "other"] ?? CATEGORY_WORDS.other}`,
+    `Packaging for ${CATEGORY_WORDS[brief.category ?? "other"] ?? CATEGORY_WORDS.other}`,
     brief.audience ? `, bought by ${brief.audience}` : "",
     `. Overall feel: ${brief.tone || "warm and friendly"}, and {{mood}}, made for {{occasion}}.`,
-    ` Style: {{style}}. Main subject: {{motif}}`,
+    ` Main subject: {{motif}}`,
     brief.must_include ? `, with hints of ${brief.must_include}` : "",
     `. Colour palette: {{colours}}`,
     brandColours.length ? `, accented with the brand colours ${brandColours.join(", ")}` : "",
-    `. Spread the detail evenly from left to right, with nothing important only at the edges.`,
+    `. Rendered as {{style}}.`,
     brief.must_avoid ? ` Do not show ${brief.must_avoid}.` : "",
   ];
   return parts.join("").replace(/\s+\./g, ".").replace(/\s{2,}/g, " ").trim();

@@ -2,184 +2,237 @@ import "server-only";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import satori from "satori";
-import sharp, { type OverlayOptions } from "sharp";
-import {
-  BOX_FACES,
-  SIDE_FACES,
-  centreCrop,
-  faceTextureSize,
-  sideSlices,
-  unrolledSizeMm,
-  type BoxDims,
-  type BoxFace,
-} from "@/lib/products";
+import sharp from "sharp";
+import { BOX_FACES, faceTextureSize, type BoxDims, type BoxFace } from "@/lib/products";
+import type { Palette, PlateShape } from "./directions";
 
-// Turns one wide artwork image into a finished texture for each face of a box.
+// Builds the finished texture for every face of a box from two AI images:
+// the composed front panel and the matching pattern.
 //
-// The AI only ever paints the background. Logo and text are placed here, in
-// code, so they are always spelled correctly and always in the same spot.
-// Text is drawn by satori from a bundled font file and converted to shapes,
-// so it looks the same on any server.
+// The AI never draws words. The label (logo or brand name, the customer's own
+// text, the required text) is typeset here from bundled font files and turned
+// into shapes by satori, so it is always spelled right and looks the same on
+// any server.
 
-let fonts: { name: string; data: Buffer; weight: 500 | 700; style: "normal" }[] | undefined;
+type Font = { name: string; data: Buffer; weight: 400 | 500 | 700; style: "normal" | "italic" };
+let fonts: Font[] | undefined;
 
-function loadFonts() {
-  fonts ??= ([500, 700] as const).map((weight) => ({
-    name: "Archivo",
-    data: readFileSync(path.join(process.cwd(), "assets", "fonts", `archivo-${weight}.woff`)),
-    weight,
-    style: "normal" as const,
-  }));
+function loadFonts(): Font[] {
+  const file = (name: string) => readFileSync(path.join(process.cwd(), "assets", "fonts", name));
+  fonts ??= [
+    { name: "Playfair", data: file("playfair-700.woff"), weight: 700, style: "normal" },
+    { name: "Playfair", data: file("playfair-400-italic.woff"), weight: 400, style: "italic" },
+    { name: "Archivo", data: file("archivo-500.woff"), weight: 500, style: "normal" },
+    { name: "Archivo", data: file("archivo-700.woff"), weight: 700, style: "normal" },
+  ];
   return fonts;
 }
 
 type Node = { type: string; props: Record<string, unknown> };
-const el = (style: Record<string, unknown>, children?: Node | Node[] | string): Node => ({
+const box = (style: Record<string, unknown>, children?: Node | Node[] | string): Node => ({
   type: "div",
   props: { style: { display: "flex", ...style }, children },
 });
 
-async function renderOverlay(width: number, height: number, tree: Node): Promise<Buffer> {
+async function render(width: number, height: number, tree: Node): Promise<Buffer> {
   const svg = await satori(tree as unknown as React.ReactNode, { width, height, fonts: loadFonts() });
   return sharp(Buffer.from(svg)).png().toBuffer();
 }
 
-// A soft panel behind text so it stays readable on any artwork.
-const panel = (fontSize: number, text: string, weight: 500 | 700 = 500): Node =>
-  el(
-    {
-      backgroundColor: "rgba(255,255,255,0.88)",
-      color: "#12283a",
-      borderRadius: fontSize * 0.5,
-      padding: `${fontSize * 0.45}px ${fontSize * 0.8}px`,
-      fontSize,
-      fontWeight: weight,
-      fontFamily: "Archivo",
-      textAlign: "center",
-      justifyContent: "center",
-      maxWidth: "88%",
-      lineHeight: 1.2,
-    },
-    text,
-  );
-
-// The image model has minimum and maximum sizes, so for very wide or very tall
-// boxes the artwork comes back in a different shape than the unrolled box.
-// Crop the centre to the true shape first, so nothing is stretched.
-async function cropToUnrolledAspect(artwork: Buffer, dims: BoxDims): Promise<Buffer> {
-  const meta = await sharp(artwork).metadata();
-  const want = unrolledSizeMm(dims);
-  const crop = centreCrop(meta.width, meta.height, want.w / want.h);
-  if (crop.width === meta.width && crop.height === meta.height) return artwork;
-  return sharp(artwork).extract(crop).png().toBuffer();
-}
-
-export type CompositeInput = {
-  artwork: Buffer;
-  dims: BoxDims;
+export type LabelContent = {
   logo?: Buffer | null;
   brandName?: string | null;
-  mandatoryText?: string | null;
   customText?: string | null;
+  mandatoryText?: string | null;
+};
+
+// The typeset label. `unit` is the shorter side of the face in pixels, so the
+// label scales with the box.
+async function labelNodes(
+  content: LabelContent,
+  palette: Palette,
+  unit: number,
+  maxWidth: number,
+): Promise<Node[]> {
+  const nodes: Node[] = [];
+  const rule = () =>
+    box({ width: unit * 0.16, height: Math.max(2, unit * 0.004), backgroundColor: palette.accent });
+  const text = (style: Record<string, unknown>, value: string) =>
+    box({ color: palette.ink, textAlign: "center", justifyContent: "center", ...style }, value);
+
+  if (content.logo) {
+    const logo = await sharp(content.logo)
+      .resize(Math.round(maxWidth * 0.8), Math.round(unit * 0.2), { fit: "inside" })
+      .png()
+      .toBuffer();
+    const meta = await sharp(logo).metadata();
+    nodes.push({
+      type: "img",
+      props: {
+        src: `data:image/png;base64,${logo.toString("base64")}`,
+        width: meta.width,
+        height: meta.height,
+      },
+    });
+  } else if (content.brandName) {
+    nodes.push(
+      text(
+        { fontFamily: "Playfair", fontWeight: 700, fontSize: unit * 0.092, lineHeight: 1.1 },
+        content.brandName,
+      ),
+    );
+  }
+
+  if (content.customText) {
+    if (nodes.length) nodes.push(rule());
+    nodes.push(
+      text(
+        { fontFamily: "Playfair", fontStyle: "italic", fontWeight: 400, fontSize: unit * 0.07, lineHeight: 1.15 },
+        content.customText,
+      ),
+    );
+  }
+
+  if (content.mandatoryText) {
+    if (nodes.length) nodes.push(rule());
+    nodes.push(
+      text(
+        {
+          fontFamily: "Archivo",
+          fontWeight: 500,
+          fontSize: unit * 0.03,
+          letterSpacing: unit * 0.004,
+          lineHeight: 1.3,
+          textTransform: "uppercase",
+        },
+        content.mandatoryText,
+      ),
+    );
+  }
+  return nodes;
+}
+
+// The label plate: a solid panel in the design's own palette with a fine
+// double keyline, in one of three shapes to suit the layout behind it.
+async function plateOverlay(
+  width: number,
+  height: number,
+  shape: PlateShape,
+  palette: Palette,
+  content: LabelContent,
+): Promise<Buffer | null> {
+  const unit = Math.min(width, height);
+  const line = Math.max(2, Math.round(unit * 0.004));
+  const gap = Math.round(unit * 0.018);
+
+  const size =
+    shape === "medallion"
+      ? { width: unit * 0.66, height: unit * 0.66 }
+      : shape === "band"
+        ? { width, height: height * 0.36 }
+        : { width: width * 0.68, height: height * 0.46 };
+  const inner = shape === "medallion" ? size.width * 0.68 : size.width * 0.8;
+
+  const nodes = await labelNodes(content, palette, unit, inner);
+  if (!nodes.length) return null;
+
+  const radius = shape === "medallion" ? size.width : shape === "band" ? 0 : unit * 0.012;
+  const sides = (w: number) =>
+    shape === "band"
+      ? { borderTop: `${w}px solid ${palette.accent}`, borderBottom: `${w}px solid ${palette.accent}` }
+      : { border: `${w}px solid ${palette.accent}` };
+
+  const plate = box(
+    {
+      width: size.width,
+      height: size.height,
+      backgroundColor: palette.plate,
+      borderRadius: radius,
+      padding: gap,
+      boxShadow: "0 6px 24px rgba(0,0,0,0.18)",
+      ...sides(line),
+    },
+    box(
+      {
+        flex: 1,
+        borderRadius: radius,
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: unit * 0.028,
+        padding: `0 ${Math.max(0, (size.width - inner) / 2 - gap)}px`,
+        ...sides(Math.max(1, line - 1)),
+      },
+      nodes,
+    ),
+  );
+
+  return render(width, height, box({ width, height, alignItems: "center", justifyContent: "center" }, plate));
+}
+
+// Now and then the model returns the artwork as a picture of a card on a plain
+// backdrop. Trimming removes any uniform border; if there is none, the image
+// comes back unchanged.
+async function trimBorder(image: Buffer): Promise<Buffer> {
+  try {
+    const { data, info } = await sharp(image).trim({ threshold: 18 }).png().toBuffer({ resolveWithObject: true });
+    const meta = await sharp(image).metadata();
+    // Ignore a trim that removes most of the picture: that is a flat design,
+    // not a border.
+    return info.width * info.height < meta.width * meta.height * 0.35 ? image : data;
+  } catch {
+    return image;
+  }
+}
+
+export type CompositeInput = LabelContent & {
+  front: Buffer;
+  pattern: Buffer;
+  dims: BoxDims;
+  plate: PlateShape;
+  palette: Palette;
+};
+
+// Which part of the pattern each face shows, so neighbouring faces differ.
+const PATTERN_CROP: Record<Exclude<BoxFace, "front">, string> = {
+  right: "left",
+  back: "centre",
+  left: "right",
+  top: "top",
+  bottom: "bottom",
 };
 
 export async function buildFaceTextures(input: CompositeInput): Promise<Record<BoxFace, Buffer>> {
-  const { dims } = input;
-  const artwork = await cropToUnrolledAspect(input.artwork, dims);
-  const meta = await sharp(artwork).metadata();
-  const slices = sideSlices(dims, meta.width, meta.height);
+  const { dims, palette } = input;
   const out = {} as Record<BoxFace, Buffer>;
+  const pattern = await trimBorder(input.pattern);
 
-  for (const face of SIDE_FACES) {
+  for (const face of BOX_FACES) {
     const size = faceTextureSize(dims, face);
-    const base = sharp(artwork).extract(slices[face]).resize(size.width, size.height, { fit: "fill" });
-    const unit = Math.min(size.width, size.height);
-    const layers: OverlayOptions[] = [];
+    const source = face === "front" ? input.front : pattern;
+    // "cover" crops to the face's shape. Nothing is ever stretched.
+    const base = await sharp(source)
+      .resize(size.width, size.height, {
+        fit: "cover",
+        position: face === "front" ? "centre" : PATTERN_CROP[face],
+      })
+      .png()
+      .toBuffer();
 
+    let overlay: Buffer | null = null;
     if (face === "front") {
-      const children: Node[] = [];
-      if (input.logo) {
-        const logoBox = Math.round(size.width * 0.42);
-        const logo = await sharp(input.logo)
-          .resize(logoBox, Math.round(size.height * 0.2), { fit: "inside" })
-          .png()
-          .toBuffer();
-        const logoMeta = await sharp(logo).metadata();
-        const pad = Math.round(unit * 0.04);
-        const plate = await sharp({
-          create: {
-            width: logoMeta.width + pad * 2,
-            height: logoMeta.height + pad * 2,
-            channels: 4,
-            background: { r: 255, g: 255, b: 255, alpha: 0.9 },
-          },
-        })
-          .composite([{ input: logo, left: pad, top: pad }])
-          .png()
-          .toBuffer();
-        layers.push({
-          input: plate,
-          left: Math.round((size.width - logoMeta.width - pad * 2) / 2),
-          top: Math.round(size.height * 0.07),
-        });
-      } else if (input.brandName) {
-        children.push(
-          el({ position: "absolute", top: size.height * 0.07, left: 0, right: 0, justifyContent: "center" }, [
-            panel(unit * 0.085, input.brandName, 700),
-          ]),
-        );
-      }
-      if (input.customText) {
-        children.push(
-          el({ position: "absolute", top: 0, bottom: 0, left: 0, right: 0, alignItems: "center", justifyContent: "center" }, [
-            panel(unit * 0.075, input.customText, 700),
-          ]),
-        );
-      }
-      if (input.mandatoryText) {
-        children.push(
-          el({ position: "absolute", bottom: size.height * 0.05, left: 0, right: 0, justifyContent: "center" }, [
-            panel(unit * 0.04, input.mandatoryText),
-          ]),
-        );
-      }
-      if (children.length) {
-        layers.push({
-          input: await renderOverlay(size.width, size.height, el({ width: "100%", height: "100%", position: "relative" }, children)),
-        });
-      }
-    }
-
-    if (face === "back" && (input.brandName || input.mandatoryText)) {
-      const children: Node[] = [];
-      if (input.brandName) children.push(panel(unit * 0.07, input.brandName, 700));
-      if (input.mandatoryText) children.push(panel(unit * 0.04, input.mandatoryText));
-      layers.push({
-        input: await renderOverlay(
-          size.width,
-          size.height,
-          el({ width: "100%", height: "100%", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: unit * 0.04 }, children),
-        ),
+      overlay = await plateOverlay(size.width, size.height, input.plate, palette, input);
+    } else if (face === "back") {
+      overlay = await plateOverlay(size.width, size.height, "frame", palette, {
+        brandName: input.brandName,
+        mandatoryText: input.mandatoryText,
       });
     }
 
-    // Composite needs a concrete buffer of the resized base first.
-    const resized = await base.png().toBuffer();
-    out[face] = await sharp(resized).composite(layers).jpeg({ quality: 86 }).toBuffer();
-  }
-
-  // Top and bottom continue the artwork: a soft blurred crop of the front.
-  for (const face of ["top", "bottom"] as const) {
-    const size = faceTextureSize(dims, face);
-    out[face] = await sharp(artwork)
-      .extract(slices.front)
-      .resize(size.width, size.height, { fit: "cover", position: face === "top" ? "top" : "bottom" })
-      .blur(12)
-      .jpeg({ quality: 82 })
+    out[face] = await sharp(base)
+      .composite(overlay ? [{ input: overlay }] : [])
+      .jpeg({ quality: 88 })
       .toBuffer();
   }
-
   return out;
 }
-
-export { BOX_FACES };

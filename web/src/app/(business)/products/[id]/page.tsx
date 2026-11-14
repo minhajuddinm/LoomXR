@@ -18,11 +18,15 @@ function Step(props: { number: number; title: string; done: boolean; children: R
   return (
     <section className={ui.card} aria-labelledby={`step-${props.number}`}>
       <h2 id={`step-${props.number}`} className="flex flex-wrap items-center gap-3 text-xl font-bold">
-        <span className="flex size-8 items-center justify-center rounded-full bg-ink text-base text-paper">{props.number}</span>
-        {props.title}
-        <span className={`text-sm font-semibold ${props.done ? "text-teal" : "text-ink-soft"}`}>
-          {props.done ? "Done" : "To do"}
+        <span
+          className={`flex size-9 items-center justify-center rounded-full font-sans text-base ${
+            props.done ? "bg-success text-paper" : "bg-ink text-paper"
+          }`}
+        >
+          {props.number}
         </span>
+        {props.title}
+        <span className={`font-sans ${props.done ? ui.badgeLive : ui.badgeDraft}`}>{props.done ? "Done" : "To do"}</span>
       </h2>
       <div className="mt-4">{props.children}</div>
     </section>
@@ -73,7 +77,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[id]"
         <Link href="/products" className={ui.link}>
           Back to products
         </Link>
-        <h1 className="mt-3 text-3xl font-bold tracking-tight">{product.name}</h1>
+        <h1 className="mt-3 font-display text-4xl font-bold tracking-tight">{product.name}</h1>
       </div>
 
       <Step number={1} title="Product details" done>

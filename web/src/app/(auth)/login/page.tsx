@@ -18,7 +18,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
 
   return (
     <>
-      <h1 className="text-3xl font-bold tracking-tight">Business login</h1>
+      <h1 className="font-display text-4xl font-bold tracking-tight">Business login</h1>
       <p className="mt-2 mb-6 text-ink-soft">
         New to LoomXR?{" "}
         <Link href="/signup" className={ui.link}>

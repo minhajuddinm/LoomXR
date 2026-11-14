@@ -31,17 +31,27 @@ One Next.js app serves two subdomains. `web/src/proxy.ts` routes by hostname usi
 - Supabase: project `loomxr-mvp` (ref `gwetmxmvqnulhsrlqlzx`, ca-central-1, free plan). Postgres, Auth (email + Google), Storage, pgvector. Uses the new publishable and secret keys. "Automatically expose new tables" is off and automatic RLS is on, so every new table needs explicit grants. Migrations were applied through the Supabase connector; file names match the recorded versions.
 - Stripe Billing: Checkout, Customer Portal, webhook. Plans are in `web/src/lib/plans.ts` (placeholder prices) and are matched to Stripe prices by lookup key.
 
-## Demo mode (currently ON for local and preview)
+## Modes and logins
 
-`DEMO_MODE=true` removes login and the subscription check so the product, generation and AR flows can be tried. Everyone shares one "Demo business" (`web/src/lib/demo.ts`). Business pages then use the admin client, so every query in `products/actions.ts` filters by `business_id` itself. Never set it in production. The auth and billing code is untouched and comes back when the flag is removed.
+- `DEMO_MODE=true` removes login (one shared business). It is OFF now; keep it off anywhere public.
+- `BILLING_REQUIRED` is unset: no subscription is needed until the company Stripe account exists. Set it to `true` to turn the Stripe flow back on.
+- Admin role lives in Supabase `app_metadata.role = "admin"` (or `ADMIN_EMAILS`). `/admin` is staff only.
+- Dev admin login: username `admin` (maps to `admin@loomxrlabs.com`). Its password is deliberately simple for development and MUST be changed before the app is reachable without Vercel's login wall.
+- `pnpm invite <email> [--admin]` creates a login and prints a one-time link to choose a password.
 
 ## Generation and AR
 
-- `lib/products.ts`: box geometry. One wide artwork covers front, right, back, left; `sideSlices` cuts it per face.
-- `lib/generation/`: `prompt.ts` (template with `{{slots}}`), `together.ts` (image and text calls), `placeholder.ts` (sample patterns when `TOGETHER_API_KEY` is empty), `composite.ts` (logo and text added in code with sharp + satori), `pipeline.ts` (one round).
-- `public/ar/viewer.html`: static MindAR + three.js viewer. MindAR and three.js load from the jsDelivr CDN for now; self-host before launch.
+- `lib/generation/directions.ts`: art direction, taken from what worked in the HYPAR thesis project. Each design is TWO images: a composed front panel at the front face's proportions and a matching seamless pattern for the other faces. Three layouts (frame, medallion, band) give three distinct designs per round. Read this file before touching prompts.
+- `lib/generation/composite.ts`: crops (never stretches) the images to each face and typesets the label (logo or brand name, custom text, required text) with satori. The AI never draws text.
+- `lib/generation/prompt.ts`: the business's brief template with `{{slots}}`. `together.ts`: API calls with retries. `placeholder.ts`: sample patterns when `TOGETHER_API_KEY` is empty. `pipeline.ts`: one round.
+- Cost: 6 images per round on FLUX.2 [dev], about US$0.09.
+- `public/ar/viewer.html`: static MindAR + three.js viewer (CDN for now; self-host before launch). `components/box-3d.tsx`: CSS 3D box preview used in the customer gallery.
 - Face photos are compiled to a `.mind` tracking file in the business's browser (`products/[id]/photos.tsx`).
 - Not built yet: uniqueness check (CLIP + pHash), moderation of custom content, custom images, cylinders, orders view, cleanup job.
+
+## UI
+
+Tokens are in `web/src/app/globals.css` and class strings in `web/src/lib/ui.ts`; use those, not one-off colours. Brand ink/teal/gold, Archivo for text, Playfair Display for headings (the same face as the packaging labels). Icons are inline SVG in `components/icons.tsx`.
 
 ## Trust boundaries
 

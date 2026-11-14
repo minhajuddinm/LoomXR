@@ -10,7 +10,7 @@ export default async function OnboardingPage() {
 
   return (
     <div className="max-w-md">
-      <h1 className="text-3xl font-bold tracking-tight">Set up your business</h1>
+      <h1 className="font-display text-4xl font-bold tracking-tight">Set up your business</h1>
       <p className="mt-2 mb-6 text-ink-soft">
         This is the name your team sees in the dashboard. You can change it later.
       </p>

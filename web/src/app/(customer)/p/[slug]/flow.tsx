@@ -1,11 +1,32 @@
 "use client";
 
 import { useState } from "react";
+import { Box3D } from "@/components/box-3d";
+import { IconArrow, IconCamera, IconCheck, IconSpark } from "@/components/icons";
 import { CUSTOMER_QUESTIONS } from "@/lib/questions";
 import { ui } from "@/lib/ui";
 
 type Design = { id: string; textures: Record<string, string> };
 type Step = "consent" | "questions" | "working" | "designs" | "done";
+
+const STAGES = ["Welcome", "Your taste", "Your designs", "Done"];
+const stageOf: Record<Step, number> = { consent: 0, questions: 1, working: 1, designs: 2, done: 3 };
+
+function Progress({ step }: { step: Step }) {
+  const current = stageOf[step];
+  return (
+    <ol className="mb-6 flex gap-1.5" aria-label="Progress">
+      {STAGES.map((name, i) => (
+        <li key={name} className="flex-1" aria-current={i === current ? "step" : undefined}>
+          <span className={`block h-1.5 rounded-full transition-colors duration-300 ${i <= current ? "bg-teal" : "bg-rule"}`} />
+          <span className={`mt-1.5 block text-xs font-semibold ${i === current ? "text-ink" : "text-ink-soft/70"}`}>
+            {name}
+          </span>
+        </li>
+      ))}
+    </ol>
+  );
+}
 
 export function Flow(props: {
   slug: string;
@@ -15,6 +36,7 @@ export function Flow(props: {
   basePrice: string;
   allowCustomText: boolean;
   arReady: boolean;
+  dims: { width: number; height: number; depth: number };
 }) {
   const [step, setStep] = useState<Step>("consent");
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -26,11 +48,13 @@ export function Flow(props: {
   const [orderCode, setOrderCode] = useState<string | null>(null);
   const [choosing, setChoosing] = useState<string | null>(null);
 
-  const answered = CUSTOMER_QUESTIONS.every((q) => answers[q.id]);
+  const answeredCount = CUSTOMER_QUESTIONS.filter((q) => answers[q.id]).length;
+  const answered = answeredCount === CUSTOMER_QUESTIONS.length;
 
   async function generate() {
     setStep("working");
     setError(null);
+    window.scrollTo({ top: 0 });
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -73,53 +97,85 @@ export function Flow(props: {
 
   if (step === "consent") {
     return (
-      <>
-        <h1 className="mt-6 text-3xl font-bold tracking-tight">Make this box yours</h1>
-        <p className="mt-3 text-ink-soft">
-          Answer five quick questions and see {props.brandName ?? "this product"}&apos;s {props.productName} in packaging
-          designed for you, on the real box, through your camera.
+      <div className="animate-rise">
+        <Progress step={step} />
+        <p className={ui.eyebrow}>{props.brandName ?? "Personalized packaging"}</p>
+        <h1 className={`${ui.h1} mt-2`}>Make this box yours</h1>
+        <p className="mt-4 text-lg text-ink-soft">
+          Answer five quick questions and see {props.productName} in packaging designed for you, on the real box,
+          through your camera.
         </p>
+
         {props.premiumPrice && (
-          <p className="mt-3">
-            Personalized: <strong>{props.premiumPrice}</strong>
-            {props.basePrice && <span className="text-ink-soft"> (usual price {props.basePrice})</span>}. You pay in
-            store, only if you like it.
-          </p>
+          <div className="mt-5 flex items-baseline gap-3 rounded-2xl bg-gold-soft px-5 py-4">
+            <span className="font-display text-3xl font-bold">{props.premiumPrice}</span>
+            <span className="text-sm text-ink-soft">
+              personalized{props.basePrice && ` (usually ${props.basePrice})`}. Pay in store, only if you love it.
+            </span>
+          </div>
         )}
-        <div className="mt-6 rounded-lg bg-panel p-4 text-sm">
+
+        <div className={`${ui.card} mt-5`}>
           <p className="font-semibold">Before you start</p>
-          <ul className="mt-2 list-disc space-y-1 pl-5">
-            <li>No account, name or email is needed.</li>
-            <li>Your answers are used only to create the designs.</li>
-            <li>Designs are made by AI services run by Together AI.</li>
-            <li>Your answers and any designs you do not buy are deleted within 24 hours.</li>
-            <li>The camera is used only on your phone to show the preview. No video is recorded or sent.</li>
+          <ul className="mt-3 space-y-2.5 text-sm">
+            {[
+              "No account, name or email is needed.",
+              "Your answers are used only to create the designs.",
+              "Designs are made by AI services run by Together AI.",
+              "Answers and designs you do not buy are deleted within 24 hours.",
+              "The camera only shows the preview on your phone. Nothing is recorded or sent.",
+            ].map((line) => (
+              <li key={line} className="flex gap-2.5">
+                <IconCheck className="mt-0.5 size-4 text-teal" />
+                {line}
+              </li>
+            ))}
           </ul>
         </div>
+
         <button type="button" className={`${ui.button} mt-6 w-full`} onClick={() => setStep("questions")}>
           I agree, let&apos;s start
+          <IconArrow />
         </button>
-      </>
+      </div>
     );
   }
 
-  if (step === "questions" || step === "working") {
-    const working = step === "working";
+  if (step === "working") {
     return (
-      <>
-        <h1 className="mt-6 text-2xl font-bold tracking-tight">Your taste</h1>
-        <div className="mt-4 space-y-6">
+      <div className="animate-rise" aria-live="polite">
+        <Progress step={step} />
+        <h1 className={ui.h1}>Designing your packaging</h1>
+        <p className="mt-3 text-ink-soft">Three designs are being made just for you. This takes about 20 to 40 seconds.</p>
+        <div className="mt-6 space-y-4" aria-hidden="true">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="shimmer h-44 rounded-2xl" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (step === "questions") {
+    return (
+      <div className="animate-rise">
+        <Progress step={step} />
+        <h1 className={ui.h1}>Your taste</h1>
+        <p className="mt-2 text-ink-soft">
+          {answeredCount} of {CUSTOMER_QUESTIONS.length} answered
+        </p>
+        <div className="mt-6 space-y-7">
           {CUSTOMER_QUESTIONS.map((q) => (
-            <fieldset key={q.id} disabled={working}>
-              <legend className="font-semibold">{q.label}</legend>
-              <div className="mt-2 flex flex-wrap gap-2">
+            <fieldset key={q.id}>
+              <legend className="text-lg font-semibold">{q.label}</legend>
+              <div className="mt-3 flex flex-wrap gap-2">
                 {q.choices.map((c) => {
                   const selected = answers[q.id] === c.value;
                   return (
                     <label
                       key={c.value}
-                      className={`min-h-11 cursor-pointer rounded-full border px-4 py-2 text-base has-focus-visible:outline-2 has-focus-visible:outline-teal ${
-                        selected ? "border-ink bg-ink text-paper" : "border-rule bg-paper"
+                      className={`flex min-h-12 items-center rounded-full border px-5 py-2.5 text-base font-semibold transition duration-200 active:scale-[0.97] has-focus-visible:outline-3 has-focus-visible:outline-teal ${
+                        selected ? "border-ink bg-ink text-paper shadow-card" : "border-rule bg-paper hover:border-ink-soft"
                       }`}
                     >
                       <input
@@ -140,81 +196,89 @@ export function Flow(props: {
 
           {props.allowCustomText && (
             <div>
-              <label htmlFor="custom" className="font-semibold">
-                Add a name or short message <span className="font-normal text-ink-soft">(optional)</span>
+              <label htmlFor="custom" className="text-lg font-semibold">
+                Add a name or short message <span className="text-base font-normal text-ink-soft">(optional)</span>
               </label>
               <input
                 id="custom"
                 value={customText}
                 onChange={(e) => setCustomText(e.target.value)}
                 maxLength={24}
-                disabled={working}
                 className={ui.input}
                 placeholder="e.g. For Sam"
               />
-              <p className="mt-1 text-sm text-ink-soft">Up to 24 characters. Printed on the front.</p>
+              <p className="mt-1.5 text-sm text-ink-soft">Up to 24 characters. Printed on the front label.</p>
             </div>
           )}
         </div>
         {alert}
-        <button type="button" className={`${ui.button} mt-6 w-full`} disabled={!answered || working} onClick={() => void generate()}>
-          {working ? "Designing your packaging…" : "Show my designs"}
-        </button>
-        {working && (
-          <p className="mt-3 text-center text-sm text-ink-soft" aria-live="polite">
-            This usually takes 10 to 30 seconds.
-          </p>
-        )}
-      </>
+        <div className="sticky bottom-0 -mx-5 mt-8 bg-gradient-to-t from-canvas via-canvas to-transparent px-5 pb-4 pt-6">
+          <button type="button" className={`${ui.button} w-full`} disabled={!answered} onClick={() => void generate()}>
+            <IconSpark />
+            Show my designs
+          </button>
+        </div>
+      </div>
     );
   }
 
   if (step === "designs") {
     return (
-      <>
-        <h1 className="mt-6 text-2xl font-bold tracking-tight">Your designs</h1>
+      <div className="animate-rise">
+        <Progress step={step} />
+        <h1 className={ui.h1}>Your designs</h1>
+        <p className="mt-2 text-ink-soft">Drag a box to turn it. Pick the one you love.</p>
         {sample && (
-          <p className={`${ui.notice} mt-3`}>
-            Sample patterns only. AI generation is not connected yet, so these are not real designs.
+          <p className={`${ui.notice} mt-4`}>
+            Sample patterns only. AI generation is not connected, so these are not real designs.
           </p>
         )}
-        <ul className="mt-4 space-y-5">
+        <ul className="mt-5 space-y-5">
           {designs.map((d, i) => (
-            <li key={d.id} className="rounded-lg border border-rule p-3">
-              <div className="flex gap-2 overflow-x-auto">
-                {["front", "right", "back"].map((face) => (
-                  // eslint-disable-next-line @next/next/no-img-element -- short-lived signed URL
-                  <img key={face} src={d.textures[face]} alt={`Design ${i + 1}, ${face}`} className="h-56 rounded border border-rule" />
-                ))}
+            <li key={d.id} className={`${ui.card} overflow-hidden !p-0`}>
+              <div className="bg-gradient-to-b from-panel to-canvas py-4">
+                <Box3D textures={d.textures} dims={props.dims} label={`Design ${i + 1} shown on a turning box`} />
               </div>
-              <div className="mt-3 flex flex-wrap gap-3">
+              <div className="space-y-3 p-5">
+                <p className="font-display text-xl font-bold">Design {i + 1}</p>
                 {props.arReady && (
-                  <a href={`/ar/viewer.html?slug=${props.slug}&design=${d.id}`} className={ui.button}>
-                    See it on the box
+                  <a href={`/ar/viewer.html?slug=${props.slug}&design=${d.id}`} className={`${ui.button} w-full`}>
+                    <IconCamera />
+                    See it on the real box
                   </a>
                 )}
-                <button type="button" className={ui.buttonQuiet} disabled={choosing !== null} onClick={() => void choose(d.id)}>
-                  {choosing === d.id ? "Saving…" : `Choose design ${i + 1}`}
+                <button
+                  type="button"
+                  className={`${props.arReady ? ui.buttonQuiet : ui.button} w-full`}
+                  disabled={choosing !== null}
+                  onClick={() => void choose(d.id)}
+                >
+                  {choosing === d.id ? "Saving…" : "Choose this design"}
                 </button>
               </div>
             </li>
           ))}
         </ul>
-        {!props.arReady && <p className="mt-4 text-sm text-ink-soft">The camera preview is not set up for this product yet.</p>}
         {alert}
         <button type="button" className={`${ui.buttonQuiet} mt-6 w-full`} disabled={roundsLeft <= 0} onClick={() => void generate()}>
-          {roundsLeft > 0 ? `Show me different designs (${roundsLeft} left)` : "No more rounds left"}
+          {roundsLeft > 0 ? `Show me three more (${roundsLeft} ${roundsLeft === 1 ? "round" : "rounds"} left)` : "No more rounds left"}
         </button>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
-      <h1 className="mt-6 text-3xl font-bold tracking-tight">Design saved</h1>
+    <div className="animate-rise text-center">
+      <Progress step={step} />
+      <span className="mx-auto flex size-16 items-center justify-center rounded-full bg-success text-paper">
+        <IconCheck className="size-8" />
+      </span>
+      <h1 className={`${ui.h1} mt-5`}>Design saved</h1>
       <p className="mt-3 text-ink-soft">Show this code at the till to buy {props.productName} with your design.</p>
-      <p className="mt-6 rounded-lg bg-panel py-6 text-center text-4xl font-bold tracking-widest">{orderCode}</p>
-      {props.premiumPrice && <p className="mt-4 text-center">Price: {props.premiumPrice}</p>}
-    </>
+      <p className="weave mt-6 rounded-2xl py-7 font-display text-4xl font-bold tracking-[0.2em] text-paper shadow-lift">
+        {orderCode}
+      </p>
+      {props.premiumPrice && <p className="mt-4 text-lg">Price: {props.premiumPrice}</p>}
+    </div>
   );
 }

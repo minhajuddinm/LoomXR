@@ -121,6 +121,20 @@ export function generationSize(
   return { width: snap(w * scale), height: snap(h * scale) };
 }
 
+// Pixel size to ask the image model for when generating one face on its own:
+// that face's proportions, sides a multiple of 32, longest side `longest`.
+export function faceGenerationSize(
+  d: BoxDims,
+  face: BoxFace,
+  longest = 1024,
+  shortest = 512,
+): { width: number; height: number } {
+  const { w, h } = faceSizeMm(d, face);
+  const scale = longest / Math.max(w, h);
+  const snap = (v: number) => Math.min(longest, Math.max(shortest, Math.round(v / 32) * 32));
+  return { width: snap(w * scale), height: snap(h * scale) };
+}
+
 export type Rect = { left: number; top: number; width: number; height: number };
 
 // Where each side face sits inside an artwork image of the given pixel size.

@@ -115,7 +115,7 @@ export function Photos(props: {
         {BOX_FACES.map((face) => {
           const size = faceSizeMm(dims, face);
           return (
-            <li key={face} className="rounded-lg border border-rule p-3">
+            <li key={face} className="rounded-xl border border-rule bg-canvas/60 p-3 transition duration-200 hover:border-teal/60">
               <p className="font-semibold">
                 {FACE_LABELS[face]}
                 {face === "front" && <span className="font-normal text-ink-soft"> (required)</span>}
@@ -123,7 +123,7 @@ export function Photos(props: {
               <p className="text-sm text-ink-soft">
                 {size.w} × {size.h} mm
               </p>
-              <div className="mt-2 flex aspect-square items-center justify-center overflow-hidden rounded bg-panel">
+              <div className="mt-2 flex aspect-square items-center justify-center overflow-hidden rounded-lg border border-dashed border-rule bg-paper">
                 {faces[face] ? (
                   // eslint-disable-next-line @next/next/no-img-element -- short-lived signed URL
                   <img src={faces[face]} alt={`${FACE_LABELS[face]} photo`} className="max-h-full max-w-full object-contain" />

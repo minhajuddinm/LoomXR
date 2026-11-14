@@ -16,13 +16,15 @@ export function AuthForm({ mode, next }: { mode: "login" | "signup"; next: strin
         <input type="hidden" name="next" value={next} />
         <div>
           <label htmlFor="email" className={ui.label}>
-            Work email
+            {mode === "login" ? "Email or username" : "Work email"}
           </label>
           <input
             id="email"
             name="email"
-            type="email"
-            autoComplete="email"
+            type={mode === "login" ? "text" : "email"}
+            autoCapitalize="none"
+            autoCorrect="off"
+            autoComplete={mode === "login" ? "username" : "email"}
             required
             className={ui.input}
           />
@@ -36,7 +38,7 @@ export function AuthForm({ mode, next }: { mode: "login" | "signup"; next: strin
             name="password"
             type="password"
             autoComplete={mode === "login" ? "current-password" : "new-password"}
-            minLength={8}
+            minLength={mode === "signup" ? 8 : undefined}
             required
             className={ui.input}
           />

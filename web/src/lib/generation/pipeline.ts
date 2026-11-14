@@ -3,16 +3,17 @@ import { randomInt, randomUUID } from "node:crypto";
 import sharp from "sharp";
 import { isDemoMode } from "@/lib/demo";
 import { isBillingRequired, isSubscriptionActive } from "@/lib/plans";
-import { BOX_FACES, generationSize, type BoxFace, type Product } from "@/lib/products";
+import { BOX_FACES, faceGenerationSize, type BoxFace, type Product } from "@/lib/products";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { CustomerSession } from "@/lib/customer-session";
 import { buildFaceTextures } from "./composite";
+import { artDirection } from "./directions";
 import { placeholderArtwork } from "./placeholder";
 import { defaultTemplate, fillTemplate } from "./prompt";
 import { IMAGE_COST_USD, IMAGE_MODEL, generateImage, hasTogether } from "./together";
 
-// One generation round: fill the prompt, make the designs, cut each into face
-// textures, store everything, log the cost.
+// One generation round. Each design is two AI images (a composed front panel
+// and a matching pattern, see directions.ts) turned into a texture per face.
 //
 // Not built yet (later in Phase 3): the uniqueness check against locked
 // designs (CLIP embedding + perceptual hash) and moderation of custom content.
@@ -83,7 +84,9 @@ export async function runGenerationRound(input: {
     .limit(1)
     .maybeSingle();
   const template = templateRow?.template ?? defaultTemplate({}, product.brand_colours);
-  const prompt = fillTemplate(template, session.answers);
+  const brief = fillTemplate(template, session.answers);
+  // Stored for the record and, later, for locking: the front prompt of design 1.
+  const prompt = artDirection({ designIndex: 0, answers: session.answers, brief }).frontPrompt;
 
   const roundNumber = session.rounds_used + 1;
   const round = await db
@@ -100,23 +103,40 @@ export async function runGenerationRound(input: {
     if (file.data) logo = Buffer.from(await file.data.arrayBuffer());
   }
 
-  const size = generationSize(product);
+  const frontSize = faceGenerationSize(product, "front");
+  const patternSize = { width: 768, height: 768 };
   const real = hasTogether();
   const customText = product.allow_custom_content ? input.customText : null;
 
   const results = await Promise.allSettled(
-    Array.from({ length: DESIGNS_PER_ROUND }, async (): Promise<DesignView> => {
+    Array.from({ length: DESIGNS_PER_ROUND }, async (_, designIndex): Promise<DesignView> => {
       const id = randomUUID();
       const seed = randomInt(1, 2 ** 31 - 1);
-      const raw = real
-        ? await generateImage({ prompt, ...size, seed })
-        : await placeholderArtwork({ ...size, seed, colourAnswer: session.answers.colours });
+      // A different layout for each of the three designs, rotated each round.
+      const direction = artDirection({
+        designIndex: designIndex + session.rounds_used,
+        answers: session.answers,
+        brief,
+      });
+
+      const [rawFront, rawPattern] = real
+        ? await Promise.all([
+            generateImage({ prompt: direction.frontPrompt, ...frontSize, seed }),
+            generateImage({ prompt: direction.patternPrompt, ...patternSize, seed }),
+          ])
+        : await Promise.all([
+            placeholderArtwork({ ...frontSize, seed, colourAnswer: session.answers.colours }),
+            placeholderArtwork({ ...patternSize, seed: seed + 1, colourAnswer: session.answers.colours }),
+          ]);
       // Models return JPEG or PNG; store one consistent format.
-      const artwork = await sharp(raw).png().toBuffer();
+      const artwork = await sharp(rawFront).png().toBuffer();
 
       const textures = await buildFaceTextures({
-        artwork,
+        front: artwork,
+        pattern: rawPattern,
         dims: product,
+        plate: direction.plate,
+        palette: direction.palette,
         logo,
         brandName: product.brand_name,
         mandatoryText: product.mandatory_text,
@@ -161,8 +181,8 @@ export async function runGenerationRound(input: {
           provider: "together",
           model: IMAGE_MODEL,
           operation: "image",
-          units: 1,
-          cost_usd: IMAGE_COST_USD[IMAGE_MODEL] ?? 0,
+          units: 2,
+          cost_usd: 2 * (IMAGE_COST_USD[IMAGE_MODEL] ?? 0),
           business_id: product.business_id,
           session_id: session.id,
         });

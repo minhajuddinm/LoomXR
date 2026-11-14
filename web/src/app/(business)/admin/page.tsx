@@ -34,7 +34,7 @@ export default async function AdminPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold tracking-tight">Admin</h1>
+      <h1 className="font-display text-4xl font-bold tracking-tight">Admin</h1>
 
       <dl className="grid gap-4 sm:grid-cols-4">
         {[
@@ -53,7 +53,7 @@ export default async function AdminPage() {
       <p className="text-ink-soft">Billing is {isBillingRequired() ? "switched on" : "switched off: no subscription is required"}.</p>
 
       <section aria-labelledby="biz-heading">
-        <h2 id="biz-heading" className="text-xl font-bold">
+        <h2 id="biz-heading" className="font-display text-2xl font-bold tracking-tight">
           Businesses
         </h2>
         <div className="mt-3 overflow-x-auto">
