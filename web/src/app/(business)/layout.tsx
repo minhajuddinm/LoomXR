@@ -25,6 +25,11 @@ export default async function BusinessLayout({ children }: LayoutProps<"/">) {
             <Link href="/billing" className="hover:text-teal">
               Billing
             </Link>
+            {user.isAdmin && (
+              <Link href="/admin" className="hover:text-teal">
+                Admin
+              </Link>
+            )}
           </nav>
           {isDemoMode() ? (
             <span className="ml-auto rounded-full bg-gold/15 px-3 py-1 text-sm font-semibold text-ink">

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { requireBusiness } from "@/lib/auth";
-import { PLANS, formatPrice, getPlan, isSubscriptionActive } from "@/lib/plans";
+import { PLANS, formatPrice, getPlan, isBillingRequired, isSubscriptionActive } from "@/lib/plans";
 import { ui } from "@/lib/ui";
 
 export const metadata: Metadata = { title: "Billing" };
@@ -37,6 +37,18 @@ export default async function BillingPage({ searchParams }: PageProps<"/billing"
   const currentPlan = getPlan(business.plan);
   const active = isSubscriptionActive(business.subscription_status);
   const renews = formatDate(business.current_period_end);
+
+  if (!isBillingRequired()) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-3xl font-bold tracking-tight">Billing</h1>
+        <p className={ui.notice}>
+          Billing is not switched on yet. Everything is available at no charge while payments are being set up. You will
+          be told before any plan starts.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { requireBusiness } from "@/lib/auth";
-import { getPlan, isSubscriptionActive } from "@/lib/plans";
+import { getPlan, isBillingRequired, isSubscriptionActive } from "@/lib/plans";
 import { ui } from "@/lib/ui";
 
 export const metadata: Metadata = { title: "Dashboard" };
@@ -19,7 +19,11 @@ export default async function DashboardPage() {
         <h2 id="plan-heading" className="text-lg font-bold">
           Subscription
         </h2>
-        {active && plan ? (
+        {!isBillingRequired() ? (
+          <p className="mt-2 text-ink-soft">
+            Billing is not switched on yet. Everything is available at no charge for now.
+          </p>
+        ) : active && plan ? (
           <>
             <p className="mt-2">
               {plan.name} plan. {business.period_generations_used} of{" "}

@@ -59,6 +59,7 @@ const PROTECTED_PREFIXES = [
   "/dashboard",
   "/billing",
   "/onboarding",
+  "/account",
   "/products",
   "/orders",
   "/admin",

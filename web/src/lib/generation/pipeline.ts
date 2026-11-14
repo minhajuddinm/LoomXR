@@ -2,7 +2,7 @@ import "server-only";
 import { randomInt, randomUUID } from "node:crypto";
 import sharp from "sharp";
 import { isDemoMode } from "@/lib/demo";
-import { isSubscriptionActive } from "@/lib/plans";
+import { isBillingRequired, isSubscriptionActive } from "@/lib/plans";
 import { BOX_FACES, generationSize, type BoxFace, type Product } from "@/lib/products";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { CustomerSession } from "@/lib/customer-session";
@@ -60,13 +60,13 @@ export async function runGenerationRound(input: {
     throw new GenerationError("round-limit", "You have used all your design rounds.");
   }
 
-  // Subscription and quota. Demo mode skips this so the flow can be tried.
+  // Subscription and quota, enforced only once billing is switched on.
   const { data: business } = await db
     .from("businesses")
     .select("id, subscription_status, monthly_generation_quota, period_generations_used")
     .eq("id", product.business_id)
     .single();
-  if (!isDemoMode()) {
+  if (isBillingRequired() && !isDemoMode()) {
     if (!business || !isSubscriptionActive(business.subscription_status)) {
       throw new GenerationError("not-subscribed", "This product is not available right now.");
     }

@@ -57,6 +57,13 @@ export function planFromLookupKey(key: string | null | undefined): Plan | null {
   return PLANS.find((p) => p.lookupKey === key) ?? null;
 }
 
+// Billing switch. While the company's Stripe account is being set up, billing
+// is off: no subscription is needed and no quota is enforced. Set
+// BILLING_REQUIRED=true once Stripe is connected.
+export function isBillingRequired(): boolean {
+  return process.env.BILLING_REQUIRED === "true";
+}
+
 // Statuses that let a business generate designs.
 export function isSubscriptionActive(status: string | null | undefined): boolean {
   return status === "active" || status === "trialing";

@@ -1,7 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getDemoBusiness, isDemoMode } from "@/lib/demo";
 import { serverEnv } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -11,20 +11,24 @@ import type { Business } from "@/lib/types";
 // Data access layer for the business side. Every page and route that needs a
 // user goes through here, so the check lives in one place.
 
-export type CurrentUser = { id: string; email: string | null };
+export type CurrentUser = { id: string; email: string | null; isAdmin: boolean };
 
 export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
   if (error || !data?.claims?.sub) return null;
   const email = typeof data.claims.email === "string" ? data.claims.email : null;
-  return { id: data.claims.sub, email };
+  // The admin role lives in app_metadata, which only the server can write.
+  // (user_metadata is editable by the user, so it is never used for this.)
+  const role = (data.claims.app_metadata as { role?: unknown } | undefined)?.role;
+  const isAdmin = role === "admin" || isAdminEmail(email);
+  return { id: data.claims.sub, email, isAdmin };
 });
 
 export async function requireUser(): Promise<CurrentUser> {
   if (isDemoMode()) {
     const business = await getDemoBusiness();
-    return { id: business.owner_user_id, email: null };
+    return { id: business.owner_user_id, email: null, isAdmin: false };
   }
   const user = await getCurrentUser();
   if (!user) redirect("/login");
@@ -51,6 +55,16 @@ export async function requireBusiness(): Promise<{ user: CurrentUser; business: 
   const business = await getBusiness();
   if (!business) redirect("/onboarding");
   return { user, business };
+}
+
+// LoomXR staff only. Everyone else gets a 404, so the page's existence is not
+// revealed. Never available in demo mode, where nobody is signed in.
+export async function requireAdmin(): Promise<CurrentUser> {
+  if (isDemoMode()) notFound();
+  const user = await getCurrentUser();
+  if (!user) redirect("/login?next=/admin");
+  if (!user.isAdmin) notFound();
+  return user;
 }
 
 // The database client business pages should use, plus the business it is
