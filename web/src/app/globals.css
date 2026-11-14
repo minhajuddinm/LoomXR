@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+/* Brand tokens, matched to the landing page (../styles.css). */
+@theme inline {
+  --color-paper: #ffffff;
+  --color-panel: #eef2f3;
+  --color-ink: #12283a;
+  --color-ink-soft: #4a5b68;
+  --color-rule: #cfd8dc;
+  --color-teal: #1f6e7d;
+  --color-gold: #a9834f;
+  --color-error: #a33a2a;
+  --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
