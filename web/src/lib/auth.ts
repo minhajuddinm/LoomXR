@@ -2,7 +2,9 @@ import "server-only";
 import { cache } from "react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { getDemoBusiness, isDemoMode } from "@/lib/demo";
 import { serverEnv } from "@/lib/env";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import type { Business } from "@/lib/types";
 
@@ -20,6 +22,10 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
 });
 
 export async function requireUser(): Promise<CurrentUser> {
+  if (isDemoMode()) {
+    const business = await getDemoBusiness();
+    return { id: business.owner_user_id, email: null };
+  }
   const user = await getCurrentUser();
   if (!user) redirect("/login");
   return user;
@@ -27,6 +33,7 @@ export async function requireUser(): Promise<CurrentUser> {
 
 // Reads through the user's own client, so RLS guarantees it is their business.
 export const getBusiness = cache(async (): Promise<Business | null> => {
+  if (isDemoMode()) return getDemoBusiness();
   const user = await getCurrentUser();
   if (!user) return null;
   const supabase = await createClient();
@@ -44,6 +51,16 @@ export async function requireBusiness(): Promise<{ user: CurrentUser; business: 
   const business = await getBusiness();
   if (!business) redirect("/onboarding");
   return { user, business };
+}
+
+// The database client business pages should use, plus the business it is
+// limited to. Normally that is the signed-in user's client, where RLS enforces
+// ownership. In demo mode there is no user, so it is the admin client and every
+// query MUST filter by business.id itself.
+export async function getBusinessContext() {
+  const { business } = await requireBusiness();
+  const db = isDemoMode() ? createAdminClient() : await createClient();
+  return { business, db };
 }
 
 export function isAdminEmail(email: string | null | undefined): boolean {

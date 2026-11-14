@@ -21,6 +21,9 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(decision.to);
   }
 
+  // Demo mode has no login, so there is nothing to check or refresh.
+  if (process.env.DEMO_MODE === "true") return NextResponse.next();
+
   const protectedPath = isProtectedPath(pathname);
   const authPage = isAuthPage(pathname);
   if (!protectedPath && !authPage) return NextResponse.next();

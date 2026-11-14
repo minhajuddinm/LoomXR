@@ -5,6 +5,8 @@ import type { NextConfig } from "next";
 // prerender, and turning it on would force a Suspense boundary around every
 // session read for no gain.
 const nextConfig: NextConfig = {
+  // Fonts read from disk by the compositing code must ship with the functions.
+  outputFileTracingIncludes: { "/api/**": ["./assets/fonts/*"] },
   turbopack: {
     rules: {
       "*.css": {

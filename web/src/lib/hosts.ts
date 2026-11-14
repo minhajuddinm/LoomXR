@@ -21,7 +21,7 @@ export function hostKind(host: string | null | undefined): HostKind {
 }
 
 // Routes the customer flow needs. Everything else belongs to the business app.
-const CUSTOMER_PREFIXES = ["/p/", "/api/session", "/api/generate", "/api/designs"];
+const CUSTOMER_PREFIXES = ["/p/", "/ar/", "/api/session", "/api/generate", "/api/designs"];
 
 // Server-to-server routes that may arrive on either host.
 const SHARED_PREFIXES = ["/api/cron"];

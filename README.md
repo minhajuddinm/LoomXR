@@ -6,14 +6,26 @@ LoomXR earns money only from business subscriptions. It never takes the customer
 
 This README explains how the product works for each of the three people involved: the business, the customer, and you as the owner. It also says plainly what is built today and what is still planned.
 
+## Right now: demo mode
+
+Login and billing are switched off for the moment (`DEMO_MODE=true`) so the core product can be tried first. Anyone who opens the app works inside one shared "Demo business". To try it:
+
+1. Open `/products`, add a box product and enter its real size.
+2. Upload a photo of the front (and other faces if you like), then press **Prepare AR tracking**.
+3. Answer the five questions about the product. A prompt template appears; you can edit it.
+4. Press **Go live**. Open the customer link, or scan the QR code with a phone.
+5. As the customer: agree, answer five taste questions, see three designs, press **See it on the box** and point the camera at the real box.
+
+Until a Together AI key is added (`TOGETHER_API_KEY`), designs are sample patterns, not AI artwork. The page says so.
+
 ## Build status
 
 | Phase | What it covers | Status |
 |---|---|---|
 | 1. Foundation | Accounts, subscriptions, database, hostname routing | Done and tested locally with email login and Stripe test mode. Google sign-in and the live webhook are not set up yet. |
-| 2. Product onboarding | Product wizard, face photos, brand assets, questionnaire, prompt template, pricing, QR code | Not started |
-| 3. Generation pipeline | Customer questions, moderation, image generation, compositing, uniqueness check | Not started |
-| 4. Box AR | AR preview on a real box, design selection, order code | Not started |
+| 2. Product onboarding | Product wizard, face photos, brand assets, questionnaire, prompt template, pricing, QR code | First version built for boxes |
+| 3. Generation pipeline | Customer questions, moderation, image generation, compositing, uniqueness check | First version built. No uniqueness check or moderation yet |
+| 4. Box AR | AR preview on a real box, design selection, order code | Built, not yet tested on a phone |
 | 5. Cylinder AR | AR preview on cans and bottles | Not started |
 | 6. Orders and launch | Orders view, design locking, cleanup, usage costs, go-live | Not started |
 

@@ -31,6 +31,18 @@ One Next.js app serves two subdomains. `web/src/proxy.ts` routes by hostname usi
 - Supabase: project `loomxr-mvp` (ref `gwetmxmvqnulhsrlqlzx`, ca-central-1, free plan). Postgres, Auth (email + Google), Storage, pgvector. Uses the new publishable and secret keys. "Automatically expose new tables" is off and automatic RLS is on, so every new table needs explicit grants. Migrations were applied through the Supabase connector; file names match the recorded versions.
 - Stripe Billing: Checkout, Customer Portal, webhook. Plans are in `web/src/lib/plans.ts` (placeholder prices) and are matched to Stripe prices by lookup key.
 
+## Demo mode (currently ON for local and preview)
+
+`DEMO_MODE=true` removes login and the subscription check so the product, generation and AR flows can be tried. Everyone shares one "Demo business" (`web/src/lib/demo.ts`). Business pages then use the admin client, so every query in `products/actions.ts` filters by `business_id` itself. Never set it in production. The auth and billing code is untouched and comes back when the flag is removed.
+
+## Generation and AR
+
+- `lib/products.ts`: box geometry. One wide artwork covers front, right, back, left; `sideSlices` cuts it per face.
+- `lib/generation/`: `prompt.ts` (template with `{{slots}}`), `together.ts` (image and text calls), `placeholder.ts` (sample patterns when `TOGETHER_API_KEY` is empty), `composite.ts` (logo and text added in code with sharp + satori), `pipeline.ts` (one round).
+- `public/ar/viewer.html`: static MindAR + three.js viewer. MindAR and three.js load from the jsDelivr CDN for now; self-host before launch.
+- Face photos are compiled to a `.mind` tracking file in the business's browser (`products/[id]/photos.tsx`).
+- Not built yet: uniqueness check (CLIP + pHash), moderation of custom content, custom images, cylinders, orders view, cleanup job.
+
 ## Trust boundaries
 
 - Business users: Supabase Auth. Queries run through `lib/supabase/server.ts` as the user, so RLS applies. `lib/auth.ts` is the single place that reads the session (`getClaims`, never `getSession`).
@@ -65,10 +77,10 @@ The landing Vercel project serves the repo root as static files. Once `web/` and
 
 ## Phase status
 
-1. Foundation: code complete. See the plan file for remaining phases.
-2. Product onboarding: not started.
-3. Generation pipeline: not started.
-4. Box AR: not started.
+1. Foundation: done; login and billing are bypassed while demo mode is on.
+2. Product onboarding: first version built (boxes only, no dieline upload).
+3. Generation pipeline: first version built; uniqueness and moderation missing.
+4. Box AR: viewer built, not yet tested on a phone.
 5. Cylinder AR: not started.
 6. Orders and launch: not started.
 

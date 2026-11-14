@@ -46,8 +46,11 @@ export default async function DashboardPage() {
           Products
         </h2>
         <p className="mt-2 text-ink-soft">
-          Product setup is not built yet. It is the next phase of the MVP.
+          Add a product to upload its photos, describe it, and get the QR code customers scan.
         </p>
+        <Link href="/products" className={`${ui.button} mt-4`}>
+          Manage products
+        </Link>
       </section>
     </div>
   );
