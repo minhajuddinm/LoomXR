@@ -7,7 +7,7 @@ import { hasTogether } from "@/lib/generation/together";
 import type { BoxFace, Product } from "@/lib/products";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ui } from "@/lib/ui";
-import { saveBrief, saveTemplate, setProductStatus, updateProduct } from "../actions";
+import { removeProduct, saveBrief, saveTemplate, setProductStatus, updateProduct } from "../actions";
 import { ProductForm } from "../product-form";
 import { BriefForm, TemplateForm } from "./forms";
 import { Photos } from "./photos";
@@ -38,7 +38,13 @@ export default async function ProductPage({ params }: PageProps<"/products/[id]"
   if (!/^[0-9a-f-]{36}$/.test(id)) notFound();
 
   const { business, db } = await getBusinessContext();
-  const { data } = await db.from("products").select("*").eq("id", id).eq("business_id", business.id).maybeSingle();
+  const { data } = await db
+    .from("products")
+    .select("*")
+    .eq("id", id)
+    .eq("business_id", business.id)
+    .neq("status", "archived") // removed products are gone from the dashboard
+    .maybeSingle();
   if (!data) notFound();
   const product = data as Product;
 
@@ -145,6 +151,25 @@ export default async function ProductPage({ params }: PageProps<"/products/[id]"
           </div>
         </div>
       </Step>
+
+      {/* Removing is two steps on purpose: open the panel, then confirm. */}
+      <details className="rounded-2xl border border-error/25 bg-paper p-6 shadow-card">
+        <summary className="min-h-11 cursor-pointer font-semibold text-error">Remove this product</summary>
+        <div className="mt-3 space-y-4">
+          <p className="text-ink-soft">
+            {product.name} will disappear from your products and its QR code will stop working straight away. Orders
+            customers have already placed are kept. This cannot be undone from the dashboard.
+          </p>
+          <form action={removeProduct.bind(null, id)}>
+            <button
+              type="submit"
+              className="inline-flex min-h-12 items-center justify-center rounded-xl bg-error px-5 py-3 font-semibold text-paper transition duration-200 hover:brightness-110 active:scale-[0.98]"
+            >
+              Yes, remove {product.name}
+            </button>
+          </form>
+        </div>
+      </details>
     </div>
   );
 }

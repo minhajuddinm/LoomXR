@@ -22,6 +22,7 @@ async function ownedProduct(productId: string) {
     .select("*")
     .eq("id", productId)
     .eq("business_id", business.id)
+    .neq("status", "archived")
     .maybeSingle();
   if (!data) throw new Error("Product not found");
   return { business, db, product: data };
@@ -273,4 +274,15 @@ export async function setProductStatus(productId: string, status: "draft" | "act
   await db.from("products").update({ status }).eq("id", productId);
   revalidatePath(`/products/${productId}`);
   revalidatePath("/products");
+}
+
+// Removes a product from the business's list and switches off its QR code.
+// The row is archived, not erased: past orders point at its designs, and the
+// business may need those records.
+export async function removeProduct(productId: string): Promise<void> {
+  const { db } = await ownedProduct(productId);
+  const { error } = await db.from("products").update({ status: "archived" }).eq("id", productId);
+  if (error) throw new Error("Could not remove the product");
+  revalidatePath("/products");
+  redirect("/products?removed=1");
 }

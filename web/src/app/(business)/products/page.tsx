@@ -6,7 +6,8 @@ import { ui } from "@/lib/ui";
 
 export const metadata: Metadata = { title: "Products" };
 
-export default async function ProductsPage() {
+export default async function ProductsPage({ searchParams }: PageProps<"/products">) {
+  const removed = (await searchParams).removed === "1";
   const { business, db } = await getBusinessContext();
   const { data } = await db
     .from("products")
@@ -24,6 +25,12 @@ export default async function ProductsPage() {
           Add a product
         </Link>
       </div>
+
+      {removed && (
+        <p role="status" className={ui.notice}>
+          Product removed. Its QR code no longer works.
+        </p>
+      )}
 
       {products.length === 0 ? (
         <p className={`${ui.card} text-ink-soft`}>
