@@ -298,3 +298,95 @@ h3 { font-size: 1.0625rem; font-weight: 650; line-height: 1.3; }
   .site-header { position: static; }
   .contact-form, .link-button { display: none; }
 }
+
+
+/* ==========================================================================
+   Polish layer (November 2026): motion, depth and a warmer page.
+   Everything above still applies; this only refines it.
+   ========================================================================== */
+
+:root { --canvas: #f6f3ec; --lift: 0 2px 4px rgb(18 40 58 / 0.06), 0 18px 40px -16px rgb(18 40 58 / 0.25); }
+
+html { scroll-behavior: smooth; }
+body { background: var(--canvas); }
+
+/* Header: translucent, with an underline that grows under each link. */
+.site-header {
+  background: rgb(246 243 236 / 0.82);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid rgb(18 40 58 / 0.08);
+}
+.site-nav a:not(.button) { position: relative; padding: 0.3em 0; }
+.site-nav a:not(.button)::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px;
+  background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease;
+}
+.site-nav a:not(.button):hover { text-decoration: none; }
+.site-nav a:not(.button):hover::after { transform: scaleX(1); }
+.site-nav a.button.quiet { color: var(--ink); padding: 0.5em 0.95em; }
+.site-nav a.button.quiet:hover { color: var(--ink); }
+
+/* Buttons: rounder, with a lift and a light sweep on hover. */
+.button {
+  border-radius: 12px; position: relative; overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.button:hover { transform: translateY(-2px); box-shadow: var(--lift); }
+.button:active { transform: translateY(0) scale(0.98); }
+.button:not(.quiet)::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.22) 50%, transparent 65%);
+  transform: translateX(-120%); transition: transform 0.7s ease;
+}
+.button:not(.quiet):hover::after { transform: translateX(120%); }
+.text-link { align-self: center; font-weight: 600; color: var(--teal); text-decoration: none; padding: 0.6em 0.2em; }
+.text-link:hover { color: var(--ink); text-decoration: underline; }
+
+/* Hero: a soft wash of the brand colours behind the headline. */
+.hero { position: relative; overflow: hidden; isolation: isolate; }
+.hero::before {
+  content: ""; position: absolute; inset: -20% -10% auto -10%; height: 130%; z-index: -1;
+  background:
+    radial-gradient(42% 55% at 12% 20%, rgb(31 110 125 / 0.16), transparent 70%),
+    radial-gradient(38% 50% at 88% 30%, rgb(169 131 79 / 0.18), transparent 70%);
+}
+.hero h1 { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.hero .lede { animation: rise 0.7s 0.1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.hero .actions { animation: rise 0.7s 0.2s cubic-bezier(0.2, 0.7, 0.2, 1) both; align-items: center; }
+.dieline { animation: rise 0.9s 0.25s cubic-bezier(0.2, 0.7, 0.2, 1) both; filter: drop-shadow(0 24px 40px rgb(18 40 58 / 0.16)); }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+/* Sections on the warmer page. */
+.section.tint { background: #ebe7dc; }
+.section-head h2::before {
+  content: ""; display: block; width: 44px; height: 3px; margin-bottom: 18px; border-radius: 2px; background: var(--gold);
+}
+
+/* Cards: blocks that were flat now sit on paper and lift on hover. */
+.pairs > *, .team > li, .steps > li, .facts > div {
+  background: var(--paper); border: 1px solid rgb(18 40 58 / 0.08); border-radius: 16px;
+  padding: clamp(16px, 2.2vw, 24px);
+  box-shadow: 0 1px 2px rgb(18 40 58 / 0.04), 0 8px 24px -12px rgb(18 40 58 / 0.12);
+  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.pairs > *:hover, .team > li:hover, .steps > li:hover, .facts > div:hover {
+  transform: translateY(-4px); box-shadow: var(--lift); border-color: rgb(31 110 125 / 0.35);
+}
+.spec, .results { background: var(--paper); border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px -12px rgb(18 40 58 / 0.14); }
+.contact-form input { border-radius: 12px; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+.contact-form input:focus { border-color: var(--teal); box-shadow: 0 0 0 4px rgb(31 110 125 / 0.15); outline: none; }
+
+/* Scroll reveal (classes are added by the script at the end of index.html). */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.reveal.in { opacity: 1; transform: none; }
+
+.site-footer { background: var(--ink); color: rgb(255 255 255 / 0.78); }
+.site-footer a { color: #fff; }
+.site-footer a:hover { color: var(--gold-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}

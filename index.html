@@ -40,7 +40,7 @@
       <a href="#research">Research</a>
       <a href="#company">Company</a>
       <a href="#team">Team</a>
-      <a href="https://app.loomxrlabs.com">Business Login</a>
+      <a class="button quiet" href="https://app.loomxrlabs.com">Business login</a>
       <a class="button" href="#contact">Contact</a>
     </nav>
   </div>
@@ -57,6 +57,7 @@
         <div class="actions">
           <a class="button" href="#research">Read the research</a>
           <a class="button quiet" href="#contact">Contact us</a>
+          <a class="text-link" href="https://app.loomxrlabs.com">Business login &rarr;</a>
         </div>
       </div>
 
@@ -296,6 +297,26 @@
     </ul>
   </div>
 </footer>
+
+<script>
+/* Sections fade up as they scroll into view. Skipped for reduced motion. */
+(function () {
+  var items = document.querySelectorAll(".section-head, .section-body, .prose, .results, .pairs > *, .timeline > li, .team > li, .steps > li, .facts > div, .contact-form");
+  if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("in");
+      seen.unobserve(entry.target);
+    });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+  items.forEach(function (el, i) {
+    el.classList.add("reveal");
+    el.style.transitionDelay = (i % 4) * 70 + "ms";
+    seen.observe(el);
+  });
+})();
+</script>
 
 <script>
 (function () {

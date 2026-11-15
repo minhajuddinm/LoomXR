@@ -62,23 +62,41 @@ const STYLES: Record<string, { language: string; pattern: string }> = {
 };
 const DEFAULT_STYLE = STYLES["vintage botanical engraving with soft colour"];
 
-// Three layouts. The design index (0, 1, 2) picks one.
-const LAYOUTS: Array<{ plate: PlateShape; layout: string }> = [
+// Five layouts, one per design in a round. `open` layouts keep the middle of
+// the panel empty for the label; the others run the artwork edge to edge and
+// let the label plate sit on top.
+const LAYOUTS: Array<{ plate: PlateShape; layout: string; open?: boolean }> = [
   {
     plate: "frame",
+    open: true,
     layout:
       "an ornamental border runs around all four edges, with the main subject clustered richly in the four corners and along the edges",
   },
   {
     plate: "medallion",
+    open: true,
     layout: "the main subject forms a full, symmetrical wreath ringing the middle of the panel, radiating outward to the edges",
   },
   {
     plate: "band",
+    open: true,
     layout:
       "the main subject fills the top third and the bottom third of the panel as two rich horizontal friezes mirrored across the middle",
   },
+  {
+    plate: "frame",
+    open: true,
+    layout:
+      "an asymmetrical, dynamic composition: the main subject sweeps in diagonally from the bottom-left corner and from the top-right corner, large in scale",
+  },
+  {
+    plate: "medallion",
+    layout:
+      "a bold all-over composition: the main subject is drawn large and fills the entire panel evenly from edge to edge, dense and rich",
+  },
 ];
+
+export const LAYOUT_COUNT = LAYOUTS.length;
 
 export const QUALITY =
   "Matte paper stock with fine grain and subtle embossing. Premium retail packaging, confident, balanced and intentional, professional graphic design.";
@@ -102,13 +120,13 @@ export function artDirection(input: {
   const { answers, brief } = input;
   const palette = PALETTES[answers.colours] ?? DEFAULT_PALETTE;
   const style = STYLES[answers.style] ?? DEFAULT_STYLE;
-  const { plate, layout } = LAYOUTS[((input.designIndex % LAYOUTS.length) + LAYOUTS.length) % LAYOUTS.length];
+  const { plate, layout, open } = LAYOUTS[((input.designIndex % LAYOUTS.length) + LAYOUTS.length) % LAYOUTS.length];
   const motif = answers.motif ?? "abstract shapes";
 
   const frontPrompt = [
     "Flat 2D front panel design for retail packaging, a pure graphic layout seen straight on, filling the whole frame edge to edge.",
     `Design language: ${style.language}.`,
-    `Layout: ${layout}. The middle of the panel is left as plain, empty ${palette.background} with nothing in it.`,
+    `Layout: ${layout}.${open ? ` The middle of the panel is left as plain, empty ${palette.background} with nothing in it.` : ""}`,
     `Background colour: ${palette.background}.`,
     brief,
     QUALITY,

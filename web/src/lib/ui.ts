@@ -10,8 +10,8 @@ export const ui = {
   label: "block text-sm font-semibold text-ink",
   input:
     "mt-1.5 block w-full rounded-xl border border-rule bg-paper px-3.5 py-3 text-base text-ink shadow-[inset_0_1px_2px_rgb(18_40_58/0.04)] transition duration-200 placeholder:text-ink-soft/55 hover:border-ink-soft/50 focus:border-teal focus:outline-none focus:ring-4 focus:ring-teal/15",
-  button: `${buttonBase} bg-ink text-paper shadow-card hover:bg-teal`,
-  buttonGold: `${buttonBase} bg-gold text-ink-deep shadow-card hover:brightness-110`,
+  button: `${buttonBase} sheen bg-ink text-paper shadow-card hover:bg-teal hover:shadow-lift`,
+  buttonGold: `${buttonBase} sheen bg-gold text-ink-deep shadow-card hover:brightness-110`,
   buttonQuiet: `${buttonBase} border border-ink/25 bg-paper text-ink hover:border-ink hover:bg-panel`,
   link: "font-semibold text-teal underline decoration-teal/40 underline-offset-4 transition hover:text-ink hover:decoration-ink",
   card: "rounded-2xl border border-rule/80 bg-paper p-6 shadow-card sm:p-7",

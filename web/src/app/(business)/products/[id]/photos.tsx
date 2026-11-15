@@ -5,6 +5,7 @@ import { BOX_FACES, FACE_LABELS, faceSizeMm, type BoxDims, type BoxFace } from "
 import { createClient } from "@/lib/supabase/client";
 import { ui } from "@/lib/ui";
 import { removeFace, requestUpload, saveFace, saveLogo, saveTargets } from "../actions";
+import { StraightenDialog } from "./straighten-dialog";
 
 const MINDAR_URL = "https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image.prod.js";
 
@@ -74,10 +75,12 @@ export function Photos(props: {
     }
   }
 
-  const onFace = (face: BoxFace, file: File | undefined) =>
-    file &&
+  // A picked photo waits here while the business marks the face's corners.
+  const [pending, setPending] = useState<{ face: BoxFace; file: File } | null>(null);
+
+  // `blob` is the straightened photo from the corner-marking step.
+  const onFace = (face: BoxFace, blob: Blob) =>
     run(face, async () => {
-      const blob = await resizeImage(file, 1280, "image/jpeg");
       const path = await upload(productId, "face", blob, face);
       const result = await saveFace(productId, face, path);
       if (result?.error) throw new Error(result.error);
@@ -140,7 +143,8 @@ export function Photos(props: {
                     className="sr-only"
                     disabled={busy !== null}
                     onChange={(e) => {
-                      void onFace(face, e.target.files?.[0]);
+                      const file = e.target.files?.[0];
+                      if (file) setPending({ face, file });
                       e.target.value = "";
                     }}
                   />
@@ -199,9 +203,31 @@ export function Photos(props: {
             {trackingReady ? `Ready (${uploaded.length} face${uploaded.length === 1 ? "" : "s"})` : faces.front ? "Not prepared yet" : "Upload the front photo first"}
           </span>
         </div>
+        {uploaded.length > 0 && uploaded.length < 4 && (
+          <p className={`${ui.notice} mt-3`}>
+            With {uploaded.length === 1 ? "only the front" : `only ${uploaded.length} faces`} photographed, the preview
+            disappears when the customer turns the box to a face without a photo. Add the back and both sides so it
+            follows the box all the way round.
+          </p>
+        )}
       </div>
 
       <div aria-live="polite">{error && <p className={ui.error}>{error}</p>}</div>
+
+      {pending && (
+        <StraightenDialog
+          file={pending.file}
+          faceLabel={FACE_LABELS[pending.face]}
+          faceW={faceSizeMm(dims, pending.face).w}
+          faceH={faceSizeMm(dims, pending.face).h}
+          onCancel={() => setPending(null)}
+          onDone={(blob) => {
+            const face = pending.face;
+            setPending(null);
+            void onFace(face, blob);
+          }}
+        />
+      )}
     </div>
   );
 }

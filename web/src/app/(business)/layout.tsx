@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { IconBox, IconCard, IconHome, IconLogout, IconShield } from "@/components/icons";
+import { NavLink } from "@/components/nav-link";
 import { requireUser } from "@/lib/auth";
 import { isDemoMode } from "@/lib/demo";
 
@@ -33,14 +34,10 @@ export default async function BusinessLayout({ children }: LayoutProps<"/">) {
 
         <nav aria-label="Main" className="flex gap-1 overflow-x-auto px-3 pb-3 lg:flex-1 lg:flex-col lg:px-4 lg:pb-0">
           {links.map(({ href, label, Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className="flex min-h-11 shrink-0 items-center gap-3 rounded-xl px-3.5 py-2.5 font-semibold text-paper/80 transition duration-200 hover:bg-paper/10 hover:text-paper"
-            >
+            <NavLink key={href} href={href}>
               <Icon />
               {label}
-            </Link>
+            </NavLink>
           ))}
         </nav>
 

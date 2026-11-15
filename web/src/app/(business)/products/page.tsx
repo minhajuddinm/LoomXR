@@ -30,7 +30,7 @@ export default async function ProductsPage() {
           No products yet. Add a box product to set up its photos, questions and QR code.
         </p>
       ) : (
-        <ul className="grid gap-4 sm:grid-cols-2">
+        <ul className="stagger grid gap-4 sm:grid-cols-2">
           {products.map((p) => (
             <li key={p.id}>
               <Link href={`/products/${p.id}`} className={`${ui.card} block transition duration-200 hover:-translate-y-0.5 hover:border-teal hover:shadow-lift`}>

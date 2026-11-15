@@ -45,9 +45,9 @@ export default async function DashboardPage() {
         <h1 className={`${ui.h1} mt-2`}>{business.name}</h1>
       </div>
 
-      <dl className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <dl className="stagger grid grid-cols-2 gap-4 lg:grid-cols-4">
         {stats.map((s) => (
-          <div key={s.label} className={ui.card}>
+          <div key={s.label} className={`${ui.card} lift`}>
             <dt className="text-sm text-ink-soft">{s.label}</dt>
             <dd className="mt-1 font-display text-4xl font-bold tabular-nums">{s.value}</dd>
           </div>

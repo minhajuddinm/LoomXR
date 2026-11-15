@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CUSTOMER_QUESTIONS, CUSTOMER_SLOTS, sanitizeCustomerAnswers } from "../questions";
-import { artDirection, COLOUR_VALUES, NEGATIVE, STYLE_VALUES } from "./directions";
+import { artDirection, COLOUR_VALUES, LAYOUT_COUNT, NEGATIVE, STYLE_VALUES } from "./directions";
 import { defaultTemplate, fillTemplate, parseSlots, unknownSlots } from "./prompt";
 
 const answers = {
@@ -78,9 +78,16 @@ describe("sanitizeCustomerAnswers", () => {
 describe("artDirection", () => {
   const brief = "Packaging for a tea product.";
 
-  it("gives each of the three designs in a round a different layout", () => {
-    const plates = [0, 1, 2].map((i) => artDirection({ designIndex: i, answers, brief }).plate);
-    expect(new Set(plates).size).toBe(3);
+  it("gives each of the five designs in a round a different layout", () => {
+    expect(LAYOUT_COUNT).toBe(5);
+    const prompts = [0, 1, 2, 3, 4].map((i) => artDirection({ designIndex: i, answers, brief }).frontPrompt);
+    expect(new Set(prompts).size).toBe(5);
+  });
+
+  it("wraps around when the design index runs past the last layout", () => {
+    const a = artDirection({ designIndex: 1, answers, brief });
+    const b = artDirection({ designIndex: 1 + LAYOUT_COUNT, answers, brief });
+    expect(b.frontPrompt).toBe(a.frontPrompt);
   });
 
   it("never asks the image model for text, logos or the customer's own words", () => {

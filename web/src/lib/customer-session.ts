@@ -68,3 +68,16 @@ export async function createCustomerSession(
   });
   return data as CustomerSession;
 }
+
+// The customer may change their answers between rounds.
+export async function updateSessionAnswers(
+  session: CustomerSession,
+  answers: Record<string, string>,
+): Promise<CustomerSession> {
+  const { error } = await createAdminClient()
+    .from("customer_sessions")
+    .update({ answers })
+    .eq("id", session.id);
+  if (error) throw new Error(`Could not save answers: ${error.message}`);
+  return { ...session, answers };
+}

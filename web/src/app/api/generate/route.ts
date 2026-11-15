@@ -1,5 +1,9 @@
 import { getPublicProduct } from "@/lib/customer-product";
-import { createCustomerSession, getCustomerSession } from "@/lib/customer-session";
+import {
+  createCustomerSession,
+  getCustomerSession,
+  updateSessionAnswers,
+} from "@/lib/customer-session";
 import { GenerationError, runGenerationRound } from "@/lib/generation/pipeline";
 import { sanitizeCustomerAnswers } from "@/lib/questions";
 
@@ -34,6 +38,11 @@ export async function POST(request: Request) {
     const answers = sanitizeCustomerAnswers(body.answers);
     if (!answers) return Response.json({ error: "Please answer every question." }, { status: 400 });
     session = await createCustomerSession(product.id, answers);
+  } else if (body.answers !== undefined) {
+    // Returning for another round: the customer may have changed their answers.
+    const answers = sanitizeCustomerAnswers(body.answers);
+    if (!answers) return Response.json({ error: "Please answer every question." }, { status: 400 });
+    session = await updateSessionAnswers(session, answers);
   }
 
   // Custom text: short, plain characters only. Proper moderation comes with

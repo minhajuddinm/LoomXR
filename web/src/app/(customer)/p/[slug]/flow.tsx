@@ -102,8 +102,8 @@ export function Flow(props: {
         <p className={ui.eyebrow}>{props.brandName ?? "Personalized packaging"}</p>
         <h1 className={`${ui.h1} mt-2`}>Make this box yours</h1>
         <p className="mt-4 text-lg text-ink-soft">
-          Answer five quick questions and see {props.productName} in packaging designed for you, on the real box,
-          through your camera.
+          Answer five quick questions and get five designs for {props.productName}, made just for you. See each one on
+          the real box through your camera.
         </p>
 
         {props.premiumPrice && (
@@ -146,9 +146,9 @@ export function Flow(props: {
       <div className="animate-rise" aria-live="polite">
         <Progress step={step} />
         <h1 className={ui.h1}>Designing your packaging</h1>
-        <p className="mt-3 text-ink-soft">Three designs are being made just for you. This takes about 20 to 40 seconds.</p>
+        <p className="mt-3 text-ink-soft">Five designs are being made just for you. This takes about 30 to 60 seconds.</p>
         <div className="mt-6 space-y-4" aria-hidden="true">
-          {[0, 1, 2].map((i) => (
+          {[0, 1, 2, 3, 4].map((i) => (
             <div key={i} className="shimmer h-44 rounded-2xl" />
           ))}
         </div>
@@ -160,10 +160,17 @@ export function Flow(props: {
     return (
       <div className="animate-rise">
         <Progress step={step} />
-        <h1 className={ui.h1}>Your taste</h1>
+        <h1 className={ui.h1}>{designs.length ? "Change your answers" : "Your taste"}</h1>
         <p className="mt-2 text-ink-soft">
-          {answeredCount} of {CUSTOMER_QUESTIONS.length} answered
+          {designs.length
+            ? "Change anything you like, then get five new designs."
+            : `${answeredCount} of ${CUSTOMER_QUESTIONS.length} answered`}
         </p>
+        {designs.length > 0 && (
+          <button type="button" className={`${ui.link} mt-3 min-h-11`} onClick={() => setStep("designs")}>
+            Back to my designs
+          </button>
+        )}
         <div className="mt-6 space-y-7">
           {CUSTOMER_QUESTIONS.map((q) => (
             <fieldset key={q.id}>
@@ -215,7 +222,7 @@ export function Flow(props: {
         <div className="sticky bottom-0 -mx-5 mt-8 bg-gradient-to-t from-canvas via-canvas to-transparent px-5 pb-4 pt-6">
           <button type="button" className={`${ui.button} w-full`} disabled={!answered} onClick={() => void generate()}>
             <IconSpark />
-            Show my designs
+            {designs.length ? "Show five new designs" : "Show my designs"}
           </button>
         </div>
       </div>
@@ -233,7 +240,7 @@ export function Flow(props: {
             Sample patterns only. AI generation is not connected, so these are not real designs.
           </p>
         )}
-        <ul className="mt-5 space-y-5">
+        <ul className="stagger mt-5 space-y-5">
           {designs.map((d, i) => (
             <li key={d.id} className={`${ui.card} overflow-hidden !p-0`}>
               <div className="bg-gradient-to-b from-panel to-canvas py-4">
@@ -260,9 +267,35 @@ export function Flow(props: {
           ))}
         </ul>
         {alert}
-        <button type="button" className={`${ui.buttonQuiet} mt-6 w-full`} disabled={roundsLeft <= 0} onClick={() => void generate()}>
-          {roundsLeft > 0 ? `Show me three more (${roundsLeft} ${roundsLeft === 1 ? "round" : "rounds"} left)` : "No more rounds left"}
-        </button>
+        <section className={`${ui.card} mt-6`} aria-labelledby="more-heading">
+          <h2 id="more-heading" className="font-display text-xl font-bold">
+            Not quite right?
+          </h2>
+          {roundsLeft > 0 ? (
+            <>
+              <p className="mt-1 text-sm text-ink-soft">
+                You can ask for new designs {roundsLeft === 1 ? "one more time" : `${roundsLeft} more times`}.
+              </p>
+              <button
+                type="button"
+                className={`${ui.button} mt-4 w-full`}
+                onClick={() => {
+                  setStep("questions");
+                  window.scrollTo({ top: 0 });
+                }}
+              >
+                Change my answers
+              </button>
+              <button type="button" className={`${ui.buttonQuiet} mt-3 w-full`} onClick={() => void generate()}>
+                Same answers, five new designs
+              </button>
+            </>
+          ) : (
+            <p className="mt-1 text-sm text-ink-soft">
+              You have used all your design rounds. Pick your favourite above.
+            </p>
+          )}
+        </section>
       </div>
     );
   }

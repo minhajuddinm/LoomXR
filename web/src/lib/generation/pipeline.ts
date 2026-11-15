@@ -19,7 +19,7 @@ import { IMAGE_COST_USD, IMAGE_MODEL, generateImage, hasTogether } from "./toget
 // designs (CLIP embedding + perceptual hash) and moderation of custom content.
 
 export const MAX_ROUNDS = 3;
-export const DESIGNS_PER_ROUND = 3;
+export const DESIGNS_PER_ROUND = 5;
 const SIGNED_URL_SECONDS = 60 * 60;
 
 export type DesignView = { id: string; textures: Record<BoxFace, string> };
@@ -114,7 +114,9 @@ export async function runGenerationRound(input: {
       const seed = randomInt(1, 2 ** 31 - 1);
       // A different layout for each of the three designs, rotated each round.
       const direction = artDirection({
-        designIndex: designIndex + session.rounds_used,
+        // Later rounds start from a different layout, so asking for more
+        // with the same answers still looks fresh.
+        designIndex: designIndex + session.rounds_used * 2,
         answers: session.answers,
         brief,
       });

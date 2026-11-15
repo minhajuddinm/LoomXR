@@ -86,8 +86,9 @@ export default async function ProductPage({ params }: PageProps<"/products/[id]"
 
       <Step number={2} title="Photos of the box" done={Boolean(product.targets_path)}>
         <p className="mb-4 text-ink-soft">
-          Photograph each face straight on, in even light, and crop so the face fills the picture edge to edge. The front
-          is required; more faces let the AR preview keep working as the customer turns the box.
+          Photograph every face of the box you can: front, back and both sides at least. After you pick a photo you
+          mark the four corners of the face, and the picture is straightened for you. The customer&apos;s phone finds
+          the box from these pictures, so each extra face lets the preview follow the box further round.
         </p>
         <Photos productId={id} dims={product} faces={faces} logoUrl={urlFor(product.logo_path)} trackingReady={Boolean(product.targets_path)} />
       </Step>
