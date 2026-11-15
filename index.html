@@ -52,7 +52,8 @@
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <h1>Packaging designed for one customer, shown in AR before it is made.</h1>
+        <p class="eyebrow">AI-personalized packaging, previewed in AR</p>
+        <h1>Packaging designed for <em>one customer</em>, shown in AR before it is made.</h1>
         <p class="lede">LoomXR Labs is building a web AR platform for consumer brands. A shopper scans a product in store, answers a few questions about their taste, and sees a packaging design generated for them on the real box, in the phone browser.</p>
         <div class="actions">
           <a class="button" href="#research">Read the research</a>
@@ -112,31 +113,38 @@
   <div class="wrap">
     <div class="section-head">
       <h2>What the platform does</h2>
-      <p>Three parts run in one browser session. The shopper installs nothing. The table shows what works in our research prototype today and what we plan for the first release.</p>
+      <p>Three parts run in one browser session. The shopper installs nothing. Each card shows what works in our research prototype today and what we plan for the first release.</p>
     </div>
     <div class="section-body">
-      <table class="spec">
-        <thead>
-          <tr><th scope="col">Part</th><th scope="col">What happens</th><th scope="col">Status</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Recognizes the product</th>
-            <td>The phone camera finds the brand's box and follows it as the shopper moves it.</td>
-            <td><strong>Prototype:</strong> printed marker on the box, tracked with AR.js.<br><strong>Planned:</strong> a detection model trained on each brand's product photos, so no marker is needed.</td>
-          </tr>
-          <tr>
-            <th scope="row">Generates the design</th>
-            <td>The shopper's answers become an image prompt. A design comes back in 5 to 10 seconds.</td>
-            <td><strong>Prototype:</strong> FLUX 1.1 [pro] image generation.<br><strong>Planned:</strong> brand rules for colours, logo and protected areas applied to every design.</td>
-          </tr>
-          <tr>
-            <th scope="row">Shows it on the box</th>
-            <td>The design is mapped onto the box in the camera view. The shopper turns the box and sees each side.</td>
-            <td><strong>Prototype:</strong> Three.js texture mapping in a Next.js web app.<br><strong>Planned:</strong> steadier tracking under store lighting.</td>
-          </tr>
-        </tbody>
-      </table>
+      <ol class="features">
+        <li>
+          <span class="num" aria-hidden="true">1</span>
+          <h3>Recognizes the product</h3>
+          <p>The phone camera finds the brand's box and follows it as the shopper moves it.</p>
+          <dl>
+            <div><dt>Prototype</dt><dd>Printed marker on the box, tracked with AR.js.</dd></div>
+            <div><dt>Planned</dt><dd>A detection model trained on each brand's product photos, so no marker is needed.</dd></div>
+          </dl>
+        </li>
+        <li>
+          <span class="num" aria-hidden="true">2</span>
+          <h3>Generates the design</h3>
+          <p>The shopper's answers become an image prompt. A design comes back in 5 to 10 seconds.</p>
+          <dl>
+            <div><dt>Prototype</dt><dd>FLUX 1.1 [pro] image generation.</dd></div>
+            <div><dt>Planned</dt><dd>Brand rules for colours, logo and protected areas applied to every design.</dd></div>
+          </dl>
+        </li>
+        <li>
+          <span class="num" aria-hidden="true">3</span>
+          <h3>Shows it on the box</h3>
+          <p>The design is mapped onto the box in the camera view. The shopper turns the box and sees each side.</p>
+          <dl>
+            <div><dt>Prototype</dt><dd>Three.js texture mapping in a Next.js web app.</dd></div>
+            <div><dt>Planned</dt><dd>Steadier tracking under store lighting.</dd></div>
+          </dl>
+        </li>
+      </ol>
     </div>
   </div>
 </section>
@@ -169,15 +177,12 @@
         <p>The AR view jittered. Tracking dropped when a finger covered the marker, and the design was cropped at steep viewing angles. Lighting on the box also affected detection. Tracking is the first engineering problem we will work on for the product.</p>
         <p class="cite">M. Minhajuddin, J. Varghese, S. Hu and S. Nam, <cite>Designing Hyper-Personalized Retail Product Packaging through Generative AI and Augmented Reality</cite>. Accepted at IEEE ISEMV 2026, Larnaca, Cyprus, 22 to 24 October 2026.</p>
       </div>
-      <table class="results">
-        <caption>User study results</caption>
-        <tbody>
-          <tr><th scope="row">Participants</th><td>15</td></tr>
-          <tr><th scope="row">System Usability Scale score<small>Standard deviation 5.11. The commonly cited average is 68.</small></th><td>89.5 / 100</td></tr>
-          <tr><th scope="row">Time to generate one design</th><td>5 to 10 s</td></tr>
-          <tr><th scope="row">Apps the participant installed</th><td>None</td></tr>
-        </tbody>
-      </table>
+      <div class="stats" role="group" aria-label="User study results">
+        <div><p class="figure">15</p><p class="what">Participants</p></div>
+        <div><p class="figure">89.5<small> / 100</small></p><p class="what">System Usability Scale score</p><p class="fine">Standard deviation 5.11. The commonly cited average is 68.</p></div>
+        <div><p class="figure">5 to 10<small> s</small></p><p class="what">Time to generate one design</p></div>
+        <div><p class="figure">None</p><p class="what">Apps the participant installed</p></div>
+      </div>
     </div>
   </div>
 </section>
@@ -256,7 +261,7 @@
   </div>
 </section>
 
-<section class="section" id="contact">
+<section class="section cta" id="contact">
   <div class="wrap">
     <div class="section-head">
       <h2>Contact</h2>
@@ -301,7 +306,7 @@
 <script>
 /* Sections fade up as they scroll into view. Skipped for reduced motion. */
 (function () {
-  var items = document.querySelectorAll(".section-head, .section-body, .prose, .results, .pairs > *, .timeline > li, .team > li, .steps > li, .facts > div, .contact-form");
+  var items = document.querySelectorAll(".section-head, .prose, .note, .features > li, .stats > div, .pairs > *, .timeline > li, .team > li, .steps > li, .contact-form");
   if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   var seen = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
